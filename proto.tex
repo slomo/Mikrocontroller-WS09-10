@@ -1,5 +1,5 @@
-\documentclass[11pt,a4paper,notitlepage,onecolumn,twoside]{article}
-%\usepackage{listings}
+\documentclass[11pt,a4paper,onecolumn]{report}
+\usepackage{listings}
 \usepackage[german]{babel}
 \usepackage[utf8]{inputenc}
 \title{TI4 - 1. Protokoll}
@@ -10,49 +10,70 @@
 \date{}
 \begin{document}
 \maketitle
-
+\tableofcontents
 
 \part{IO-Ports}
 
 \chapter{Aufgabe 1}
 
 \paragraph*{}
-Das Schaltungungsbild zeigt, dass an den Bits null bis zwei des Ports vier 
-jeweils eine LED so wie der zugehörige Vorwiederstand verschaltet ist. 
+Das Schaltungungsbild zeigt, dass an den Bits Null bis Zwei des Ports vier 
+jeweils eine LED so wie der zugehÃ¶rige Vorwiederstand verschaltet ist. 
 Die andere Seite der LEDs ist ist an die Stromquelle (mit vermutlich 3 V) 
 angeschlossen. Das vierte Bit des Port vier ist an das Gate eines p-Kanal 
 MOSFETs angeschlossen. Solange zwischen Gate und Source keine positive
-Spannung anlegt leitet der MOSFET nicht. Die Source desMOSFET ist mit 
+Spannung anlegt leitet der MOSFET nicht. Die Source des MOSFET ist mit 
 der Spannung verbunden. \\
-Wird eine Null auf eine Portleitung geschreiben so liegt an ihr, wenn in
+Wird eine Null auf eine Portleitung geschrieben so liegt an ihr, wenn in
 PXDIR das entsprechende Bit auf Ausgang steht (der Wert muss Eins sein), 
 die Versorgungsspannung des Controllers an, anderenfalls Ground. \\
-Wir auf die Bits der LEDs eine Null geschreiben so gibt es ein 
-Spannungsgefälle in Leitrichtung der LED so dass ein Strom über die LED 
-fließt und diese leuchtet. Anderes herum verhält es sich bei dem 
-Lautsprecher; Damit dieser einen Ton ausgeben kann muss über den MOSFET
-ein Strom fließen können, dies wird erreicht in dem auf das Gate Spannung 
-gleget wird durch schreiben einer Eins in die angeschlossene Protleitung.
+Wir auf die Bits der LEDs eine Null geschrieben so gibt es ein 
+SpannungsgefÃ¤lle in Leitrichtung der LED so dass ein Strom Ã¼ber die LED 
+flieÃŸt und diese leuchtet. Anderes herum verhÃ¤lt es sich bei dem 
+Lautsprecher; Damit dieser einen Ton ausgeben kann muss Ã¼ber den MOSFET
+ein Strom flieÃŸen kÃ¶nnen, dies wird erreicht in dem auf das Gate Spannung 
+geleget wird durch schreiben einer Eins in die angeschlossene Protleitung.
 
-\paragraph{}*
-Nachfolgend eine kurze Erklärung der Befehele
+ \begin{tabular}{lcr}
+  Spalte 1 & Spalte 2 & Spalte 3 \\
+  1 & 2 & 3 \\
+ \end{tabular}
 
-\begin{table}{ll}
-$#define LEDRT (0x01)$
+
+
+\begin{tabular}{lr}
+
+
+test & test  \\
+
+\begin{lstlisting}
+#define LEDRT (0x01) 
+\end{lstlisting} &
+Beschreibung \\
+
+\begin{lstlisting}
 P4DIR = 0x00;
+\end{lstlisting} &
+Beschreibung \\
+
+\begin{lstlisting} 
 a = 10;
+\end{lstlisting}&
+Beschreibung \\
+
+\begin{lstlisting} 
 P4OUT = a;
+\end{lstlisting}&
+Beschreibung \\
+
+\begin{lstlisting}
 P4OUT = 0x01;
-P4DIR = 0x0F;
-a = P4IN & 0x0F;
-P4OUT &= 0x08;
-P4OUT |= 0x01;
-P4OUT |= LEDRT;
-P4OUT &= ~LEDRT;
-P4OUT ^= LEDRT;
+\end{lstlisting}&
+Beschreibung \\
 
 
 
+\end{tabular}
 
 
 \end{document}
