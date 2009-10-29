@@ -1,0 +1,58 @@
+\documentclass[11pt,a4paper,notitlepage,onecolumn,twoside]{article}
+%\usepackage{listings}
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+\title{TI4 - 1. Protokoll}
+\author{Rpbin Nehls, Yves M\"uller\\
+  Institut f\"ur Informatik,\\
+  Freie Universit\"at Berlin\\
+  nehls@spline.de uves@spline.de }
+\date{}
+\begin{document}
+\maketitle
+
+
+\part{IO-Ports}
+
+\chapter{Aufgabe 1}
+
+\paragraph*{}
+Das Schaltungungsbild zeigt, dass an den Bits null bis zwei des Ports vier 
+jeweils eine LED so wie der zugehörige Vorwiederstand verschaltet ist. 
+Die andere Seite der LEDs ist ist an die Stromquelle (mit vermutlich 3 V) 
+angeschlossen. Das vierte Bit des Port vier ist an das Gate eines p-Kanal 
+MOSFETs angeschlossen. Solange zwischen Gate und Source keine positive
+Spannung anlegt leitet der MOSFET nicht. Die Source desMOSFET ist mit 
+der Spannung verbunden. \\
+Wird eine Null auf eine Portleitung geschreiben so liegt an ihr, wenn in
+PXDIR das entsprechende Bit auf Ausgang steht (der Wert muss Eins sein), 
+die Versorgungsspannung des Controllers an, anderenfalls Ground. \\
+Wir auf die Bits der LEDs eine Null geschreiben so gibt es ein 
+Spannungsgefälle in Leitrichtung der LED so dass ein Strom über die LED 
+fließt und diese leuchtet. Anderes herum verhält es sich bei dem 
+Lautsprecher; Damit dieser einen Ton ausgeben kann muss über den MOSFET
+ein Strom fließen können, dies wird erreicht in dem auf das Gate Spannung 
+gleget wird durch schreiben einer Eins in die angeschlossene Protleitung.
+
+\paragraph{}*
+Nachfolgend eine kurze Erklärung der Befehele
+
+\begin{table}{ll}
+$#define LEDRT (0x01)$
+P4DIR = 0x00;
+a = 10;
+P4OUT = a;
+P4OUT = 0x01;
+P4DIR = 0x0F;
+a = P4IN & 0x0F;
+P4OUT &= 0x08;
+P4OUT |= 0x01;
+P4OUT |= LEDRT;
+P4OUT &= ~LEDRT;
+P4OUT ^= LEDRT;
+
+
+
+
+
+\end{document}
