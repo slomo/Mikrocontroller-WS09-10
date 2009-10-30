@@ -1,4 +1,4 @@
-#include "msp430x16x.h"		// Systemdefinitionen von TI fr den MSP430F1612
+#include "msp430x16x.h"		// Systemdefinitionen von TI für den MSP430F1612
 #include "init.h"			// Initialisierung des Mikrocontrollers
 #include "CC1100.h"			// CC1100 Funktransceiver
 #include "system.h"			// Systemfunktionen MSB430H
@@ -17,23 +17,23 @@
 void aufgabe2() {
     // Input Maskieren um nur die beinen Taster zu erfassen
 	switch (P1IN & 0x03) {
-		case 0x00 : // kein Taster gedrckt oder beide gedrckt
+		case 0x00 : // kein Taster gedrückt oder beide gedrückt
 		case 0x03 : // schlate nur gelbe LED ein 
 			LED_ON(YELLOW);
 			LED_OFF(RED);
 			LED_OFF(GREEN);
 		break; 
-		case 0x01 :  // rechter Taster gedrckt schlate nur grne LED ein
+		case 0x01 :  // rechter Taster gedrückt schlate nur grüne LED ein
 			LED_OFF(YELLOW);
 			LED_OFF(RED);
 			LED_ON(GREEN);
 		break;
-		case 0x02 : // linker Taster gedrckt schalte nur rote LED ein
+		case 0x02 : // linker Taster gedrückt schalte nur rote LED ein
 			LED_OFF(YELLOW);
 			LED_ON(RED);
 			LED_OFF(GREEN);
 		break;
-		default : // dieser Fall sollte nicht eintreten fr den Fall das doch,
+		default : // dieser Fall sollte nicht eintreten für den Fall das doch,
                   // sollen alle LEDs leuchten
 			LED_ON(YELLOW);
 			LED_ON(RED);

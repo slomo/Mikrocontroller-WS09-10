@@ -1,4 +1,4 @@
-#include "msp430x16x.h"		// Systemdefinitionen von TI fr den MSP430F1612
+#include "msp430x16x.h"		// Systemdefinitionen von TI für den MSP430F1612
 #include "init.h"			// Initialisierung des Mikrocontrollers
 #include "CC1100.h"			// CC1100 Funktransceiver
 #include "system.h"			// Systemfunktionen MSB430H
@@ -14,8 +14,9 @@
 #define LED_ON(led)      	(P4OUT &= ~led)    
 #define LED_TOGGLE(led)  	(P4OUT ^=  led)
 
+
 // Funtion, welche die bereits vorhandene Funktion wait verwendet
-// um den Programmfluss zu um n Millisekunden zu verzgern
+// um den Programmfluss zu um n Millisekunden zu verzögern
 void delay(unsigned int time_mill) {	
 	unsigned int i;
 	for(i=0;i<=time_mill;++i){
@@ -23,22 +24,26 @@ void delay(unsigned int time_mill) {
 	}
 }
 
-void aufgabe3() {
-    // wenn einer der beinen Taster gedrckt wird, starte einen Ampelzyklus
-	if(P1IN & 0x03) {
-		LED_ON(YELLOW);
-		delay(2000);
-		LED_OFF(YELLOW);
-		LED_ON(RED);
-		delay(3000);
-		LED_ON(YELLOW);
-		delay(2000);
-		LED_OFF(RED);
-		LED_OFF(YELLOW);
-		LED_ON(GREEN);
-		delay(3000);
-		LED_OFF(GREEN);
-        //Ampel ist wieder aus und es kann 4 sec lang kein neuer Zyklus gestartet werden
-		delay(4000);
-	}
+void aufgabe1() {
+    // Ampel auf rot schalten und warten
+	LED_ON(RED);
+	delay(3000);
+
+    // Ampel auf gelb-rot schalten und warten
+	LED_ON(YELLOW);
+	delay(1000);
+
+    // Ampel auf grün schalten und warten
+	LED_OFF(YELLOW);
+	LED_OFF(RED);
+	LED_ON(GREEN);
+	delay(3000);
+
+    // Ampel auf gelb schalten und warten
+	LED_OFF(GREEN);
+	LED_ON(YELLOW);
+	delay(1000);
+    
+    // Ampel für den nächsten Durchlauf zurücksetzen
+	LED_OFF(YELLOW);
 }

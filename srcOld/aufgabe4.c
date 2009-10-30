@@ -1,4 +1,4 @@
-#include "msp430x16x.h"		// Systemdefinitionen von TI fr den MSP430F1612
+#include "msp430x16x.h"		// Systemdefinitionen von TI für den MSP430F1612
 #include "init.h"			// Initialisierung des Mikrocontrollers
 #include "CC1100.h"			// CC1100 Funktransceiver
 #include "system.h"			// Systemfunktionen MSB430H
@@ -15,7 +15,7 @@
 #define LED_TOGGLE(led)  	(P4OUT ^=  led)
 
 // Funtion, welche die bereits vorhandene Funktion wait verwendet
-// um den Programmfluss zu um n Millisekunden zu verzgern
+// um den Programmfluss zu um n Millisekunden zu verzögern
 void delay(unsigned int time_mill) {	
 	unsigned int i;
 	for(i=0;i<=time_mill;++i){
@@ -23,7 +23,7 @@ void delay(unsigned int time_mill) {
 	}
 }
 
-// Funktion um die Ausgabe von Zahlen in Binrer form ber die LEDs zu erleichtern
+// Funktion um die Ausgabe von Zahlen in Binärer form über die LEDs zu erleichtern
 void ausgabe(int zahler){
     //Ausgabe Varriable Nullen
 	int out = 0;
@@ -41,23 +41,23 @@ void ausgabe(int zahler){
 	P4OUT = ~ out;  
 }
 
-//Globaler Zhler
+//Globaler Zähler
 int unsigned i;
 
 void aufgabe4() {
 	
-    // Wenn ein Taster gedrckt wird
+    // Wenn ein Taster gedrückt wird
 	if(P1IN & 0x03){
 		switch (P1IN & 0x03) {
-			case 0x00 : // kein Taster gedrckt
+			case 0x00 : // kein Taster gedrückt
 			break;
-			case 0x01 :  // rechter Taster gedrckt decrementiere
+			case 0x01 :  // rechter Taster gedrückt decrementiere
 				i = (i - 1) % 8;
 			break;
-			case 0x02 : // linker Taster gedrckt incrementiere 
+			case 0x02 : // linker Taster gedrückt incrementiere 
 				i = (i + 1) % 8;
 			break;
-			case 0x03 : //beide gedrckt setze Zhler auf 0
+			case 0x03 : //beide gedrückt setze Zähler auf 0
 				i = 0;
 			break;
 			default :

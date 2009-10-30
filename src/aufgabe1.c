@@ -1,4 +1,4 @@
-#include "msp430x16x.h"		// Systemdefinitionen von TI für den MSP430F1612
+#include "msp430x16x.h"		// Systemdefinitionen von TI fr den MSP430F1612
 #include "init.h"			// Initialisierung des Mikrocontrollers
 #include "CC1100.h"			// CC1100 Funktransceiver
 #include "system.h"			// Systemfunktionen MSB430H
@@ -16,7 +16,7 @@
 
 
 // Funtion, welche die bereits vorhandene Funktion wait verwendet
-// um den Programmfluss zu um n Millisekunden zu verzögern
+// um den Programmfluss zu um n Millisekunden zu verzgern
 void delay(unsigned int time_mill) {	
 	unsigned int i;
 	for(i=0;i<=time_mill;++i){
@@ -33,7 +33,7 @@ void aufgabe1() {
 	LED_ON(YELLOW);
 	delay(1000);
 
-    // Ampel auf grün schalten und warten
+    // Ampel auf grn schalten und warten
 	LED_OFF(YELLOW);
 	LED_OFF(RED);
 	LED_ON(GREEN);
@@ -44,6 +44,6 @@ void aufgabe1() {
 	LED_ON(YELLOW);
 	delay(1000);
     
-    // Ampel für den nächsten Durchlauf zurücksetzen
+    // Ampel fr den nchsten Durchlauf zurcksetzen
 	LED_OFF(YELLOW);
 }

@@ -1,4 +1,4 @@
-#include "msp430x16x.h"		// Systemdefinitionen von TI fr den MSP430F1612
+#include "msp430x16x.h"		// Systemdefinitionen von TI für den MSP430F1612
 #include "init.h"			// Initialisierung des Mikrocontrollers
 #include "CC1100.h"			// CC1100 Funktransceiver
 #include "system.h"			// Systemfunktionen MSB430H
@@ -15,7 +15,7 @@
 #define LED_TOGGLE(led)  	(P4OUT ^=  led)
 
 // Funtion, welche die bereits vorhandene Funktion wait verwendet
-// um den Programmfluss zu um n Millisekunden zu verzgern
+// um den Programmfluss zu um n Millisekunden zu verzögern
 void delay(unsigned int time_mill) {	
 	unsigned int i;
 	for(i=0;i<=time_mill;++i){
@@ -24,7 +24,7 @@ void delay(unsigned int time_mill) {
 }
 
 void aufgabe3() {
-    // wenn einer der beinen Taster gedrckt wird, starte einen Ampelzyklus
+    // wenn einer der beinen Taster gedrückt wird, starte einen Ampelzyklus
 	if(P1IN & 0x03) {
 		LED_ON(YELLOW);
 		delay(2000);
