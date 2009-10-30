@@ -2,21 +2,28 @@
 \usepackage{listings}
 \usepackage[german]{babel}
 \usepackage[utf8]{inputenc}
+\usepackage{longtable}
+\usepackage{graphicx} 
 \title{TI4 - 1. Protokoll}
-\author{Rpbin Nehls, Yves M\"uller\\
+\author{Robin Nehls, Yves M\"uller\\
   Institut f\"ur Informatik,\\
   Freie Universit\"at Berlin\\
   nehls@spline.de uves@spline.de }
 \date{}
+\lstset{
+	language=C ,
+	basicstyle=\small , 
+	numbers=none
+	}
 \begin{document}
 \maketitle
 \tableofcontents
 
-\part{IO-Ports}
+\chapter{IO-Ports}
 
-\chapter{Aufgabe 1}
+\section{Einführung}
 
-\paragraph*{}
+\paragraph*{Schaltung}
 Das Schaltungungsbild zeigt, dass an den Bits Null bis Zwei des Ports vier 
 jeweils eine LED so wie der zugehörige Vorwiederstand verschaltet ist. 
 Die andere Seite der LEDs ist ist an die Stromquelle (mit vermutlich 3 V) 
@@ -32,48 +39,178 @@ Spannungsgefälle in Leitrichtung der LED so dass ein Strom über die LED
 fließt und diese leuchtet. Anderes herum verhält es sich bei dem 
 Lautsprecher; Damit dieser einen Ton ausgeben kann muss über den MOSFET
 ein Strom fließen können, dies wird erreicht in dem auf das Gate Spannung 
-geleget wird durch schreiben einer Eins in die angeschlossene Protleitung.
+gelegt wird durch schreiben einer Eins in die angeschlossene Protleitung.
 
- \begin{tabular}{lcr}
-  Spalte 1 & Spalte 2 & Spalte 3 \\
-  1 & 2 & 3 \\
- \end{tabular}
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{img/mikrocontrollerUNDled.png}
+\caption{\em \small Schaltplan mit LEDs und Lautsprecher}
+\end{figure}
 
+\paragraph{} Die in der Aufgabenstellung gegebenen Befehle und 
+ihre Wirkung sind in der folgenden Tabelle beschreiben:
 
+\begin{longtable}{p{0.4\textwidth}p{0.5\textwidth}}
 
-\begin{tabular}{lr}
+\textbf{Befehl} &
+\textbf{Wirkung}
+\endhead
+\hline
 
-
-test & test  \\
-
-\begin{lstlisting}
-#define LEDRT (0x01) 
+\begin{lstlisting} 
+#define LEDRT (0x01)
 \end{lstlisting} &
-Beschreibung \\
+Definition eines Präcompilermakros LEDRT.\\
+\hline
 
-\begin{lstlisting}
-P4DIR = 0x00;
+\begin{lstlisting} 
+P4DIR = 0x00; 
 \end{lstlisting} &
-Beschreibung \\
+Setzen der Ausgaberichtung des Portes 4 auf ausgehend.\\
+\hline
 
 \begin{lstlisting} 
 a = 10;
-\end{lstlisting}&
-Beschreibung \\
+\end{lstlisting} &
+Die Variable a wird auf den dezimal Wert 10 gesetzt.\\
+\hline
 
 \begin{lstlisting} 
 P4OUT = a;
-\end{lstlisting}&
-Beschreibung \\
+\end{lstlisting} &
+Schreibzugriff auf das Ausgaberegister des Ports 4. Es wird 00001010 
+geschrieben, so dass das 2 und 4 Bit auf Spannung die anderen auf Ground
+liegen.\\
+\hline
 
-\begin{lstlisting}
-P4OUT = 0x01;
-\end{lstlisting}&
-Beschreibung \\
+\begin{lstlisting} 
+P4OUT = 0x01; 
+\end{lstlisting}  &
+Erneuter Schreibzugriff auf Port 4 (genauer gesagt auf das 
+Ausgaberegister).\\
+\hline 
 
+\begin{lstlisting} 
+P4DIR = 0x0F;
+\end{lstlisting}  &
+In das Dir-Register des Portes 4 wird 11111111 geschrieben, so dass
+alle Bits als Ausgabe benutzt wird. \\
+\hline
 
+\begin{lstlisting} 
+a = P4IN & 0x0F;
+\end{lstlisting}  &
+Der Wert der am Port 4 wird mit 0x0F bitweise verundet und in a 
+geschrieben. Das heißt dass die ersten 4 Bits in a genauso gesetzt 
+sind wie in PIN, die anderen 4 Bits sind 0.\\
+\hline 
 
-\end{tabular}
+\begin{lstlisting} 
+P4OUT &= 0x08;
+\end{lstlisting}  &
+In das Ausgaberegister des Portes 4 wird das 4 Bit auf 1 gesetzt, falls
+das Bit vorher schon 1 war, der Rest auf 0.\\
+\hline 
+
+\begin{lstlisting} 
+P4OUT |= 0x01;
+\end{lstlisting} &
+Im Ausgaberegister des Portes 4 wird das erste Bit auf 1 gesetzt, der 
+Rest beibehalten in dem das Register bitweise mit 00000001 verodert 
+wird.\\
+\hline
+
+\begin{lstlisting} 
+P4OUT |= LEDRT;
+\end{lstlisting}  &
+Unter Verwendung eines Präcompiler-Makros wird in P4OUT das erste Bit 
+auf 1 gesetzt, und damit die angeschlossene LED ausschaltet.\\
+\hline 
+
+\begin{lstlisting} 
+P4OUT &= ~LEDRT;
+\end{lstlisting} &
+Das erste Bit in P4OUT wird auf 0 gesetzt, und somit die angeschlossene
+LED eingeschaltet.\\
+\hline 
+
+\begin{lstlisting} 
+P4OUT ^= LEDRT;
+\end{lstlisting}  &
+Durch ein bitweises XOR wird das erste Bit in P4OUT getoggelt. Das 
+heißt wenn das Bit vorher auf 0 war ist es nun 1 und umgekehrt. \\
+\hline 
+
+\end{longtable}
+
+\section{Aufgabe 1}
+\lstinputlisting{src/aufgabe1.c}
+
+\section{Aufgabe 2}
+%\lstinputlisting{utf8/aufgabe2.c}
+
+\section{Aufgabe 3}
+%\lstinputlisting{utf8/aufgabe3.c}
+
+\section{Aufgabe 4}
+%\lstinputlisting{utf8/aufgabe4.c}
+
+\chapter{Clock System}
+
+\section{Aufgabe 5}
+\section{Aufgabe 6}
+\section{Aufgabe 7}
+\section{Aufgabe 8}
+
+\chapter{Watchdog}
+
+\section{Aufgabe 9}
+\section{Aufgabe 10}
+\section{Aufgabe 11}
+
+\chapter{Interrupt}
+
+\section{Aufgabe 12}
+\section{Aufgabe 13}
+
+\chapter{LPM-Modi}
+
+\section{Aufgabe 14}
+\section{Aufgabe 15}
+\section{Aufgabe 16}
+
+\chapter{Timer}
+
+\section{Aufgabe 17}
+\section{Aufgabe 18}
+\section{Aufgabe 19}
+
+\chapter{USART}
+
+\section{Aufgabe 20}
+\section{Aufgabe 21}
+\section{Aufgabe 22}
+
+\chapter{ADU}
+
+\section{Aufgabe 23}
+\section{Aufgabe 24}
+
+\chapter{DAU}
+
+\section{Aufgabe 25}
+
+\chapter{DMA}
+
+\section{Aufgabe 26}
+
+\chapter{Transceiver}
+
+\section{Aufgabe 27}
+\section{Aufgabe 28}
+
+\chapter{Projekte}
+
 
 
 \end{document}
