@@ -1,4 +1,4 @@
-#include "msp430x16x.h"		// Systemdefinitionen von TI fr den MSP430F1612
+#include "msp430x16x.h"		// Systemdefinitionen von TI fur den MSP430F1612
 #include "init.h"			// Initialisierung des Mikrocontrollers
 #include "CC1100.h"			// CC1100 Funktransceiver
 #include "system.h"			// Systemfunktionen MSB430H
@@ -22,12 +22,12 @@ void delay(unsigned int time_mill) {
 
 void aufgabe7() {
 		switch (P1IN & 0x03) {
-			case 0x01 :  // rechter Taster gedrckt
+			case 0x01 :  // rechter Taster gedruckt
 				DCOCTL 	= 0x0;
 				BCSCTL1 = 0x80;				
 				BCSCTL2 = 0xf1;				
 			break;
-			case 0x02 : // linker Taster gedrckt
+			case 0x02 : // linker Taster gedruckt
 				DCOCTL 	= 0xbe;
 				BCSCTL1 = 0x85;
 				BCSCTL2 = 0x1;

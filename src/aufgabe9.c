@@ -1,4 +1,4 @@
-#include "msp430x16x.h"		// Systemdefinitionen von TI fr den MSP430F1612
+#include "msp430x16x.h"		// Systemdefinitionen von TI fur den MSP430F1612
 #include "init.h"			// Initialisierung des Mikrocontrollers
 #include "CC1100.h"			// CC1100 Funktransceiver
 #include "system.h"			// Systemfunktionen MSB430H
@@ -22,12 +22,16 @@ void delay(unsigned int time_mill) {
 
 void aufgabe9() {
 	//Wachund rauslassen
-	WDTCTL = WDTPW & ~WDTHOLD;
+	BCSCTL1	|= DIVA0;
+	BCSCTL1	|= DIVA1;
+	WDTCTL = (WDTPW+WDTCNTCL+WDTSSEL);
+	//WDTCTL = ((WDTCTL & ~0xff00) | WDTPW | WDTSSEL) & ~WDTHOLD & ~WDTIS0 & ~WDTIS1;	
 	while(1){
-		delay(5);
+		delay(500);
 		LED_OFF(RED);
-		WDTCTL = WDTPW | WDTCNTCL;
-		delay(5);
+		//WDTCTL = (WDTCTL & ~0xff00) | WDTPW | WDTCNTCL;	
+		WDTCTL = (WDTPW+WDTCNTCL+WDTSSEL);
+		delay(500);
 		LED_ON(RED);
 	}
 }
