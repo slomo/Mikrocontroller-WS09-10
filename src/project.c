@@ -15,7 +15,7 @@
 #define LED_ON(led)      	(P4OUT &= ~led)    
 #define LED_TOGGLE(led)  	(P4OUT ^=  led)
 
-#define PI 3.14
+#define PI 3.1415926535897932384626433
 
 #define SCALEX 1
 #define SCALEY 1
@@ -50,8 +50,8 @@ void project(){
 	int t,i=0;
 	
 	for(t=0;t<ANTZ;t++) {
-    	valuesX[i][t]=(int) (lissajous_x((float)t*0.02,a,delta)*4096.0/3.0);
-       	valuesY[i][t]=(int) (lissajous_y((float)t*0.02,b)*4096.0/3.0);
+    	valuesX[i][t]=(int) (lissajous_x((float)t*2.0*PI/((float)ANTZ),a,delta)*4096.0/3.0);
+       	valuesY[i][t]=(int) (lissajous_y((float)t*2.0*PI/((float)ANTZ),b)*4096.0/3.0);
     }
 	
 	
@@ -125,7 +125,7 @@ void project(){
 	DAC12_0DAT=valuesX[i][0];
 	while(1) {
 		for(t=0;t<ANTZ;t++) {
-    		valuesX[i][t]=(int) (lissajous_x((float)t*0.02,a,delta+((float)t*0.05/314.0))*4096.0/3.0);
+    		valuesX[i][t]=(int) (lissajous_x((float)t*2.0*PI/((float)ANTZ),a,delta+((float)t*0.05/314.0))*4096.0/3.0);
         	//valuesY[t]=(int) (lissajous_y(t*0.1,b)*4096/3);
     	}
     	delta+=0.05;
