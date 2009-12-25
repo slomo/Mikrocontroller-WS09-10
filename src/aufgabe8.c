@@ -6,20 +6,8 @@
 #include "stdio.h"			// includes TI MSP430F1612 
 #include "SHT11.h"			// SHT11 Temperatur- und Feuchtesensor
 
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
-
-void delay(unsigned int time_mill) {	
-	unsigned int i;
-	for(i=0;i<=time_mill;++i){
-		wait(100);
-	}
-}
-
 void aufgabe8() {
+    // Pin bei jedem Scheifendurchlauf toggeln, um
+    // die ungefaehre Taktfequenz messen zu koennen
 	P4OUT ^= 0x01;
 }
