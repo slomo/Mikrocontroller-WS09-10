@@ -1,0 +1,44 @@
+Interruptverarbeitung des MSP430F1612
+Interrupte sind in der Lage eine Programmabarbeitung beim Eintreten von bestimmten Ereignissen zu unterbrechen und sogenannte Interrupt-Service-Routinen (ISR) zu starten oder einen Mikrocontroller aus einem LP-Mode aufzuwecken und die ISR abzuarbeiten.
+Als Interruptquellen sind folgende I/O Ports und Peripherieeinheiten auf dem MSP430F1612 verfügbar.
+
+INT 0   - D/A Wandler und DMA
+INT 1   - I/O PORT2
+INT 2   - USART1 Senden
+INT 3   - USART1 Empfangen
+INT 4   - I/O PORT
+INT 5   - TIMER A CC1-2, TA
+INT 6   - TIMER A CC0
+INT 7   - A/D Wandler
+INT 8   - USART0 Senden
+INT 9   - USART0 Empfangen
+INT 10  - Watchdog Timer
+INT 11  - Comparator A
+INT 12  - TIMER B CC1-6, TB
+INT 13  - TIMER B CC0
+INT 14  - NMI
+INT 15  - RESET
+ 
+Die höchste Priorität hat INT15.
+Das Status-Register (SR) des Controllers beinhaltet folgende Bits, die den Status des Controllers und abgearbeiteter Befehle definieren:
+
+V      - Overflow Bit
+SCG1   - System Clock Generator 1, schaltet SMCLK-Taktquelle
+SCG0   - System Clock Generator 0, schaltet DCOCLK-Taktquelle
+OSCOFF - Oszillator Off, schaltet LFXT1CLK-Taktquelle
+CPUOFF - CPU Off, schaltet CPU
+GIE    - General Interrupt Enable, schaltet maskierbare Interrupt
+N      - Negative Bit, Ergebnis Bit einer vorhergehenden Operation
+Z      - Zero Bit; Ergebnis Bit einer vorhergehenden Operation
+C      - Carry Bit; Ergebnis Bit einer vorhergehenden Operation
+
+Über das GIE-Bit des Status-Registers (SR) werden Interrupte freigegeben.  Auf die Status-Register kann mit: 
+ 
+_bis_SR_register(GIE);    /* erlaubt Interrupt */
+_bic_SR_register(GIE);    /* verbietet Interrupt */
+
+zugegriffen werden (siehe auch msp430x16x.h und in430.h). Für Ports und Peripherie Einheiten erfolgt eine gesondert Interruptfreigabe durch sogenannte Interrupt-Enable Bits.
+Eine Verschachtelung von Interrupten ist nur möglich wenn das GIE-Bit innerhalb einer Interruptservice-Routine (ISR) gesetzt wird. Eine ISR kann erst nach dem Setzen des GIE-Bit durch einen höher priorisierten Interrupt unterbrochen werden.
+Es ist oft erforderlich innerhalb einer ISR Interruptflags zurückzusetzen, um die Abarbeitung der ISR zu signalisieren. Erfolgt dies nicht, wird automatisch nach Verlassen der ISR wieder in die ISR gesprungen. Das führt zu Fehlfunktionen oder zur Blockade der Programmabarbeitung.
+Ist für einen Port oder eine Peripherieeinheit die Interruptbedingung erfüllt und der Interrupt erlaubt, werden auf dem Stack der Programcounter (PC) und das Statusregister (SR) abgelegt und die Register gesichert (automatisch durch den C-Compiler). Danach wird anhand der Interruptquelle die Startadresse der ISR aus der Interruptvektortabelle in den Programmcounter geladen und die ISR abgearbeitet. Nach Abarbeitung der ISR wird der Ausgangszustand unter Nutzung der im Stack gespeicherten Information wieder hergestellt. Die Programmabarbeitung wird an der Stelle weiter fortgesetzt an der sie unterbrochen wurde.
+Da der Stack im RAM eine begrenzte Größe hat, kann es zu Problemen bei Verschachtelungen von ISR auf Basis des GIE-Bits kommen.

@@ -1,0 +1,15 @@
+Aufgabe 13: Die Totmannschaltung mit Interrupt und Watchdog
+Der Watchdog und ein Tasten-Interrupt sollen in dieser Aufgabe gleichzeitig genutzt werden. In der Technik kommt so etwas in Form einer sogenannten Totmannschaltung vor. Betätigt der Fahrer eines Fahrzeugs innerhalb eines festgelegten Zeitraumes nicht eine Taste, erfolgt ein Notbremsung. 
+Folgendes soll implementiert werden:
+
+Taste (P1.0) als Interruptquelle programmieren
+alle LED (P4.0..2)  ausschalten
+Watchdog als Timer Interruptquelle (ACLK-Takt, 4 Sekunden ) programmieren
+LED (P4.1) einschalten
+Endlosschleife mit im 0,5 Sekundentakt blinkender LED (P4.0)
+Bei Tastendruck - in der ISR für den Taster - Watchdog Timer neu starten und LED (P4.1) ausschalten
+
+In der Watchdog-Timer-ISR soll Folgendes realisiert werden:
+
+Ist LED (P4.1) aus, wird sie wieder eingeschaltet
+Ist LED (P4.1) an, wird der Watchdog Timer Interrupt ausgeschaltet und eine Ampelsequenz innerhalb einer Endlosschleife gestartet.
