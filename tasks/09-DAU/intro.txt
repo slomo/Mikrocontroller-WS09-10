@@ -1,0 +1,20 @@
+Der Digital/Analog Wandler des MSP430F1612
+Der Controller verfügt über zwei 12-Bit DA-Wandler. Das Blockschaltbild ist der Abbildung zu entnehmen.
+Die Referenzspannungswert des DA-Wandlers sind per Software zu selektieren. Um Strom zu sparen, sollte die VEREF+ Spannung genutzt werden, die schaltungsbedingt beim MSB430H Board auf 3V liegt. Dadurch wird jeder digitale Wert in eine Spannung zwischen 0…3V gewandelt.
+ 
+Beachten sie das Zahlenformat (DAC12DF-Bit) und die einzustellen Spannungs- bereiche (DAC12IR-Bit).
+Die Auflösung des DA-Wandlers kann wahlweise auf 8- oder 12-Bit eingestellt werden (DAC12RES-Bit). Der digitale Wert wird jeweils in das Datenregister geschrieben.
+Beachten Sie die Möglichkeiten der Datenübernahme aus dem DAC12xDAT-Register in das DAC12_xLatch Register.
+Der DA-Wandler ist interruptfähig und teilt sich den Interrupt INT0 mit der DMA.
+Ein Interrupt kann ausgelöst werden, wenn der DA-Wandler den Wert ausgegeben hat und ein neuer Wert folgen kann.
+Zur Steuerung des DA-Wandlers werden folgende Register genutzt:
+
+DAC12_0CTL Controlregister DA Wandler 0
+DAC12_0DAT Datenregister DA Wandler 0
+DAC12_1CTL Controlregister DA Wandler 1
+DAC12_1DAT Datenregister DA Wandler 1
+
+Für alle Aufgaben sollte der DA-Wandler mit 3V (VEREF+) Referenzspannung und 12 Bit Auflösung (DAC12RES) genutzt werden.
+Das Blockschaltbild der Portleitungen P6.6 (DAC0) und P6.7 (DAC1) zeigt den Einfluss der INCHx-, P6SEL-, DAC12.0CALON- und  DAC12.0AMP-Bits.
+ 
+Beachten sie die PIN-Belegung entsprechend der nebenstehenden Abbildung des MSB430H Boards.
