@@ -1,0 +1,15 @@
+Aufgabe 23: Messung einer Gleichspannung
+Entwickeln Sie ein Programm das folgende Funktionalität besitzt:
+
+Im Sekundentakt (Timergesteuert) soll eine A/D-Wandlung statt finden
+Der gewandelte Wert soll in dem Format "U=x,xx V" als Zeichenkette auf die serielle Schnittstelle ausgegeben werden
+Bei U<1V gelbe LED (P4.1) an
+Bei 1V < U < 2V grüne LED (P4.2)  an
+Bei U > 2V rote LED (P4.0) an 
+Nutzen Sie ein Terminal Programm zur Anzeige der Ausgabe
+
+Der nebenstehenden Abbildung entnehmen Sie bitte die PIN-Belegung des MSB430H.
+Die Gleichspannung soll an ADC4 (P6.4) angelegt werden.
+Sichern Sie ab das die Spannung in dem Bereich von 0...3V liegt, um eine Zerstörung der Portleitung zu vermeiden.
+Überprüfen Sie das Programm und die Anzeige durch unterschiedliche Spannungen im Bereich von 0...3V.
+Als Spannungsquelle nutzen Sie bitte das Gleichspannungsnetzteil.

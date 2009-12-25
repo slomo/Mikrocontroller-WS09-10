@@ -1,0 +1,28 @@
+Der Analog/Digital Wandler des MSP430F1612
+Der Mikrocontroller verfügt über einen 12 Bit AD-Wandler. Es ist ein AD-Wandler auf Basis der sukzessiven Approximation. 
+Die nebenstehende Abbildung zeigt die Blockstruktur des AD- Wandlers. Insgesamt können 16 analoge Eingänge über einen Multiplexer adressiert werden. Eine Sample- and Hold-Schaltung hält den analogen Wert bis zum Ende der Wandlung konstant. Als Taktquelle für den AD-Wandler kann über einen Multiplexer zwischen ADC12OSC-, ACLK-, MCLK- und SMCLK-Takt gewählt werden.
+ 
+Die Referenzspannungen werden mit einem Multiplexer eingestellt. Sollte die interne Referenzspannungsquelle genutzt werden, muss diese rechtzeitig eingeschaltet werden.
+Für das Praktikum ist VR+=AVCC und VR-=AVSS auszuwählen werden.
+
+VR+   positive (obere) Referenzspannung des AD-Wandlers
+AVCC  positive Versorgungsspannung des Controllers (3V - beim MSB430H)
+VR-   negative (untere) Referenzspannung des AD-Wandlers
+AVSS  Masse der Versorgungsspannung des Controllers
+
+Die Referenzspannungsquelle muss in diesem Fall nicht eingeschaltet werden und man spart damit Energie.
+Der AD-Wandler wird im wesentlichen mit dem ADC12ON- und ENC-Bit gesteuert. Mit dem BUSY-Bit kann abgefragt werden, ob der AD-Wandler mit der Wandlung fertig ist und der Wert ausgelesen werden kann. Die gewandelten Werte stehen in den Registern ADC12MEM0…15 und können dort direkt gelesen werden.
+Folgende Register werden für die Programmierung des AD-Wandlers benötigt:
+
+ADC12CTL0
+ADC12CTL1
+ADC12IFG
+ADC12IE
+ADC12IV
+ADC12MEM0…15
+ADC12MCTL0…15
+
+Der AD-Wandlerkanal ist auf dem MSB430H über die P6.4- und P6.5-Portleitungen herausgeführt.
+Entsprechend muss über das P6SEL Register der AD-Wandlerkanal mit den Portleitungen verbunden werden.
+Die Blockstruktur der Portleitungen Port6.4 und Port6.5 ist  nebenstehend abgebildet.
+Beachten Sie die PIN-Belegung des MSB430H entsprechend der Abbildung.
