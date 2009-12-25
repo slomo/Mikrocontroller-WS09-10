@@ -1,0 +1,8 @@
+Aufgabe 11: Reset per Software
+Bei Auftreten der Zeile
+MCU_RESET;
+im Quellcode soll ein RESET des Controllers herbeigeführt werden.
+Vervollständigen Sie dazu die nachfolgende Zeile:
+#define MCU_RESET (...)
+ 
+Schreiben Sie ein kleines Programm, mit dem Sie die Funktion testen können. Das Programm soll bei Tastendruck einen RESET auslösen und über die LED ein Neustart des Controllers in geeigneter Weise signalisieren. Nutzen Sie dazu den Watchdog.

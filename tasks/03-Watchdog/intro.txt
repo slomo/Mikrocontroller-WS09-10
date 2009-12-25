@@ -1,0 +1,17 @@
+Die Watchdog Einheit des MSP430F1612
+Für Mikrocontrolleranwendungen besteht ein Problem darin, den Controller bei Power ON-RESET und nach Softwareabstürzen sicher neu zu starten, da die meisten batteriebetriebenen Geräte über keinen Ein- bzw. Ausschalter und auch keinen RESET-Taster verfügen.  Die Lösung des Problems besteht im Einsatz eines sogenannten Watchdogs.
+Dazu wird per Software zyklisch ein Counter zurückgesetzt, der ohne zurückgesetzt zu werden bei Erreichen bestimmter Zählerstände hardwaremäßig einen RESET auslösen würde. Im Falle eines Absturzes der Software ist dies nicht mehr gewährleistet und der resultierende RESET startet das System neu. Startet das Programm nicht, wird das Controllersystem dadurch dauerhaft im RESET- Zustand gehalten.
+Die abgebildete Watchdog-Einheit enthält einen Counter und eine Steuerlogik, die wahlweise den ACLK- oder SMCLK-Takt auf den Counter schaltet. Bei erreichen bestimmter Zählerstände wie 32768, 8192, 512 oder 64, die über einen Multiplexer selektiert werden, wird ein  RESET ausgelöst. Der Watchdog kann aber auch als einfacher Timer benutzt werden.  
+ 
+Der Watchdog ist nach einem RESET standardmäßig eingeschaltet und über den Multiplexer der Teiler 32768 eingestellt. Der Controller läuft mit ca. 700kHz Taktfrequenz hoch. Nach ca. 47 Millisekunden (SMCLK-Taktdauer mal 32768) würde ein RESET erfolgen. Im Startprojekt wird in der initPort() und DCO() der Watchdog ausgeschaltet, um den RESET zu vermeiden.
+In der Entwicklungsphase einer Software und beim Debuggen ist es sinnvoll den Watchdog zu deaktivieren.
+Folgende Register mit den aufgelisteten Bits sind für die Nutzung des Watchdog maßgeblich:
+
+WDTCTL  (WDTHOLD,WDTNMIES,WDTNMI,WDTTIMSEL,WDTCNTCL,WDTSSEL,WDTIS1,WDTSSEL)
+IE1     (NMIIE,WDTIE)
+IFG1    (NMIIFG,WDTIFG)  
+BCSCTL1 (DIVA1,DIVA0)          
+BCSCTL2 (DIVS1,DIVS0)
+
+Macros zu Steuerung des Watchdog sind in msp430x16x.h definiert.
+Der Watchdog wird nur in den Aufgaben speziell zum Watchdog aktiviert. In allen anderen Aufgaben soll der Watchdog generell deaktiviert bleiben !

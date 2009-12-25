@@ -1,0 +1,17 @@
+Aufgabe 10: Nutzung des Watchdog bei lokalen Problemen
+Variieren Sie das Programm aus Aufgabe 9 in der Form, dass bei Tastendruck die Abarbeitung der Endlosschleife gestoppt wird.
+Solange Sie die Taste gedrückt halten, bleibt das Programm in einer separaten Schleife die die Taste pollt (kontinuierlich abfragen) und die LED nicht blinkt. Lassen Sie die Taste los, wird die Endlosschleife weiter abgearbeitet und die LED blinkt wieder.
+Halten Sie die Taste länger gedrückt, erhält der Controller nach ca. 8 Sekunden einen RESET.
+Testen Sie das aus.
+Im nächsten Schritt ändern Sie das Programm so, dass während der Taster gedrückt ist, kein RESET durch den Watchdog ausgelöst wird.
+Diskutieren Sie die Möglichkeiten dazu und testen sie deren Funktionalität.
+Bei größeren Projekten ist  aufgrund unterschiedlicher Laufzeiten in Abhängigkeit von Programmverzweigungen, Funktionsaufrufen und anderen Sachverhalten der Umgang mit dem Watchdog komplizierter.
+Beantworten Sie folgende Frage:
+Wie können Sie registrieren und speichern, wann und an welcher Programmstelle der Watchdog das System neu gestartet hat.
+Skizzieren Sie einen Lösungsansatz. Als Hilfestellung hier folgende Stichwörter:
+
+NMI-Interrupt
+Stackpointer
+Programcounter
+Softwarereset
+INFOMEM
