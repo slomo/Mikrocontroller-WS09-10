@@ -1,0 +1,19 @@
+I/O Portleitungen
+Ein wesentliches Merkmal von Mikrocontrollern ist die Vielzahl von Portleitungen, die als Eingänge oder Ausgänge genutzt werden können. Diese Portleitungen sind zum Teil interruptfähig. Wenn die Portleitung als Eingang konfiguriert ist, kann eine LH-Flanke, eine HL-Flanke oder beides einen Interrupt auslösen. Dazu ist es erforderlich, über die Register PxIE und PxIES die Interruptbedingungen zu setzen.  Auch Zweitfunktionen wie UART, AD-Wandler, DA-Wandler oder Timer sind an bestimmten Portleitungen konfigurierbar.
+Der MSP430F1612 besitzt 6 Ports mit jeweils 8 Bit Breite. Die Portleitungen der Ports 1 und 2 sind interruptfähig. Die Funktion jeder einzelnen Portleitung definiert sich über Register, die einem Port zugeordnet sind. Diese sind jeweils 8 Bit breit. Jedes einzelne Bit eines Ports kann in der Richtung (IN/OUT), der Zweitfunktion und der Interruptfähigkeit einzeln über die Register konfiguriert werden.
+
+Am Beispiel von Port 1 sind es folgende:
+P1SEL
+P1DIR
+P1OUT
+P1IN
+P1IE
+P1IFG
+P1IES
+ 
+Mit dem Register P1DIR erfolgt die Auswahl, ob die Portleitung ein Eingang (PDIR.x=0) oder ein Ausgang (P1DIR.x=1) ist. Eine Ausgabe setzt voraus, dass P1DIR entsprechend gesetzt wurde. Der zugehörige Wert wird ins Register P1OUT geschrieben und erschein sofort auf der zugehörigen Portleitung.
+Schaltet man mit P1DIR eine Portleitung auf Eingang, kann über das Register P1IN der Logikpegel (0 oder 1) der zugehörigen Portleitung gelesen werden.
+Die Register P1IES, P1IE und P1IFG dienen der Programmierung und Signalisierung der Interruptfähigkeit der Portleitungen.
+Mit P1SEL wird die Zweitfunktion an der jeweiligen Portleitung verfügbar gemacht. P1SEL überschreibt je nach Zweitfunktion P1DIR. 
+Nach dem Reset sind alle Portleitungen als Eingang definiert. Zu Beginn eines Programms werden über init.c alle Portleitungen entsprechend der jeweiligen Ausgangsbeschaltung in ihrer Funktion initialisiert.
+Es ist problemlos möglich zur Laufzeit eines Programms Richtung, Funktion und Interruptfähigkeit über die Register zu ändern. Es ist aber nicht ausgeschlossen, dass Software wenn die externe Beschaltung nicht berücksichtigt wird Portleitungen zerstören kann.

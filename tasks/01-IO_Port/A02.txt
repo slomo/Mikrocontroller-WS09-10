@@ -1,0 +1,29 @@
+Aufgabe 2: Portleitung als Input
+Für die Nutzung des Port1 als Eingang werden folgende Register benötigt:
+P1SEL = 0x00;
+P1DIR
+P1OUT
+P1IN
+Alle Leitungen des Port1 werden als Eingang genutzt. Zwei Taster sind angeschlossen. Anhand der Schaltung ist zu erkennen, dass der nicht gedrückte Taster  an der Portleitung den logischen Wert "0" und gedrückt den logischen Wert"1" liefert.
+Nutzen Sie die obere Schaltung zur Erklärung der nachfolgend dargestellten Befehlszeilen und geben Sie an, welchen Wert die Variable a (unsigned char) in den einzelnen Zeilen annimmt. Beachten sie dabei den Tastenzustand im Kommentar.
+
+#define TasterA (0x01)
+P1DIR = 0xF8;
+a = 10;
+P1OUT = a; //was passiert wenn jetzt der Taster an der Portleitung P1.0 gedrückt wird?
+a = P1IN & 0x00;              //Taste an P1.0 gedrückt
+a = P1IN & 0x03;              //Taste an P1.0 gedrückt
+a = P1IN & 0x02;              //Taste an P1.0 gedrückt
+a = P1IN & 0x01;              //Taste an P1.1 gedrückt
+a = P1IN & 0x03;              //Tasten an P1.0 und P1.1 gedrückt
+P4OUT = P1IN & TasterA; //Taster an P1.0 nicht gedrückt
+P4OUT = P1IN & TasterA; //Taster an P1.0 gedrückt
+  
+Folgende Portbelegung gilt für die Taster:
+P1.0 rechter Taster
+P1.1 linker Taster
+Schreiben Sie ein Programm mit folgender Funktionalität:
+Keine Taste gedrückt gelbe LED (P4.1) an
+Rechte Taste gedrückt grüne LED (P4.2) an
+Linke Taste gedrückt rote LED (P4.0) an
+Beide Tasten gedrückt gelbe LED (P4.1) an

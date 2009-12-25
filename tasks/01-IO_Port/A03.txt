@@ -1,0 +1,12 @@
+Aufgabe 3: Ampelsteuerung
+Nutzen Sie alle drei LED und den rechten Taster (P1.0), um eine Fußgängerampel  (aus der Sichtweise des Autofahrers) zu programmieren. Folgender Ablauf soll dabei realisiert werden:
+
+Grundzustand alle LED aus
+Wenn Taste gedrückt wird, sofort gelbe LED (P4.1) einschalten
+Danach zeitverzögert gelbe LED aus und rote LED (P4.0) an
+Nach einer Pause gelbe LED (P4.1) zur roten LED (P4.0) dazuschalten
+Dann zeitverzögert nur die grüne LED (P4.2) einschalten
+Nach einer weiteren Pause alle LEDs ausschalten
+Erst danach mit einer größeren Wartezeit die Taste wieder abfragen
+
+Testen Sie ihre Lösung und überprüfen Sie die Funktion.

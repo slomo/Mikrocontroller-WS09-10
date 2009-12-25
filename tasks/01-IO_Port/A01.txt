@@ -1,0 +1,31 @@
+Aufgabe 1: Portleitung als Output
+Für die Nutzung des Port4 als Ausgang werden folgende Register benötigt:
+P4SEL = 0x00;
+P4DIR
+P4OUT
+P4IN
+Die obere Abbildung zeigt die innere Struktur einer Portleitung.
+Alle Leitungen des Port4 werden als Ausgang genutzt. Die LED leuchten, wenn die zugehörige Portleitung den Wert "0" hat. Der Beeper gibt ein akustisches Signal beim Wert "1". Erklären Sie diesen Sachverhalt anhand der Schaltung.
+ 
+ 
+Erläutern Sie die folgenden Befehle und deren Auswirkung in der Reihenfolge ihrer Abarbeitung auf die LED, den Beeper und den Wert der Variablen a (unsigned char).
+
+#define LEDRT (0x01)
+P4DIR = 0x00;
+a = 10;
+P4OUT = a;
+P4OUT = 0x01;
+P4DIR = 0x0F;
+a = P4IN & 0x0F;
+P4OUT &= 0x08;
+P4OUT |= 0x01;
+P4OUT |= LEDRT;
+P4OUT &= ~LEDRT;
+P4OUT ^= LEDRT;
+
+Folgende Belegungen der Portleitungen auf Basis der Schaltung werden vorausgesetzt:
+P4.0 LED rot
+P4.1 LED gelb
+P4.2 LED grün
+P4.3 Beeper
+Schreiben Sie ein kleines Programm, welches den Durchlauf einer Ampelsignalsequenz mit den Phasen (rt,rt-gb,gr,gb,rt) simuliert. Nutzen Sie dazu die bereitgestellte Funktion für eine Zeitschleife. 
