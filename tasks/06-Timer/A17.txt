@@ -1,0 +1,9 @@
+Aufgabe 17: Der Sekunden Interrupt
+Zielstellung ist es eine LED (P4.0) im Sekundentakt blinken zu lassen. In den vorhergehenden Aufgaben nutzten Sie dazu eine Zeitschleife. Dabei wird unnötig Verarbeitungskapazität des Controllers verbraucht.
+Finden Sie eine Lösung, die auf Basis eines Timer-Interrupts den Zustand der LED (P4.0) toggelt. Dazu muss der Timer jede Sekunde einen Interrupt generieren und in der ISR wird die LED getoggelt. 
+Für diese Aufgabe wird vorausgesetzt, dass die while(1) Schleife leer ist und der Controller mit einer Taktfrequenz von 7,3728 MHz auf Basis des DCOCLK-Taktes arbeitet. Als Taktquelle für den Timer soll der ACLK-Takt genutzt werden.
+Benutzen Sie den Timer B im Count/Up-Mode und TBCCR0 ist Interruptquelle. Folgende Register sind zur Lösung der Aufgabe nötig:
+
+TBCCR0 = ... ;   // Taktanzahl für eine Sekunde
+TBCTL = ... ;    // Taktquelle und Count-Mode
+TBCCTL0 = ... ;  // Interrupt freigeben

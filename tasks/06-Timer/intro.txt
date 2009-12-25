@@ -1,0 +1,23 @@
+Timer des MSP430F1612
+Der MSP430F1612 hat mit Ausnahme des schon betrachteten Watchdog noch einen Timer A und einen Timer B. Diese Timer werden vorrangig dazu genutzt:
+
+Zeiten zu messen
+Zeitraster zu generieren
+Impulse bzw. Ereignisse zu zählen und
+Pulsweitenmodulierte Signale zu generieren.
+
+Den nebenstehenden Abbildungen ist das Blockschaltbild der Timer A und B zu entnehmen. Am Beispiel des Timer A sehen Sie, dass das Kernstück ein 16-Bit-Timerregister (TAR) ist. Über einen Eingangsmultiplexer wird die Taktquelle ausgewählt und über einen Vorteiler dem 16-Bit-Timer als Taktsignal bereitgestellt. Das TAR-Register kann jederzeit gelesen und geschrieben werden. Über die Bits des Count-Mode-Blocks kann der Timer in vier unterschiedliche Betriebsmodi wie Stop, Continuous, Up und  Up/Down versetzt werden. Diese Einstellungen werden über das TACTL-Register vorgenommen. Anhand des TAIV-Registers kann der Interrupt mit der höchsten Priorität festgestellt werden. Die drei Capture/ Compare-Register (CCRx) des TIMER A ermöglichen die Nutzung als Compare-Register oder als Capture-Register und werden über die TACCTLx-Register (Capture/Compare Control Register) gesteuert. Der Timer B ist ähnlich aufgebaut, verfügt aber über 7 Capture/Compare-Register.
+ 
+Hier eine Auflistung der Register des Timers A mit x=0..2.
+TACTL    Timer A Control Register
+TAR      Timer A Counter
+TACCTLx  Capture/Compare Control x Register
+TACCRx   Capture/Compare x Register
+
+Hier eine Auflistung der Register des Timers B mit x=0..6.
+TBCTL    Timer A Control Register
+TBR      Timer A Counter
+TBCCTLx  Capture/Compare Control x Register
+TBCCRx   Capture/Compare x Register
+
+Die Beschreibung der einzelnen Konfigurierungsmöglichkeiten ist dem MSP430 User`s Guide zu entnehmen.

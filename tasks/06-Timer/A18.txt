@@ -1,0 +1,7 @@
+Aufgabe 18: LED als Indikator
+Soll eine LED (P4.0) nur die Bereitschaft eines Controllers signalisieren, ist es energetisch sinnvoll alle 5 Sekunden für 0,5 Sekunden die LED blinken zu lassen. Beispiele dafür sind Alarmanlagen, BT-GPS-Empfängern und Handys.
+Der Controller befindet sich bei dieser Aufgabe in einer Endlosschleife im LPM3-Mode und wird durch den Timerinterrupt "aufgeweckt".
+Programmieren Sie den Timer B mit einem CCR0-Interrupt in der Form, dass per ISR die LED im oben beschriebenen Rhythmus blinkt.
+Finden Sie dabei eine Lösung, die es ihnen gestattet den Rhythmus relativ einfach zu verändern. Testen Sie das Programm mit dem Zyklus 3 Sekunden aus und 1 Sekunde an.
+Welche Batterienutzungsdauer wird für beide Blinkmodi erreicht, wenn eine 1100mAh Batterie genutzt wird. Es wird dabei vorausgesetzt, dass der Gesamtstromverbrauch des Controllerboards bei 5mA (LED an) und bei 100µA (LED aus) liegt.
+Zu welchem Ergebnis kommen Sie?
