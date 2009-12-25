@@ -6,31 +6,33 @@
 #include "stdio.h"			// includes TI MSP430F1612 
 #include "SHT11.h"			// SHT11 Temperatur- und Feuchtesensor
 
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
-
-void delay(unsigned int time_mill) {	
-	unsigned int i;
-	for(i=0;i<=time_mill;++i){
-		wait(100);
-	}
-}
-
 void aufgabe7() {
 		switch (P1IN & 0x03) {
 			case 0x01 :  // rechter Taster gedruckt
-				DCOCTL 	= 0x0;
-				BCSCTL1 = 0x80;				
-				BCSCTL2 = 0xf1;				
+                // Taktrate 4,096kHz einstellen (niedriger Stromverbrauch)
+				DCOCTL 	= 0x0;  // 000 00000
+                                // alle takterhoehenden Register auf 0
+                                
+				BCSCTL1 = 0x80;	// 1 0 00 0 000
+                                // XT2CLK wie vorgegeben deaktivieren
+                                
+				BCSCTL2 = 0xf1;	// 11 11 0 00 1
+                                // LFXT1CLK als Quelle fuer MCLK
+                                // Teiler fuer MCLK auf 8 setzen
+                                // externen DCO Wiederstand waehlen
 			break;
 			case 0x02 : // linker Taster gedruckt
-				DCOCTL 	= 0xbe;
-				BCSCTL1 = 0x85;
-				BCSCTL2 = 0x1;
+                // Taktrate 7,3728 MHz einstellen (hoeherer Stromverbrauch)
+				DCOCTL 	= 0xbe; // 1011 1110
+                                // DCO5 waehlen
+                                // MOD14 waehlen
+                                
+				BCSCTL1 = 0x85; // 1 0 00 0 101
+                                // XT2CLK wie vorgegeben deaktivieren
+                                // RSEL5 waehlen
+                                
+				BCSCTL2 = 0x1;  // 00 00 0 00 1
+                                // externen DCO Wiederstand waehlen
 			break;
 			
 			default :
