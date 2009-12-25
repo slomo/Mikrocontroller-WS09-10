@@ -1,0 +1,14 @@
+Aufgabe 14: LPM4 mit Interrupt
+Ausgangslage ist folgende Grundeinstellung:
+
+DCOCLK- Taktgenerator mit 7,3728 MHz
+Alle LED aus
+Der CC1100 im PowerDown Mode
+Die while(1) Schleife ist leer
+
+Starten Sie den Controller und überprüfen Sie messtechnisch den Stromverbrauch und die MCLK-Taktfrequenz.
+Fügen Sie in der while(1) Schleife der main() Funktion einen Befehl ein, der den Mikrocontroller in den LPM4 Mode setzt.
+Lassen sie das Programm laufen. Was bewirkt der Befehl? Wie verhalten sich die Taktfrequenz und der Stromverbrauch?
+Programmieren Sie den Port1 in der Form, dass bei einem Druck auf die Taste ein Interrupt ausgelöst wird. Die while(1) Schleife bleibt unverändert, es befindet sich nur die LPM4 Anweisung in der Schleife. Realisieren Sie in der ISR des PORT1 eine 10 Sekunden dauernde Warteschleife.
+Dokumentieren Sie Ihre Beobachtungen (Stromverbrauch und Taktfrequenz) zum Zeitpunkt des Tastendruckes.
+Erläutern Sie die Abläufe nach dem Starten des Programms im Detail und die Zustände des Mikrocontrollers.  

@@ -1,0 +1,21 @@
+Aufgabe 16: Externes Wakeup
+In Abhängigkeit von einer Portleitung soll der Controller über Tastendruck (per ISR; P1.0) in den aktiven Mode geschaltet werden. Beim Loslassen der Taste wird der Controller in den LPM4 Mode geschaltet.
+Der LPM4-Mode soll über eine Status-Variable verwaltet werden.
+Ein Beispiel für eine Anwendung ist eine Präsentation, die nur startet und läuft solange eine Person anwesend ist (per Sensor erfasst).
+Zur Lösung der Aufgabe müssen Sie die Interrupt Bedingung während einer ISR für die Portleitung umsetzen. Ein HL-Flanken-Interrupt startet (aktiver Mode) und ein LH-Flanken-Interrupt stoppt (LPM4-Mode).
+Das Programm beinhaltet folgende Punkte:
+
+Portinitialisierung
+Status-Variable initialisieren
+Interrupt erlauben
+Eintritt in die Endlosschleife
+Wenn Statusvariable gleich LPM4 dann alle LED aus und in LPM4 setzen
+Wenn Statusvariable gleich aktiv dann dauerhaft mit den LED (P4.0...2) eine  Ampelsequenzen laufen lassen und im aktiven Mode bleiben
+In der Schleife bleiben
+
+Die Taster-ISR beinhaltet:
+
+Wenn HL-Flanke als Interruptquelle gesetzt dann Status-Variable auf aktiven Mode und auf LH-Flanke programmieren
+Wenn LH Flanke als Interruptquelle gesetzt dann Status-Variable auf LPM4 Mode und auf HL-Flanke programmieren.
+
+Testen Sie die Funktionalität und überprüfen Sie auch die  MCLK-Taktfrequenz und den Stromverbrauch. Dokumentieren Sie die Ergebnisse.

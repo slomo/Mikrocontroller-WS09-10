@@ -1,0 +1,39 @@
+Aufgabe 15: ON/OFF Logik mit Auto Shutdown
+Der LPM4 ist die energiesparendste Betriebsart des Mikrocontrollers, da die CPU und das komplette Taktsystem ausgeschaltet sind. Nur die Portleitungen sind noch interruptfähig.
+Bei vielen Geräten erfolgt die Bedienung in folgender Form:
+
+Kurzer Tastendruck schaltet Gerät ein
+Tastendruck länger als 2 Sekunden schaltet Gerät aus
+wird keine Taste während der Zeit von einer Minute betätigt schaltet sich das Gerät selbstständig aus.
+
+Für die Umsetzung der oben beschriebenen Verhaltensweise, werden der Watchdog in einer Timer Anwendung und parallel dazu zwei Interruptquellen genutzt. Der Taster (P1.0) soll genutzt werden. Die unten erwähnten Variablen Status und Tick sind globale Variablen.
+
+Implementieren Sie folgende Programm-Funktionen:
+
+Status-Variable auf LPM4 Mode setzen
+Tick Variable auf Null setzen
+Tastaturport (P1.0) interruptfähig initialisieren
+Eintreten in eine Endlosschleife
+Abfrage ob aktiver Mode aktuell (Status) oder Wechsel in den LPM4 Mode:
+Wenn aktiver Mode dann LED (P4.1) ein  
+Wenn LPM4 Mode dann LED (P4.1..2) aus und LPM4 Mode einschalten
+Wenn Taste (P1.0) gedrückt in einer Schleife Taste lesen bis die Taste nicht mehr gedrückt ist. Dabei abtesten ob Tick Variable > 2. Wenn > 2 dann Status Variable auf LPM4 Mode setzen und Schleife verlassen.
+In der Endlosschleife bleiben
+
+Implementieren Sie in der ISR für den Taster:
+
+Status für den LP-Mode abfragen
+Wenn LPM4 Mode markiert:
+Status-Variable auf aktiven Mode setzen
+Watchdog Timer programmieren (ACLK Takt, 1 Sekunden Interrupt)
+Wenn aktiver Mode in Status abgespeichert:
+Tick Variable auf null setzen
+
+Implementieren Sie in der ISR für den Watchdog Timer:
+
+Zeittick-Variable inkrementieren und LED (P4.2) toggeln
+Wenn die Status Variable auf aktivem Mode steht, abtesten ob Timer Zeittick > 60
+Ist das der Fall, Statusvariable auf LPM4 setzen, LED ausschalten und ISR verlassen
+
+Entwickeln und testen Sie ein entsprechendes Programm.
+Normalerweise wird der Watchdog nicht als Timer genutzt. Timeranwendungen werden im der Mehrzahl der Fälle auf Basis der im nächsten Kapitel behandelten Timer A und Timer B realisiert.
