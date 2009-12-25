@@ -1,0 +1,14 @@
+Aufgabe 6: Stromverbrauch und Taktfrequenz
+Der MCLK-Takt soll durch den DCOCLK-Taktgenerator bereitgestellt werden. Ermitteln Sie für diesen Fall die Abhängigkeit des Stromverbrauchs von der Taktfrequenz. Stellen Sie die Abhängigkeit für einen Bereich von 100kHz bis 10MHz grafisch dar.
+Achten Sie bei dieser Aufgabe darauf:
+
+das der Transceiver CC1100 mit initCC1100_POWERDOWN() in den Sleep Mode gesetzt ist
+die LED ausgeschaltet sind
+Der ROSC Widerstand wird mit dem DCOR-Bit geschaltet werden kann
+
+Sie können den DCOCLK-Taktgenerator mit dem Code Composer im Stopp-Modus über das Setzen/Rücksetzen der Bits folgender Register einstellen:  
+DCOCTL    (DCO2,DCO1,DCO0,MOD4,MOD3,MOD2,MOD1,MOD0)
+BCSCTL1   (XT2OFF,XTSDIVA1,DIVA0,XT5V,RSEL2,RSEL1,RSEL0) 
+BCSCTL2   (SELM1,SELM0,DIVM1,DIVM0,SELS,DIVS1,DIVS0,DCOR)
+ 
+Um den Strom richtig messen zu können, muss sich der Controller im Code Composer im RUN-Modus befinden.

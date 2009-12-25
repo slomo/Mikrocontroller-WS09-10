@@ -1,0 +1,30 @@
+Basic Clock System des Mikrocontrollers
+Das MSP430 Taktsystem ist speziell für batteriebetriebene Anwendungen entwickelt worden. In diesen Anwendungen ist es wichtig die CPU-Taktfrequenz in weiten Bereichen variabel einstellen zu können. Die internen Funktionseinheiten und die CPU können aus den folgenden drei unterschiedlichen Taktquellen versorgt werden:
+
+LFXT1CLK-Taktgenerator, der bevorzugt auf Basis eines 32768Hz Quarz läuft (bis 8 MHz möglich)
+XT2CLK-Taktgenerator, mit Quarzfrequenzen zwischen 450kHz und 8MHz
+DCOCLK-intern digital steuerbarer Taktgenerator  (DCO-Digitally Controlled Oscillator) im Bereich bis zu 10MHz
+
+Im Controller werden drei unterschiedliche Taktsignale verwendet:
+ACLK   Auxiliary Clock System
+SMCLK  SubMain Clock System
+MCLK   Master Clock System
+ 
+ 
+Der ACLK-Takt hat den LFXT1CLK-Taktgenerator als Quelle. Der Takt des Taktgenerators kann wahlweise noch durch die Faktoren 1,2,4 und 8 geteilt werden. Der ACLK-Takt kann  von mehreren Peripherieeinheiten (per Software gesteuert) genutzt werden. Auf dem MSB430H ist für den LFXT1CLK-Taktgenerator ein 32768Hz Quarz eingesetzt.
+Der MCLK-Takt dient als Taktquelle für die CPU. Über den Multiplexer kann der Takt für den MCLK-Takt aus dem LFXT1CLK-, dem XT2CLK- oder dem DCOCLK-Taktgenerator gewonnen werden und mit einem Teiler von 1,2,4 oder 8 an die CPU als MCLK-Takt weitergeleitet werden.
+Anhand des Blockschaltbildes wird deutlich, mit welchen Bits die Taktverteilung und Taktsteuerung erfolgt. Diese Bits werden über die folgenden Register konfiguriert:
+
+SR        (R,V,SCG1,SCG0,OSC_OFF,CPU_OFF,GIE,N,Z,C)
+DCOCTL    (DCO2,DCO1,DCO0,MOD4,MOD3,MOD2,MOD1,MOD0)
+BCSCTL1   (XT2OFF,XTSDIVA1,DIVA0,XT5V,RSEL2,RSEL1,RSEL0) 
+BCSCTL2   (SELM1,SELM0,DIVM1,DIVM0,SELS,DIVS1,DIVS0,DCOR)
+
+Die Register mit den entsprechenden Bits sind zur Laufzeit eines Programms oder über den Code Composer bei angehaltener CPU veränderbar.
+Für die stromsparenden LP-Modi (Low Power Modi) des Controllers können Teile des Taktsystems, die Peripherieeinheiten und die CPU ausgeschaltet werden. Dieses Thema wird später noch gesondert behandelt.
+Die DCO-Taktquelle ist nach dem RESET des Controllers und nach dem Wechsel aus einem der LP-Modi in den aktiven Mode ohne Zeitverzögerung sofort verfügbar. Dagegen benötigt die XT2-Taktquelle ca. 600msek, bevor sie einen stabilen Takt liefert.
+Die XT1-Taktquelle wird im Normalfall mit einem 32768Hz Quarz (Uhrenquarz) betrieben.
+Nach dem RESET des Controllers startet er standardmäßig mit ca. 700kHz Taktfrequenz basierend auf dem DCO-Taktsystem.
+Für Low Power Applikationen ist es vorteilhaft aus dem LP-Mode direkt auf eine über die DCO-Taktquelle eingestellte Taktfrequenz zu wechseln, da die DCO-Taktquelle extrem geringe Einschaltverzögerungen hat. Deshalb ist es für Low-Power- Applikationen im Allgemeinen nicht notwendig XT1 und XT2 mit Quarzen zu beschalten.
+Bei vielen MSP430-Controllern gibt es parallel zum XT1 einen VLO-Taktgenerator (Very Low Power Oscillator), der ohne externe Bauelemente auskommt und mit 32768Hz läuft. 
+

@@ -1,0 +1,7 @@
+Aufgabe 5: Frequenzmessung der LFXT1CLK-, XT2CLK- und DCOCLK-Taktquelle
+Bestimmen Sie messtechnisch die Frequenz der drei oben genannten Taktquellen. Die Portleitung P5.4 muss unter Nutzung des P5SEL-Registers mit dem MCLK-Taktsignal verbunden werden. Mit den SELMx-Bits wird der Multiplexer gesteuert, der den MCLK-Takt bereitstellt.
+ 
+Bestimmen Sie messtechnisch die minimale und maximale Takt- frequenz des MCLK-Taktes, die sich auf Basis der LFXT1CLK-, XT2CLK- und DCOCLK-Taktquelle bereitstellen läßt. Beachten Sie dabei  den Einfluss der DIVMx Bits und des DCOR Bits.
+An P2.5 ist ein Oszillatorwiderstand ROSC von 39kOhm angeschlossen.
+Erläutern Sie, wie der externe Widerstand für den DCOCLK-Taktgenerator nutzbar gemacht wird.
+Welchen Einfluss hat der Widerstand auf den DCOCLK-Taktgenerator.

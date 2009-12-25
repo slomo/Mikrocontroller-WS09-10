@@ -1,0 +1,11 @@
+Aufgabe 8: Abarbeitungszeit eines Befehls
+Bestimmen Sie messtechnisch die Abarbeitungzeit des folgenden Befehls unter Nutzung der XT2CLK-Taktquelle:
+ 
+P4OUT^= 0x01; (Signal ist auf der Stiftleiste als P40 herausgeführt)
+
+Bestimmen Sie nun rechnerisch die Abarbeitungzeit des Befehls unter Nutzung der LFXT1CLK-Taktquelle.
+Überprüfen Sie messtechnisch den berechneten Wert.
+Die Aufgabenstellungen zum Clock System zeigen die Möglichkeiten auf, wie Taktfrequenz und die Taktquellen umschalten werden können.
+Für den Entwurf von Programmen resultiert daraus die Zielstellung ein Optimum zwischen Geschwindigkeit und Energieverbrauch zu finden.
+In der Mehrzahl der Anwendungen ist es optimal den Controller im LP-Mode "schlafen" zu lassen und nur bei "Bedarf" aufzuwecken und dann mit maximaler Taktfrequenz laufen zu lassen. Die benötigten Voraussetzungen dafür lernen Sie in den nächsten drei Aufgabenkomplexen kennen.
+Im Weiteren wird vorausgesetzt, dass der MCLK-Takt standardmäßig über den Funktionsaufruf DCO() in der main.c auf 7,3728 MHz eingestellt wird.
