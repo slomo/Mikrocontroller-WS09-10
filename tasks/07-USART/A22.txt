@@ -1,0 +1,12 @@
+Aufgabe 22: UART mit Empfangspuffer und Interrupt
+Über ein Terminalprogramm am PC soll eine Zeichenkette eingegeben und mit CR+LF abgeschlossen werden. Das Terminalprogramm überträgt die Zeichenkette zum Controller. Dieser soll die Zeichenkette im Interrupt empfangen, die Länge der Zeichenkette bestimmen und zum PC zurückschicken.
+Nutzen Sie die bereitgestellten Variablen und Funktionen:
+
+writechar()
+writestr()
+ISR_USART1_Receive()
+UART1ReadByte()
+UART1buffer[32]
+UART1readPointer
+UART1writePointer
+UART1bufferLen

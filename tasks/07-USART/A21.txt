@@ -1,0 +1,8 @@
+Aufgabe 21: Sensordatenübertragung
+Entwickeln Sie ein Programm das zyklisch die Uhrzeit und die Werte des SHT11- Sensors als ASCII-Zeichenkette auf der seriellen Schnittstelle ausgibt.
+Beeinflussen Sie den Sensor (siehe Abbildung) während der Datenübertragung durch Anhauchen bzw. Berühren.
+Nutzen Sie zur Lösung der Aufgabenstellung:
+
+Das Uhrenprogramm aus Aufgabe 19
+Die Funktion SHT11_Read_Sensor()
+Die Variablen humi_char und temp_char

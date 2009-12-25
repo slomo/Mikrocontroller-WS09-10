@@ -1,0 +1,24 @@
+Aufgabe 20: Ein Zeichen Senden
+Initialisieren Sie die UART1 und schicken Sie kontinuierlich ein "?" über die serielle Schnittstelle zum PC. Auf dem PC starten Sie ein Terminalprogramm und überprüfen ob die Zeichen übertragen werden.
+Folgende Informationen zur Lösung der Aufgabe:
+
+Controller mit 7,3728MHz DCOCLK-Takt
+SMCLK-Taktquelle für Baudratengenerator
+Baudrate 115200 Bit/sek
+Datenformat ist 8,N,1
+Initialisierung der UART mit initUART1() 
+
+Folgende Funktion in init.c ist zur Lösung der Aufgabe zu vervollständigen:
+void initUART1(void)
+{
+P3SEL = .....;   // USART RX und TX dem Modul zuweisen
+U1CTL =.....;    // Reset
+U1CTL =.....;    // Format 8N1
+U1TCTL =....;    // Taktquelle SMCLK
+U1BR0 =.....;    // Teiler Low-Teil, da 7372800/64 ca. 115200
+U1BR1 =.....;    // Teiler High-Teil
+U1MCTL =...;     // Modulationskontrolle
+ME2 =.........;  // Enable USART1 TXD/RXD
+U1CTL =.....;    // Reset
+IE2 =..........; // Enable Interrupt
+}
