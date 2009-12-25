@@ -1,0 +1,11 @@
+Aufgabe 26: Der Funktionsgenerator im DMA Betrieb
+Verändern Sie die Lösung aus der Aufgabe 25 in der Form, dass die Ausgabe der Sinuswerte auf den D/A-Wandler durch die DMA Einheit vorgenommen wird.
+Dazu folgende Hinweise:
+
+Der Timer wird nicht im Interrupt genutzt
+Der Timer liefert nur das Triggersignal für einen DMA Transfer
+Ist das Feld an den D/A-Wandler ausgegeben, liefert der DMA einen Interrupt
+In der DMA ISR wird der DMA erneut initialisiert
+
+Der Vorteil dieser Lösung besteht in einer geringeren Interrupt Last und kürzeren Programmlaufzeiten.
+Überprüfen Sie die Funktion wie in Aufgabe 25 beschrieben.
