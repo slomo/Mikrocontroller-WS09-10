@@ -36,6 +36,10 @@ void aufgabe10() {
     // übergeben werden sonst wird ein RESET ausgelöst
 	WDTCTL = (WDTPW+WDTCNTCL+WDTSSEL);
     
+    // wenn direkt nach einem RESET ein Taster gedrückt wird, wird die
+    // gruene LED eingeschaltet
+    // das hilft in unserem Fall zu erkennen, wenn ein RESET vom
+    // Watchdog ausgeloest wurde
 	if(P1IN & 0x03) {
 		LED_ON(GREEN);
 	}
@@ -62,7 +66,7 @@ void aufgabe10() {
         // Watchdog zähler zuruecksetzen
 		WDTCTL = (WDTPW+WDTCNTCL+WDTSSEL);
         
-        // 500 msec warten dann rote und gruene LED ausschalten
+        // 500 msec warten dann rote einsschalten
 		delay(500);
 		LED_ON(RED);
 	}
