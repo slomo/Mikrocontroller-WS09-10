@@ -6,14 +6,6 @@
 #include "stdio.h"			// includes TI MSP430F1612 
 #include "SHT11.h"			// SHT11 Temperatur- und Feuchtesensor
 
-// Definitionen um das Ein- und Ausschalten von LEDs zu erleichtern
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
-
 // Funtion, welche die bereits vorhandene Funktion wait verwendet
 // um den Programmfluss zu um n Millisekunden zu verzoegern
 void delay(unsigned int time_mill) {	
@@ -65,7 +57,8 @@ void aufgabe4() {
 		
 		ausgabe(i);
 
-        // Warte eine kurze Zeit nach der Ausgabe um Prellverhalten vom Taster abzufangen
+        // Warte eine kurze Zeit nach der Ausgabe um Prellverhalten
+        // vom Taster abzufangen
 		delay(100);
 	}
 }

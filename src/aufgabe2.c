@@ -12,7 +12,6 @@
 #define GREEN				(0x04)
 #define LED_OFF(led)	    (P4OUT |= led)    
 #define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
 
 void aufgabe2() {
     // Input Maskieren um nur die beinen Taster zu erfassen
