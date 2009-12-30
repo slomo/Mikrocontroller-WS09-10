@@ -4,8 +4,6 @@
 #include "CC1100.h"		// CC1100 Funktransceiver
 #include "stdio.h"		// includes TI MSP430F1612
 #include "aufgabe21.h"	// Headerdatei des Haubtprogramms
-#include "string.h"
-#include "aufgabe21.h"
 
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen
 TIMERB0_ISR(ISR_Timer_B_CCR0)     //int13 | 0xFFFA | Timer B CC0
