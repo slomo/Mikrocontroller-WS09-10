@@ -7,19 +7,14 @@
 #include "SHT11.h"			// SHT11 Temperatur- und Feuchtesensor
 #include "aufgabe22.h"
 
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
+// Zaehler fuer die laenge der Zeichenkette
+int count=0;
 
-int count;
-
-void aufgabe22() {	
+void aufgabe22() {
+	// Interrupts von UART1 erlauben
 	IE2 |= URXIE1;
-	count = 0 ;
-	_bis_SR_register(GIE); //Interrupts zulassen
+	//Interrupts allgemein zulassen
+	_bis_SR_register(GIE);
 	while(1){
 	}
 }
