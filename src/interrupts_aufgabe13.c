@@ -3,7 +3,7 @@
 #include "system.h"		// Systemfunktionen MSB430H
 #include "CC1100.h"		// CC1100 Funktransceiver
 #include "stdio.h"		// includes TI MSP430F1612
-#include "aufgabe13.h"	// Headerdatei des Haubtporgramms
+#include "aufgabe13.h"	// Headerdatei des Haubtprogramms
 
 
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen
@@ -25,7 +25,7 @@ __interrupt void ISR_Port1 (void) {
 		break;
 	}
 	// Alle Interuptflags fuer Port 1 entfernen um eine Wiederholung
-	// der ISR, wegen gesetzem Interuptfalg, zu verhinder
+	// der ISR, wegen gesetzem Interuptfalg, zu verhindern
 	CLEAR(P1IFG, 0xFF);
 
 }
@@ -43,7 +43,7 @@ __interrupt void ISR_Watchdog (void) {
 		ampel();
 	}
 	
-    // Das Watchdog Interuptflag entfernen um eine Wiederholung
-    // der ISR, wegen gesetzem Interuptfalg, zu verhindern
+	// Das Watchdog Interuptflag entfernen um eine Wiederholung
+	// der ISR, wegen gesetzem Interuptfalg, zu verhindern
 	CLEAR(IFG1, WDTIFG);
 }

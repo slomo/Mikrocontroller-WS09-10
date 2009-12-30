@@ -23,6 +23,6 @@ __interrupt void ISR_Port1 (void) {
 		P1IES = 0x0;
 	}
 	// Alle Interuptflags fuer Port 1 entfernen um eine Wiederholung
-	// der ISR, wegen gesetzem Interuptfalg, zu verhinder
+	// der ISR, wegen gesetzem Interuptfalg, zu verhindern
 	CLEAR(P1IFG, 0xFF);
 }
