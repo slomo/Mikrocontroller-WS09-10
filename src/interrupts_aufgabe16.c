@@ -22,7 +22,7 @@ __interrupt void ISR_Port1 (void) {
 		// auf low-high Flanke reagiern
 		P1IES = 0x0;
 	}
-	// Alle Interuptflags fuer Port 1 entfernen um eine Wiederholung
-	// der ISR, wegen gesetzem Interuptfalg, zu verhindern
+	// Alle Interruptflags fuer Port 1 entfernen um eine Wiederholung
+	// der ISR, wegen gesetzem Interruptflag, zu verhindern
 	CLEAR(P1IFG, 0xFF);
 }

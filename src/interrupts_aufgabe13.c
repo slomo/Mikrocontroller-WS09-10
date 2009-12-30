@@ -24,8 +24,8 @@ __interrupt void ISR_Port1 (void) {
 		case 0x02 : // linker Taster gedruckt tue nichts
 		break;
 	}
-	// Alle Interuptflags fuer Port 1 entfernen um eine Wiederholung
-	// der ISR, wegen gesetzem Interuptfalg, zu verhindern
+	// Alle Interruptflags fuer Port 1 entfernen um eine Wiederholung
+	// der ISR, wegen gesetzem Interruptflag, zu verhindern
 	CLEAR(P1IFG, 0xFF);
 
 }
@@ -43,7 +43,7 @@ __interrupt void ISR_Watchdog (void) {
 		ampel();
 	}
 	
-	// Das Watchdog Interuptflag entfernen um eine Wiederholung
-	// der ISR, wegen gesetzem Interuptfalg, zu verhindern
+	// Das Watchdog Interruptflag entfernen um eine Wiederholung
+	// der ISR, wegen gesetzem Interruptflag, zu verhindern
 	CLEAR(IFG1, WDTIFG);
 }

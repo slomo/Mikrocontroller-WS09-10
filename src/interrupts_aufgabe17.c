@@ -12,7 +12,7 @@ __interrupt void ISR_Timer_B_CCR0 (void) {
 	// rote LED toggeln
 	P4OUT ^=  0x01;
 
-	// Interuptflag entfernen um eine Wiederholung der ISR, wegen
-	// gesetzem Interuptfalg, zu verhindern
+	// Interruptflag entfernen um eine Wiederholung der ISR, wegen
+	// gesetzem Interruptflag, zu verhindern
 	TBCCTL0 &= ~CCIFG;
 }	

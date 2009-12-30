@@ -12,7 +12,7 @@ void aufgabe17() {
 	// Interrupts fuer Timer B aktivieren
 	TBCCTL0 = CCIE; 
 	// Timerinterrupt nach 32000 Takten auslösen
-	// das fuehrt bei 32kHz Takt zu einem Interupt pro Sekunde
+	// das fuehrt bei 32kHz Takt zu einem Interrupt pro Sekunde
 	TBCCR0 = 32000; //bei 32kHz
 	
 	//Interrupts allgemein zulassen

@@ -44,7 +44,7 @@ void ampel() {
 void aufgabe13() {
 	// Interrupts allgemein erlauben
 	_bis_SR_register(GIE);
-	// Taster an P1.0 interuptfaehig machen
+	// Taster an P1.0 Interruptfaehig machen
 	P1IE |= 0x01;
 	// TODO was soll das -> siehe aufgabe12
 	P1IES &= ~0x00;
@@ -56,14 +56,14 @@ void aufgabe13() {
 
 	// ACLK Teiler auf 4 setzen
 	BCSCTL1	|= DIVA1;
-	// Interupts vom Watchdog erlaugen
+	// Interrupts vom Watchdog erlaugen
 	IE1 |= WDTIE;
 	// Wachund rauslassen
 	// WDTCNTCL setzt den Watchdog Timer zurueck
 	// WDTSSEL waehlt den ACLK Takt als Quelle fuer den Watchdogzaehler
 	// WDTTMSEL versetzt den Watchdog in den Timermode
 	// Bei dieser Operation werden WDTIS0/1 und WDTHOLD auf 0 gesetzt
-	// Das hat zur Folge, dass der Watchdog auf "Interupt nach 32768
+	// Das hat zur Folge, dass der Watchdog auf "Interrupt nach 32768
 	// Takten" gestellt und aktiviert wird.
 	// Neue werte muessen in Verbindung mit dem Watchdog Passwort WDTPW
 	// uebergeben werden sonst wird ein RESET ausgeloest

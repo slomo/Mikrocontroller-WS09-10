@@ -24,7 +24,7 @@ void aufgabe15() {
 	_bis_SR_register(GIE);
 	// Interrupts fuer Schalter eins einschalten
 	P1IE |= 0x02;
-	// Interupt bei low to high Flanke ausloesen
+	// Interrupt bei low to high Flanke ausloesen
 	P1IES = 0x00;
 	// Watchdog Interrupt aktivieren
 	IE1 |= WDTIE;

@@ -21,9 +21,9 @@ void delay(unsigned int time_mill) {
 }
 
 void aufgabe12() {
-    // Interupts erlauben
+    // Interrupts erlauben
     _bis_SR_register(GIE);
-    // Interupts fuer den Taster an Port 1.1 aktivieren
+    // Interrupts fuer den Taster an Port 1.1 aktivieren
     P1IE |= 0x02;
     // IMHO macht das keinen Sinn
     // wenn man etwas auschlieslich mit einsen verundet ist das Ergebnis

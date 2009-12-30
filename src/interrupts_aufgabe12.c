@@ -29,7 +29,7 @@ __interrupt void ISR_Port1 (void) {
         case 0x02 : // linker Taster gedruckt
             // gelbe LED toggeln
             P4OUT ^= 0x02;
-            // Interupts fuer den Taster an Port1.0 toggeln
+            // Interrupts fuer den Taster an Port1.0 toggeln
             P1IE ^= 0x01;
             // kurz warten um eventuelles Prellverhalten des Tasters
             // abzufangen
@@ -38,8 +38,8 @@ __interrupt void ISR_Port1 (void) {
 
     }
 
-    // Alle Interuptflags fuer Port 1 entfernen um eine Wiederholung
-    // der ISR, wegen gesetzem Interuptfalg, zu verhindern
+    // Alle Interruptflags fuer Port 1 entfernen um eine Wiederholung
+    // der ISR, wegen gesetzem Interruptflag, zu verhindern
     CLEAR(P1IFG, 0xFF);
    
 }

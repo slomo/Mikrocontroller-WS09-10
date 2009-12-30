@@ -43,7 +43,7 @@ __interrupt void ISR_Timer_B_CCR0 (void) {
 		P4OUT |= 0x04;
 	}
 
-	// Interuptflag entfernen um eine Wiederholung der ISR, wegen
-	// gesetzem Interuptfalg, zu verhindern
+	// Interruptflag entfernen um eine Wiederholung der ISR, wegen
+	// gesetzem Interruptflag, zu verhindern
 	TBCCTL0 &= ~CCIFG;
 }
