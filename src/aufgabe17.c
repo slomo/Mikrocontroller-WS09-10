@@ -6,18 +6,17 @@
 #include "stdio.h"			// includes TI MSP430F1612 
 #include "SHT11.h"			// SHT11 Temperatur- und Feuchtesensor
 
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
-
 void aufgabe17() {
-	TBCTL 	= MC_1 + TASSEL_1;
+	// Timer soll hochzaehlen und den ACLK Takt als Quelle verwenden
+	TBCTL = MC_1 + TBSSEL_1;
+	// Interrupts fuer Timer B aktivieren
 	TBCCTL0 = CCIE; 
-	TBCCR0 	= 32000; //bie 32kHz
-	_bis_SR_register(GIE); //Interrupts zulassen	
-	while(1){	
+	// Timerinterrupt nach 32000 Takten auslösen
+	// das fuehrt bei 32kHz Takt zu einem Interupt pro Sekunde
+	TBCCR0 = 32000; //bei 32kHz
+	
+	//Interrupts allgemein zulassen
+	_bis_SR_register(GIE); 
+	while(1){
 	}
 }
