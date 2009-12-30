@@ -21,18 +21,18 @@ void delay(unsigned int time_mill) {
 }
 
 void aufgabe9() {
-	// Teiler für den ACLK Takt auf 8 setzen
+	// Teiler fuer den ACLK Takt auf 8 setzen
 	BCSCTL1	|= DIVA0;
 	BCSCTL1	|= DIVA1;
     
 	// Wachund rauslassen
     // WDTCNTCL setzt den Watchdog Timer zurueck
-    // WDTSSEL wählt den ACLK Takt als Quelle fuer den Watchdogzaehler
+    // WDTSSEL waehlt den ACLK Takt als Quelle fuer den Watchdogzaehler
     // Bei dieser Operation werden WDTIS0/1 und WDTHOLD auf 0 gesetzt
     // Das hat zur Folge, dass der Watchdog auf RESET nach 32768 Takten
     // gestellt und aktiviert wird.
-    // Neue werte müssen in Verbindung mit dem Watchdog Passwort WDTPW
-    // übergeben werden sonst wird ein RESET ausgelöst
+    // Neue werte muessen in Verbindung mit dem Watchdog Passwort WDTPW
+    // uebergeben werden sonst wird ein RESET ausgeloest
     WDTCTL = (WDTPW+WDTCNTCL+WDTSSEL);
     
 	while(1){
@@ -40,7 +40,7 @@ void aufgabe9() {
 		delay(500);
 		LED_OFF(RED);
         
-        // Watchdog zähler zuruecksetzen um einen RESET zu vermeiden
+        // Watchdog zaehler zuruecksetzen um einen RESET zu vermeiden
         // waehre diese Zeile nicht da, wuerde die rote LED nie
         // eingeschaltet, da vor erreichen der Anweisung ein RESET
         // durch den Watchdog erfolgen wuerde

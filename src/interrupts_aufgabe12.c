@@ -6,7 +6,7 @@
 
 
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen
-PORT1_ISR(ISR_Port1)
+PORT1_ISR(ISR_Port1)    //int04 | 0xFFE8 | Port1
 
 // Zaehler fuer die Anzahl der Tasterbetaetigungen
 int i=0;
@@ -38,7 +38,7 @@ __interrupt void ISR_Port1 (void) {
 
     }
 
-    // Alle Interuptflags für Port 1 entfernen um eine Wiederholung
+    // Alle Interuptflags fuer Port 1 entfernen um eine Wiederholung
     // der ISR, wegen gesetzem Interuptfalg, zu verhindern
     CLEAR(P1IFG, 0xFF);
    
