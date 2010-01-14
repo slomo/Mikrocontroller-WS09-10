@@ -8,30 +8,6 @@
 #include "project.h"
 #include "math.h"
 
-#define RED                    (0x01)
-#define YELLOW                (0x02)
-#define GREEN                (0x04)
-#define LED_OFF(led)        (P4OUT |= led)    
-#define LED_ON(led)          (P4OUT &= ~led)    
-#define LED_TOGGLE(led)      (P4OUT ^=  led)
-
-#define M_PI 3.1415926535897932384626433
-
-// no lissajous anymore
-//#define SCALEX 1
-//#define SCALEY 1
-
-#define FALSE 0
-#define TRUE 1
-
-#define FIELD_X 1024.0
-#define FIELD_Y 1024.0
-#define BARLENGTH 1024.0
-
-#define RES_X 4095.0
-#define RES_Y 4095.0
-
-#define BALL_POINTS 10
 
 int valuesX[ANTZ];
 int valuesY[ANTZ];
@@ -40,11 +16,14 @@ int i;
 
 volatile int ic=2;
 
+extern barstate left_bar=512, right_bar=512;
+
+#define MAX(s1,s2) ((s1 > s2) ? s1 : s2) 
+#define MIN(s1,s2) ((s1 < s2) ? s1 : s2)
 
 void project(){
     
     ballstate ball;
-    barstate left_bar=512, right_bar=512;
 
     //DMA vorbereiten
     DMACTL0 = DMA0TSEL_8 + DMA1TSEL_8;
@@ -68,7 +47,10 @@ void project(){
     //P6SEL = 0xc0;
     TBCTL     = MC_1 + TASSEL_2 + ID_3;
     //TBCCTL0 = CCIE; 
-    TBCCR0     = 3;
+    TBCCR0     = 100;
+    
+	P1IE |= 0x03;
+	P1IES &= ~0x03;
     
     _bis_SR_register(GIE); //Interrupts zulassen
     
@@ -81,6 +63,8 @@ void project(){
     
     while(1) {
         next(&ball, left_bar, right_bar);
+        
+        left_bar = MAX(0 + BARLENGTH/2.0, MIN(FIELD_Y - BARLENGTH/2.0, ball.y));
         LED_TOGGLE(GREEN);
         generate_array(&ball, left_bar, right_bar);
     }    
@@ -168,7 +152,7 @@ void generate_array(ballstate *ball, barstate bar_left, barstate bar_right)
     }
     
     
-    for (i = count + 1; i < ANTZ - BALL_POINTS; i++) {
+    for (i = count + 1; i <= ANTZ - BALL_POINTS; i++) {
         valuesX[i + BALL_POINTS-1] = (int)RES_X;
         valuesY[i + BALL_POINTS-1] = (int)((bar_right - BARLENGTH/2.0) + (BARLENGTH / count) * (i-count) * RES_Y/FIELD_Y);
     }
@@ -181,7 +165,7 @@ void init_ball(ballstate *ball)
 {
     ball->x = FIELD_X / 2;
     ball->y = FIELD_Y / 2;
-    ball->speed = 10;
+    ball->speed = 2;
     ball->angle = 0.4; // 7°
 }
 
