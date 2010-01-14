@@ -1,0 +1,35 @@
+Low Power Modi des MSP430F1612
+Die meisten Geräte auf Basis von Batterie- und Akkubetrieb nutzen sogenannte LP-Modi. Dabei steht der Controller, da kein MCLK-Takt anliegt. Der Stromverbrauch ist auf einige wenige µA oder nA reduziert.
+Der Controller startet mit der eingestellten Taktquelle (bevorzugt DCOCLK) auf Grund eines Interrupts durch Tastendruck, arbeitet alle notwendigen Operationen  ab und geht wieder in einen LP-Mode.
+Der MSP430F1612 hat neben dem Aktiven-Mode fünf mögliche LP-Modi (LPM0...4). In der folgenden Auflistung sind die LPM-Bits des SR-Statusregisters und die Möglichkeiten das Statusregister zu setzen (siehe msp430x16x.h) aufgelistet:
+
+#define LPM0_bits (CPUOFF)                  
+#define LPM1_bits (SCG0+CPUOFF)                  
+#define LPM2_bits (SCG1+CPUOFF)                  
+#define LPM3_bits (SCG1+SCG0+CPUOFF)               
+#define LPM4_bits (SCG1+SCG0+OSCOFF+CPUOFF)      
+#define LPM0      _bis_SR_register(LPM0_bits)         /* Enter LPM 0 */
+#define LPM0_EXIT _bic_SR_register_on_exit(LPM0_bits) /* Exit  LPM 0 */
+#define LPM1      _bis_SR_register(LPM1_bits)         /* Enter LPM 1 */
+#define LPM1_EXIT _bic_SR_register_on_exit(LPM1_bits) /* Exit  LPM 1 */
+#define LPM2      _bis_SR_register(LPM2_bits)         /* Enter LPM 2 */
+#define LPM2_EXIT _bic_SR_register_on_exit(LPM2_bits) /* Exit  LPM 2 */
+#define LPM3      _bis_SR_register(LPM3_bits)         /* Enter LPM 3 */
+#define LPM3_EXIT _bic_SR_register_on_exit(LPM3_bits) /* Exit  LPM 3 */
+#define LPM4      _bis_SR_register(LPM4_bits)         /* Enter LPM 4 */
+#define LPM4_EXIT _bic_SR_register_on_exit(LPM4_bits) /* Exit  LPM 4 */
+
+In der nebenstehenden Abbildung sind die LP-Modi und die Übergänge zwischen den LPMx-Modi dargestellt (SR-Registerbits).
+Beim LPM4 kann nur eine Flanke an Port1 und Port2 einen Interrupt auslösen und den Mikrocontroller aus dem LP-Mode in den aktiven Mode bringen.
+Beim LPM3 besteht zusätzlich die Möglichkeit über einen Timerinterrupt den LP-Mode zu verlassen und in den aktiven Mode zu wechseln. Dadurch kann zyklisch in definierten Zeitintervallen eine Anwendung gestartet werden.
+Der nebenstehenden Abbildung sind die Stromaufnahmen der einzelnen LPMx-Modi zu entnehmen.
+Eine häufige Variante in Mikrocontrollersystemen ist es, innerhalb einer Endlosschleife, in den LP-Mode zu gehen. Der Mikrocontroller arbeitet den Befehl LPMx ab und ist sofort im LPMx-Mode.
+ 
+ 
+ 
+Alle Verarbeitungsfunktionen können nun nur noch durch einen Interrupt gestartet werden. Nach Abarbeitung der ISR wird innerhalb der Endlosschleife sofort wieder LPMx ausgeführt und die CPU befindet sich wieder im LPx-Mode. Hier ein Beispielcode. 
+
+while(1)
+{
+    LPMx;
+} 

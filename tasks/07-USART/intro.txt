@@ -1,0 +1,56 @@
+USART Schnittstelle des MSP430F1612
+Der MSP430F1612 stellt uns zwei USART-Einheiten zur Verfügung. Die USART kann je nach Programmierung folgende Schnittstellen realisieren:
+
+UART    Universal Asynchron Receiver Transmitter   
+SPI     Serial Peripheral Interface
+I2C     Inter-Integrated Circuit
+
+Die nebenstehende Abbildung zeigt das Blockschaltbild der USART im UART Mode. Für die Kommunikation mit der UART-Peripherie werden folgende Register und Bits genutzt (über x=0,1 definiert sich UART0 oder UART1):
+
+UxCTL  (PENA,PEV,SPB,CHAR,LISTEN,SYNC,MM,SWRST)
+UxTCTL (CKPH,CKPL,SSEL1,SSEL0,URXSE,TXWAKE,STC,TXEPT)
+UxRCTL (FE,PE,OE,BRK,URXEIE,URXWIE,RXWAKE,RXERR)
+UxMCTL           
+UxBR0
+UxBR1
+UxRXBUF
+UxTXBUF
+ 
+Die Register IE1, IFG1, ME1, IE2, IFG2 und ME2 sind je nach Bedarf zu setzen. 
+Zur Initialisierung der UART muss generell folgende Abfolge eingehalten werden:
+
+Die Peripherieeinheit mit den Portleitungen unter Nutzung der PxSEL Bits verbinden
+SWRST Bit setzen
+Alle USART Register bei SWRST = 1 initialisieren
+Das USART Modul über die MEx Bits und die URXEx und UTXEx Bits aktivieren
+Das SWRST Bit zurücksetzen
+Optional die Interrupts erlauben mit den IEx, URXIEx und UTXIEx Bits
+
+Zum Senden eines Zeichens muss folgender Ablauf eingehalten werden:
+
+mit TXEPT-Bit testen ob UxTXBUF-Register leer
+Byte in UxTXBUF Register schreiben
+UxTXBUF Register ins Transmit Shift Register erfolgt automatisch
+Transmit Shift Register wird seriell auf die UTXD-Leitung ausgegeben
+
+Zum Empfangen eines Zeichens:
+
+Daten auf URXD-Leitung werden seriell ins Receive Shift Register geshiftet
+bei Vollständigkeit ins ins UxRXBUF-Register übernommen
+mit URXIFG1 Bit im IFG2 Register wird der Empfang eines Zeichens signalisiert
+Zeichen aus UxRXBUF-Register auslesen
+
+Datenformat der UART ist 8N1: 8 Datenbit, keine Parität und 1 Stopp Bit.
+Standard-Baudrate ist 115200Bit/s.
+Die Einstellung erfolgt über:
+
+Bauderaten Control Register UxBR0 und UxBR1
+Modulationsregister UxMCTL
+
+Die Taktquelle für die Baudratengenerierung wird über einen Multiplexer (SSEL1- und SSEL0-Bits) ausgewählt.
+Als Taktquellen stehen UCLK-, ACLK- oder SMCLK-Takt zur Verfügung.
+Beträgt der SMCLK-Takt beispielsweise 7,3728MHz und die Baudrate soll 115200Bit/s betragen, rechnet man folgendermaßen:
+Baudraten Teiler =  Taktfrequenz / Baudrate
+Der Baudratenteiler beträgt in diesem Fall 64 und ist eine gerade Zahl.
+Daraus folgen folgende Registerwerte: UxBR1=0, UxBR0=64 und UxMCTL=0.
+Die Nutzung der UART kann im Polling, im Interrupt und im DMA Betrieb erfolgen.

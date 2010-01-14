@@ -1,0 +1,15 @@
+Aufgabe 25: Funktionsgenerator
+Entwickeln Sie das Grundgerüst eines Programms für einen Sinus Generator.
+Hier die Beschreibung der erforderlichen Programmfunktionalität:
+
+In ein Feld mit 100 Elementen soll eine volle Periode der Sinusfunktion abgelegt werden
+Die Sinusfunktion soll eine Amplitude von 1V und einen Gleichspannungsanteil von 1,5V besitzen
+Am Ausgang des DA-Wandlers liegt die Sinusfunktion innerhalb des Spannungsbereiches von 0...3V
+Die Ausgabe der einzelnen Werte an den DA-Wandler soll innerhalb einer Timer ISR erfolgen
+Ist eine Periode ausgegeben, wird der Vorgang kontinuierlich wiederholt
+Über die Zeitdauer der Ausgabe von 100 Werten, definiert sich die Periodendauer
+Wählen Sie eine Periodendauer die einer Frequenz von 100Hz entspricht 
+
+Nutzen Sie als DA-Wandlerkanal den Port P6.7.
+Beachten Sie die PIN-Belegung des abgebildeten MSB430H Boards.
+Überprüfen Sie die Funktion des Programms mit einem Oszilloskop.

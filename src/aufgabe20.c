@@ -7,16 +7,14 @@
 #include "SHT11.h"			// SHT11 Temperatur- und Feuchtesensor
 #include "aufgabe20.h"
 
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
-
 void aufgabe20() {
-	while(1){	
-		if (U1TCTL & TXEPT) { //Wenn sendebuffer leer
+	// Zur Initialisierung des UART1 muss die Funktion initUART() in der
+	// main einkommentiert werden
+	while(1){
+		// Wenn der Sendepuffer leer ist ...
+		if (U1TCTL & TXEPT) {
+			// Schreibe ein '?' in den Sendepuffer, dass es ueber UART1
+			// ausgegeben wird
 			U1TXBUF = '?';
 		}
 	}

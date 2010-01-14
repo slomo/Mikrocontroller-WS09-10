@@ -1,0 +1,28 @@
+Die Nutzung des CC1100 Transceivers des MSB430H
+Der Transceiver CC1100 ist über eine SPI Schnittstelle an den MSP430F1612 angebunden und verfügt über eigenen Sende- und Empfangspuffer.
+Im Startprojekt wird mit initUART0_SPI() die SPI Schnittstelle initialisiert um mit dem CC1100 kommunizieren zu können.
+Da die Programmierung des CC1100 den Zeitrahmen der Veranstaltung sprengen würde, werden für die Lösung der Aufgabenstellungen folgende Funktionen bereitgestellt:
+ 
+Transceiver initialisieren danach im Empfangsmode
+void initCC1100(void);
+Transceiver initialisieren danach im IDLE Mode               
+void initCC1100_IDLE(void);
+Transceiver RESET
+void reset(void);
+Transceiveradresse setzen (0...255 möglich)
+void setUid(unsigned char id);
+Sendeleistung setzen
+char setOutputPower(unsigned char paIdx);
+Funktkanal (0...9 möglich) einstellen
+void switchFreq(unsigned char c);
+Datenpaket senden (siehe auch TxCC1100 Puffer)
+void sendPacket(unsigned char ziel,unsigned char quelle, char *data, unsigned char length);
+Datenpaket empfangen (siehe auch RxCC1100 Puffer)
+char receivePacket(void);
+Datenpaket aus Terminal ausgeben
+void PrintPacket(void);
+
+Im Startprojekt ist die CC1100.c über #include "CC1100.h" eingebunden und kann im Detail eingesehen werden.
+Den  Originalquellcode nicht ändern!
+Falls es für die Lösung der Aufgabenstellungen erforderlich ist, sind zusätzliche Funktionen einzubauen.
+Dabei ist das Zustandsdiagramm des CC1100 zu beachten.

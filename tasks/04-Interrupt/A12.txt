@@ -1,0 +1,22 @@
+Aufgabe 12: Interrupt Quelle Taster
+Entwickeln Sie ein Programm, das folgende Teilschritte beinhaltet:
+
+Initialisierung des Ports
+Interruptfreigabe und
+Endlosschleife mit blinkender LED aus Aufgabe 10 (alles ohne Watchdog)
+
+Beachten Sie, dass eine ISR für Port1 geschrieben werden muss.
+Die ISR für Port1 soll folgende Funktionalität aufweisen:
+
+Nach jedem 10-ten Tastendruck Port1.0 soll die LED (Port4.0) getoggelt werden
+Bei jedem Tastendruck (PORT1.1) soll die LED (PORT4.1) getoggelt werden.
+Im nächsten Schritt soll eine Lösung gefunden werden, die eine mögliche Interruptquelle ausschalten kann.
+
+Verändern Sie dazu die ISR in der Form:
+
+Nach jedem 10-ten Tastendruck Port1.0 soll die LED (Port4.0) getoggelt werden
+Bei jedem Tastendruck (PORT1.1) soll die LED (PORT4.1) getoggelt werden
+nur bei leuchtender LED (PORT4.1) soll der Taster (PORT1.0) interruptfähig sein.
+
+Testen und dokumentieren Sie ihre Lösung.
+Um eine LED blinken zu lassen existieren auch effektivere Lösungen als eine Endlosschleife.

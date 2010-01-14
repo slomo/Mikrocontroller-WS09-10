@@ -1,0 +1,35 @@
+Aufgabe 24: Der 3D Beschleunigungssensor
+In dieser Aufgabe sollen Sie Beschleunigungswerte als analoge Größen erfassen und Visualisieren.
+Entwickeln Sie ein Programm das folgende Funktionalität besitzt:
+
+Initialisierung der Portleitungen
+Einstellung des 1,5g Messbereiches des MMA7260A
+Timergesteuerte AD-Wandlung der 3D-Beschleunigungswerte (ax-,ay- und az-Werte) im 0,1 Sekundentakt
+Ausgabe der Werte als Zeichenkette auf die serielle Schnittstelle
+
+Zeichenkettenstruktur:
+<ax><HT><ay><HT><az><CR><LF>
+
+ax, ay und az Werte als ASCII Zeichenkette im Bereich von 0...4096
+HT - Horizontal Tab
+CR - Carriage Return
+LF - Line Feed
+
+Loggen Sie die Daten kurzzeitig mit einem Terminalprogramm in eine Datei. Bewegen Sie dabei das MSB430H Board.
+Nutzen Sie eine Excel-Tabelle zur Visualisierung der geloggten Zeitverläufe.
+Erweitern Sie die Excel-Tabelle in der Form, das Beschleunigungswerte berechnet werden (Maßeinheit m/s2) und als Zeitverlauf angezeigt werden.
+Hinweis:
+
+Der Timer B soll einen 0,1 Sekunden Interrupt generieren
+In der Timer ISR soll der A/D-Wandler gestartet werden.
+Der A/D-Wandler ist interruptfähig
+In der ISR des A/D-Wandlers sollen die Werte ausgegeben werden
+
+Für die Initialisierung der Portleitungen beachten Sie die folgende Portbelegung und die nebenstehende Abbildung:
+P5.4 – GS1     
+P5.5 – GS2
+P5.6 - /Sleep
+P6.0 – ax
+P6.1 – ay
+P6.2 – az
+Details sind dem zugehörigen Datenblatt zu entnehmen

@@ -1,0 +1,11 @@
+Aufgabe 19: Die Zeitschaltuhr
+Programmieren Sie eine Uhr, die ein Format der Form hh:mm:ss.s realisiert und integrieren Sie eine Schaltfunktion für eine LED P4.2 (kleinste Zeiteinheit ist die Sekunde). Zwei Variablen (t1 und t2) dienen zum speichern der Schaltzeiten.
+Zum Zeitpunkt:
+
+t1 - wird LED (P4.2) einschalten
+t2 - wird LED (P4.2) ausschalten
+
+Signalisieren Sie den Sekundentakt über die LED (P4.0).
+Testen und dokumentieren Sie die Lösung.
+Zum Testen der Schaltfunktionen können Sie im Stopp-Mode mit dem Debugger die Zeiten über die Variablen t1 und t2 setzen. 
+In den nachfolgenden Aufgaben koppeln Sie zur Visualisierung der Daten den Controller über eine UART mit dem PC.

@@ -1,0 +1,35 @@
+Aufgabe 9: Nutzung des Watchdog
+Entwickeln Sie als Programm eine eigenständige Endlosschleife  die folgenden Ablauf realisiert:
+
+0,5 Sekunden warten
+LED ausschalten
+0.5 Sekunden warten
+LED einschalten und
+alles von vorn
+
+Testen Sie diese Funktion.
+Im nächsten Schritt schalten Sie den Watchdog vor der Endlosschleife ein.
+Testen Sie das Programm mit dieser Änderung und diskutieren Sie das Ergebnis.
+Im nächsten Schritt wird der Watchdog vor der Endlosschleife mit folgenden Einstellungen eingeschaltet:
+
+Watchdog auf Basis des ACLK-Takt mit dem Vorteiler 8
+Zählerstand 32768 für RESET
+
+Testen Sie die Änderung und diskutieren Sie das Ergebnis.
+Jetzt nehmen Sie folgende Änderung der Endlosschleife vor:
+
+0,5 Sekunden warten
+LED ausschalten
+Watchdog Counter/Timer zurücksetzen (WDTCNTCL-Bit)
+0.5 Sekunden warten
+LED einschalten und
+Alles von vorn
+
+Der Test des Programms sollte jetzt belegen, dass die Endlosschleife nicht mehr durch einen RESET unterbrochen wird.
+Zusammenfassung:
+
+Ist der Watchdog aktiv und wird in einem bestimmten Zeitintervall nicht der Counter/Timer zurückgesetzt, erfolgt ein RESET
+Das Zurücksetzen des Watchdog Counters/Timers kann an zentraler Stelle, zum Beispiel in einer Schleife oder über den Programmcode verteilt an mehreren Stellen erfolgen
+Die Struktur des Programms kann unterschiedliche Herangehensweisen erfordern
+In Test- und Entwicklungsphasen sollte man den Watchdog möglichst ausgeschaltet lassen
+Erweitern Sie programmtechnisch bestehende Systeme, müssen Sie beachten wie der Watchdog eingebunden wurde 

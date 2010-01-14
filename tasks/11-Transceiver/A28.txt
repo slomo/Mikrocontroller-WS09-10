@@ -1,0 +1,36 @@
+Aufgabe 28: Sensordaten per Funk übertragen
+Entwickeln Sie eine Lösung für zwei MSB430H-Boards, eins als Sender und das andere als Empfänger, die folgende Funktionalität für den entsprechenden MSB430H bereitstellt:
+
+Für den Sender:
+
+Transceiver in den Empfangsmode setzen
+Initialisierung Funkkanal entsprechend des Arbeitsplatzes
+Initialisierung auf ID = Arbeitsplatznummer + 10
+Per Funk an den Empfänger alle 5 Sekunden Sensordaten übertragen
+Sensordatenformat:
+<T><HT><RH><HT><ax><HT><ay><HT><az><HT><TA><CR><LF>
+T - Temperatur in °C
+RH - Relative Luftfeuchtigkeit in %
+ax, ay und az Werte als ASCII Zeichenkette im Bereich von 0...4096
+TA - Tastenstatus:
+1 für rechter Taster gedrückt
+2 für linker Taster gedrückt
+3 für beide Tasten gedrückt
+HT - Horizontal Tab
+CR - Carriage Return
+LF - Line Feed
+Vor dem Senden des Datenpaketes rote LED (P5.7) ein
+Wird der Erhalt des Datenpaketes bestätigt rote LED (P5.7) aus
+
+ Für den Empfänger:
+Transceiver in den Empfangsmode setzen
+Initialisierung Funkkanal entsprechend des Arbeitsplatzes
+Initialisierung auf ID = Arbeitsplatznummer
+Empfangenes Datenpaket auf die serielle Schnittstelle ausgeben
+Ausgabeformat der Zeichenkette:
+<T><HT><RH><HT><ax><HT><ay><HT><az><HT><TA><CR><LF>
+Bei TA = 2 grüne LED (P4.2) an
+Bei TA = 2 grüne LED (P4.2) aus
+Bei jedem Datenpaket gelbe LED (P4.1) toggeln
+Bei Beschleunigungsdifferenzen größer 20%  zum vorhergehenden Wert (in mindestens einer Achse) rote LED (P4.0) an, sonst aus
+Jedes empfangene Datenpaket per Funk bestätigen

@@ -1,0 +1,16 @@
+Aufgabe 4: Tastaturabfrage
+Entwickeln Sie einen Binärzähler, der folgender Beschreibung entspricht:
+
+Jede Tastenbetätigung der linken Taste (P1.1), soll eine Variabel um eins inkrementieren
+Jede Betätigung der rechten Taste (P1.0) soll eine Variable um eins dekrementieren
+Der Zahlenwert der Variablen soll als Binärzahl mit drei LED dargestellt werden
+Werden beide Tasten gedrückt wird die Variable auf Null gesetzt
+
+Die LED haben folgende Zuordnung mit dem darstellbaren Zahlenbereich von 0 bis 7:
+
+20 grüne LED (P4.2) mit der Wertigkeit 1
+21 gelbe LED (P4.1) mit der Wertigkeit 2
+22 rote LED (P4.0) mit der Wertigkeit 4
+
+Eine leuchtende LED signalisiert dabei den logischen Zustand "1" und eine ausgeschaltete LED den logischen Zustand "0".
+Eine interessante und nicht ganz einfach zu lösende Problematik ergibt sich hier durch das Prellen der Tastenkontakte. Beim Austesten ihrer Lösung werden sie auf dieses Problem stoßen. Finden sie für dieses Problem eine Lösung.

@@ -7,20 +7,21 @@
 #include "SHT11.h"			// SHT11 Temperatur- und Feuchtesensor
 #include "aufgabe18.h"
 
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
-
-
-
 void aufgabe18() {
-	TBCTL 	= MC_1 + TASSEL_1 + ID0 + ID1;
+	// Timer soll hochzaehlen und den ACLK Takt mit 8fachem Teiler 
+	// als Quelle verwenden
+	TBCTL 	= MC_1 + TBSSEL_1 + ID0 + ID1;
+	// Interrupts fuer Timer B aktivieren
 	TBCCTL0 = CCIE; 
-	TBCCR0 	= 4000*LEDDELAY; //bei 32kHz /8
-	_bis_SR_register(GIE); //Interrupts zulassen	
+	// Timerinterrupt nach 4000 mal der gewuenschten Verzoegerung in
+	// Sekunden Takten auslösen (32000kHz/8fachen Teiler = 4000)
+	// LEDDELAY ist in aufgabe18.h definiert
+	TBCCR0 	= 4000*LEDDELAY;
+	
+	// Interrupts allgemein zulassen
+	_bis_SR_register(GIE);
+	
+	// sobald die Moeglichkeit besteht in den LPM3 wechseln
 	while(1){	
 		LPM3;
 	}

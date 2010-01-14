@@ -1,0 +1,18 @@
+Aufgabe 27: Der Empfangsmode
+Stellen Sie auf Basis der bereitgestellten Funktionen den Transceiver folgendermaßen ein:
+
+Transceiver im Empfangsmode
+ID ist gleich der Nummer ihres Praktikumsarbeitsplatzes (im Bereich von 1...8, steht am Labortisch)
+Frequenzkanal 0
+
+Geben Sie alle empfangenen Datenpakete mit der Funktion PrintPacket() auf die serielle Schnittstelle aus.
+Dazu sind folgende Programmteile zu beachten:
+
+In main.c die  initUART0_SPI(), initCC1100() und setUid(ID)
+Zum Setzen des Frequenzkanals in CC1100.c die Funktion switchFreq(unsigned char c)
+In interrupts.c die ISR des Port2
+
+Dokumentieren Sie die von Ihnen empfangenen Datenpakete.
+Probieren Sie das auch für 2-3 andere ID aus dem Bereich 1...8 aus.
+Diskutieren Sie die gemachten Beobachtungen.
+Erfragen Sie bei den Betreuern, ob der erforderliche Sender eingeschaltet ist!

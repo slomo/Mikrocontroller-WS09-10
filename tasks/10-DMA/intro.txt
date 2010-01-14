@@ -1,0 +1,16 @@
+Der DMA Controller des MSP430F1612
+DMA steht für Direct Memory Access. Der MSP430F1612 verfügt über drei unabhängige DMA-Kanäle.
+Die DMA-Kanäle sind in der Lage unabhängig von der CPU, Daten mit vier unterschiedlichen Adressierungsmodi zu transportieren (siehe Abbildung).
+Die Struktur der DMA Kanäle und die Steuerungsmöglichkeiten sind der Abbildung zu entnehmen.
+Folgende 14 DMA Register sind für die Programmierung  verfügbar  (x steht für Kanal also 0,1 oder 2):
+
+DMACTL0
+DMACTL1
+DMAxCTL
+DMAxSA - Quelladresse
+DMAxDA - Zieladresse
+DMAxSZ - Anzahl
+ 
+ 
+Auf Basis der Control Register lassen sich die DMA-Kanäle beliebig konfigurieren und auch im Interrupt nutzen.
+Für die DMA-Einheit ist gemeinsam mit dem DA-Wandler der Interrupt INT0 reserviert. 
