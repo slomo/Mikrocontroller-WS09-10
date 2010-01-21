@@ -1,5 +1,6 @@
-#define FALSE 0
-#define TRUE 1
+#define IN 0
+#define LEFT 1
+#define RIGHT 2
 
 #define RED                    (0x01)
 #define YELLOW                (0x02)

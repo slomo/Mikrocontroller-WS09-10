@@ -142,12 +142,18 @@ __interrupt void ISR_Port1 (void) {
 			if(right_bar <= FIELD_Y-BARLENGTH/2.0-BARSTEP) {
 				right_bar+=BARSTEP;
 			}
+			else {
+				right_bar = FIELD_Y-BARLENGTH/2.0;
+			}
 			
 		  	wait(10);
 	  	break;
 		case 0x02 : // linker Taster gedrückt
 			if(right_bar >= 0+BARLENGTH/2.0+BARSTEP) {
 				right_bar-=BARSTEP;
+			}
+			else {
+				right_bar = BARLENGTH/2.0;
 			}
 			
 			wait(10);

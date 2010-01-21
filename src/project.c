@@ -62,9 +62,12 @@ void project(){
     init_ball(&ball);
     
     while(1) {
-        next(&ball, left_bar, right_bar);
+        if(next(&ball, left_bar, right_bar) != IN) {
+        	init_ball(&ball);
+        }
         
         left_bar = MAX(0 + BARLENGTH/2.0, MIN(FIELD_Y - BARLENGTH/2.0, ball.y));
+        //left_bar = ball.y;
         LED_TOGGLE(GREEN);
         generate_array(&ball, left_bar, right_bar);
     }    
@@ -100,61 +103,63 @@ uint8_t next(ballstate *ball, barstate bar_left, barstate bar_right)
         }
         
         // ball has passed bar layer
-        if(ball->x <= 0 || ball->x >= 1024){
+        if(ball->x <= 0 || ball->x >= FIELD_X){
 
-            float collision_point_y = fabs(tan(ball->angle) * (ball->x - m_x));
             float bar_position;
             
             if (ball->x <= 0) {
                 // calculate if 
+	            float collision_point_y = fabs(tan(ball->angle) * (ball->x - m_x) + (ball->y - m_y));
                 bar_position = fabs(collision_point_y - (float)bar_left);
+
+                // ball crossed border at xMin
+                ball->x = fabs(ball->x);
             }
             else {
                 // calculate if 
+	            float collision_point_y = fabs(tan(ball->angle) * (FIELD_X - ball->x - m_x) + (ball->y - m_y));
                 bar_position = fabs(collision_point_y - (float)bar_right);
-            }
 
-            if (ball->x >= FIELD_X) {
                 // ball crossed border at xMax
                 ball->x = 2 * FIELD_X - ball->x;
-            }
-            else {
-                // ball crossed border at xMin
-                ball->x = fabs(ball->x);
             }
 
             if (bar_position <= (BARLENGTH/2)) {
                 ball->angle = (M_PI - ball->angle);
                 //Use the speedup feature later when averything works
-                //ball->speed += 0.2;
+                ball->speed += 0.5;
                 LED_TOGGLE(RED);
-                return TRUE;
+                return IN;
             }
             
-            return FALSE;
+            if (ball->x <= 0) {
+	            return LEFT;
+            }
+
+           	return RIGHT;
         }
 
-        return TRUE;
+        return IN;
 }
 
 void generate_array(ballstate *ball, barstate bar_left, barstate bar_right)
 {
     int i, count;
     for(i=0;i<BALL_POINTS;i++){
-        valuesX[i] = (int)ball->x * RES_X/FIELD_X;
-        valuesY[i] = (int)ball->y * RES_Y/FIELD_Y;
+        valuesX[i] = (int)(ball->x * RES_X/FIELD_X);
+        valuesY[i] = (int)(ball->y * RES_Y/FIELD_Y);
     }
     
     count = ((ANTZ-BALL_POINTS) / 2);
     for (i = 1; i < count + 1; i++) {
         valuesX[i + BALL_POINTS-1] = 0;
-        valuesY[i + BALL_POINTS-1] = (int)((bar_left - BARLENGTH/2.0) + (BARLENGTH / count) * i * RES_Y/FIELD_Y);
+        valuesY[i + BALL_POINTS-1] = (int)(((bar_left - BARLENGTH/2.0) + (BARLENGTH / count) * i) * RES_Y/FIELD_Y);
     }
     
     
     for (i = count + 1; i <= ANTZ - BALL_POINTS; i++) {
         valuesX[i + BALL_POINTS-1] = (int)RES_X;
-        valuesY[i + BALL_POINTS-1] = (int)((bar_right - BARLENGTH/2.0) + (BARLENGTH / count) * (i-count) * RES_Y/FIELD_Y);
+        valuesY[i + BALL_POINTS-1] = (int)(((bar_right - BARLENGTH/2.0) + (BARLENGTH / count) * (i-count)) * RES_Y/FIELD_Y);
     }
 }
 
