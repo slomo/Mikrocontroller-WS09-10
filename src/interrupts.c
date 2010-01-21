@@ -19,7 +19,7 @@
 PORT1_ISR(ISR_Port1)                //int04 | 0xFFE8 | Port1 			|
 //TIMERA1_ISR(ISR_Timer_A)          //int05 | 0xFFEA | TimerA CC1-2,TA	|
 //TIMERA0_ISR(ISR_Timer_A_CCR0)     //int06 | 0xFFEC | TimerA CC0 		|
-//ADC12_ISR(ISR_ADC12)             	//int07 | 0xFFEE | ADC				|
+ADC12_ISR(ISR_ADC12)             	//int07 | 0xFFEE | ADC				|
 //USART0TX_ISR(ISR_USART0_Transmit) //int08 | 0xFFF0 | USART0 Transmit	|
 //USART0RX_ISR(ISR_USART0_Receive)  //int09 | 0xFFF2 | USART0 Receive	|
 //WDT_ISR(ISR_Watchdog)             //int10 | 0xFFF4 | Watchdog Timer	|
@@ -137,30 +137,31 @@ __interrupt void ISR_Port2 (void) {
 //==============================================================
 
 __interrupt void ISR_Port1 (void) {
-	switch (P1IFG & 0x03) {
-		case 0x01 :  // rechter Taster gedrückt
-			if(right_bar <= FIELD_Y-BARLENGTH/2.0-BARSTEP) {
-				right_bar+=BARSTEP;
-			}
-			else {
-				right_bar = FIELD_Y-BARLENGTH/2.0;
-			}
-			
-		  	wait(10);
-	  	break;
-		case 0x02 : // linker Taster gedrückt
-			if(right_bar >= 0+BARLENGTH/2.0+BARSTEP) {
-				right_bar-=BARSTEP;
-			}
-			else {
-				right_bar = BARLENGTH/2.0;
-			}
-			
-			wait(10);
-		break;
-
+	if (running) {
+		switch (P1IFG & 0x03) {
+			case 0x01 :  // rechter Taster gedrückt
+				if(right_bar <= FIELD_Y-BARLENGTH/2.0-BARSTEP) {
+					right_bar+=BARSTEP;
+				}
+				else {
+					right_bar = FIELD_Y-BARLENGTH/2.0;
+				}
+				
+		  	break;
+			case 0x02 : // linker Taster gedrückt
+				if(right_bar >= 0+BARLENGTH/2.0+BARSTEP) {
+					right_bar-=BARSTEP;
+				}
+				else {
+					right_bar = BARLENGTH/2.0;
+				}
+				
+			break;
+		}
 	}
-  		
+	else {
+		init(&ball);
+	}
   	CLEAR(P1IFG, 0xFF); // Clear all flags
 }
 //==============================================================
@@ -187,10 +188,16 @@ __interrupt void ISR_Port1 (void) {
 //==============================================================
 //===INT:07====ADR:FFEE====ADC12================================
 //==============================================================
-//__interrupt void ISR_ADC12 (void)
-//	{
-//  ...hier den Code der ISR einfügen
-//	}
+__interrupt void ISR_ADC12 (void)
+{
+	if(ADC12IFG & 0x01){
+		srand(ADC12MEM0);
+		ADC12MCTL0 = 0;
+		ADC12CTL1 = 0;
+		ADC12CTL0 = 0;
+		P5OUT &= ~64;
+	}
+}
 //==============================================================
 
 

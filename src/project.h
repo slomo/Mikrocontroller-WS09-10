@@ -1,6 +1,6 @@
 #define IN 0
-#define LEFT 1
-#define RIGHT 2
+#define LEFT -1
+#define RIGHT 1
 
 #define RED                    (0x01)
 #define YELLOW                (0x02)
@@ -11,7 +11,7 @@
 
 #define M_PI 3.1415926535897932384626433
 
-#define RES_X 700.0
+#define RES_X 800.0
 #define RES_Y 512.0
 #define FIELD_X 1024.0
 #define FIELD_Y 1024.0
@@ -30,13 +30,23 @@ typedef struct ball {
 
 typedef float barstate;
 
-extern barstate left_bar, right_bar;
+extern barstate left_bar;
+extern barstate right_bar;
 
 extern int valuesX[ANTZ];
 extern int valuesY[ANTZ];
+
+extern int life_left;
+extern int life_right;
+
+extern int running;
+
+extern ballstate ball;
+
 extern volatile int ic;
 extern int i;
 void project();
-uint8_t next(ballstate *ball, barstate bar_left, barstate bar_right);
+int next(ballstate *ball, barstate bar_left, barstate bar_right);
 void generate_array(ballstate *ball, barstate bar_left, barstate bar_right);
-void init_ball(ballstate *ball);
+void init(ballstate *ball);
+void reset_ball(ballstate *ball, int direction);
