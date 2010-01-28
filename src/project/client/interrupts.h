@@ -5,7 +5,7 @@
 // bei Bedarf die Auskommentierung entfernen 
 //===========================================================
 //__interrupt void ISR_DACDMA (void);           // Routine: DMA und DAC
-//__interrupt void ISR_Port2 (void);            	// Routine: Port2
+__interrupt void ISR_Port2 (void);            	// Routine: Port2
 //__interrupt void ISR_USART1_Transmit (void);  // Routine: USART1 Versand
 //__interrupt void ISR_USART1_Receive (void);   // Routine: USART1 Empfang
 __interrupt void ISR_Port1 (void);            // Routine: Port1

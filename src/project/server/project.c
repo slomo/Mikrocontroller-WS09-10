@@ -1,10 +1,10 @@
 #include "msp430x16x.h"        // Systemdefinitionen von TI für den MSP430F1612
-#include "init.h"            // Initialisierung des Mikrocontrollers
-#include "CC1100.h"            // CC1100 Funktransceiver
-#include "system.h"            // Systemfunktionen MSB430H
+#include "../init.h"            // Initialisierung des Mikrocontrollers
+#include "../CC1100.h"            // CC1100 Funktransceiver
+#include "../system.h"            // Systemfunktionen MSB430H
 #include "interrupts.h"        // ISR - Interrupt Service Routinen
 #include "stdio.h"            // includes TI MSP430F1612 
-#include "SHT11.h"            // SHT11 Temperatur- und Feuchtesensor
+#include "../SHT11.h"            // SHT11 Temperatur- und Feuchtesensor
 #include "project.h"
 #include "math.h"
 
@@ -23,11 +23,25 @@ int life_right;
 int running;
 ballstate ball;
 
+int player;
+int start_game;
+
+char str[255];
+
+void delay(unsigned int time_mill) {	
+	unsigned int i;
+	for(i=0;i<=time_mill;++i){
+		wait(100);
+	}
+}
+
 #define MAX(s1,s2) ((s1 > s2) ? s1 : s2) 
 #define MIN(s1,s2) ((s1 < s2) ? s1 : s2)
-#define GRAD(g) (g / 360.0 * 2.0 * M_PI)
+#define GRAD(g) (((g) / 360.0) * 2.0 * M_PI)
 
 void project(){
+	int count;
+	
     //DMA vorbereiten
     DMACTL0 = DMA0TSEL_8 + DMA1TSEL_8;
     DMACTL1 = ROUNDROBIN;
@@ -74,7 +88,15 @@ void project(){
     DAC12_1DAT=valuesY[0];
     DAC12_0DAT=valuesX[0];
 
-
+	player = 0;
+	start_game = 0;
+	
+	// Funk vorbereiten
+	initUART0_SPI();
+	initCC1100();
+	setUid(0);
+	switchFreq(7);
+	
 	// here be pong
     init(&ball);
   	   	
@@ -83,21 +105,46 @@ void project(){
    	
     	if (running) {
 	        if((dir = next(&ball, left_bar, right_bar)) != IN) {
-	        	if (life_left < 0 || life_right < 0) {
+	        	if ((life_left < 0 || life_right < 0) && player == 2) {
 	        		running = 0;
+	        		LED_OFF(GREEN);
+	        		LED_ON(RED);
 	        	}
 	        	else {
 	    	    	reset_ball(&ball, dir);
 	        	}
         	}
 
-	        left_bar = MAX(0 + BARLENGTH/2.0, MIN(FIELD_Y - BARLENGTH/2.0, ball.y));
-	        LED_TOGGLE(GREEN);
+			if (player < 2) {
+		        left_bar = MAX(0 + BARLENGTH/2.0, MIN(FIELD_Y - BARLENGTH/2.0, ball.y));
+		        right_bar = MAX(0 + BARLENGTH/2.0, MIN(FIELD_Y - BARLENGTH/2.0, ball.y));
+			}
+			
 	        generate_array(&ball, left_bar, right_bar);
+	        
     	}
+
+        if (start_game) {
+        	running = 0;
+        	start_game_now();
+        }
+        
+        if (player < 2) {
+	        // jedes hundertste Mal
+    	    if ((++count % 100) == 0) {
+        		count = 0;
+        	
+	        	// W = WAITING_FOR_PLAYERS
+    	    	sendPacket(1, 0, "W", 1);
+        		LED_TOGGLE(YELLOW);
+    	    }
+        }
     }    
 }
 
+/**
+ * @return Position der nächsten Angabe.
+ */
 int next(ballstate *ball, barstate bar_left, barstate bar_right)
 {
         // move ball
@@ -114,7 +161,11 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
         // check for collisions
         // ball has reached the borders
         if ((ball->y <= 0) || (ball->y >= FIELD_Y)) {
-            ball->angle = 2*M_PI - ball->angle;
+        	sprintf(str,"Hit Wall Angle: %f - ",ball->angle);
+            writestr(str);
+            ball->angle = normalize_radiant(2*M_PI - ball->angle);
+            sprintf(str,"%f\r\n",ball->angle);
+            writestr(str);
             
             if (ball->y >= FIELD_Y) {
                 // ball crossed border at yMax
@@ -126,7 +177,6 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
             }
             
             ball->speed += 0.2;
-            LED_TOGGLE(YELLOW);
         }
         
         // ball has passed bar layer
@@ -137,7 +187,7 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
             if (ball->x <= 0) {
                 // calculate if 
 	            float collision_point_y = fabs(tan(ball->angle) * (ball->x - m_x) + (ball->y - m_y));
-                bar_position = bar_left - collision_point_y;
+                bar_position = collision_point_y - bar_left;
 
                 // ball crossed border at xMin
                 ball->x = fabs(ball->x);
@@ -152,39 +202,42 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
             }
 
             if (fabs(bar_position) <= (BARLENGTH/2.0)) {
-                ball->angle = (M_PI - ball->angle) + (bar_position / (BARLENGTH/2.0)) * GRAD(30);
-				
+                sprintf(str,"Hit Bar Angle: %f - ",ball->angle);
+                writestr(str);
+                ball->angle = normalize_radiant((M_PI - ball->angle) + (bar_position / (BARLENGTH/2.0)) * GRAD(30.0));
+                sprintf(str,"%f\r\n",ball->angle);
+                writestr(str);
+                		
 				// Winkel nicht zu steil
-				if (ball->angle > GRAD(70) && ball->angle < GRAD(110)) {
-					if (ball->angle > GRAD(90)) {
-						ball->angle = GRAD(110);
+				if (ball->angle > GRAD(70.0) && ball->angle < GRAD(110.0)) {
+					if (ball->angle > GRAD(90.0)) {
+						ball->angle = GRAD(110.0);
 					}
 					else {
-						ball->angle = GRAD(70);
+						ball->angle = GRAD(70.0);
 					}
 				}
-				else if (ball->angle > GRAD(250) && ball->angle < GRAD(290)) {
-					if (ball->angle > GRAD(270)) {
-						ball->angle = GRAD(290);
+				else if (ball->angle > GRAD(250.0) && ball->angle < GRAD(290.0)) {
+					if (ball->angle > GRAD(270.0)) {
+						ball->angle = GRAD(290.0);
 					}
 					else {
-						ball->angle = GRAD(250);
+						ball->angle = GRAD(250.0);
 					}
 				}
 								
                 //Use the speedup feature later when averything works
                 ball->speed += 0.5;
-                LED_TOGGLE(RED);
                 return IN;
             }
             
             if (ball->x <= 0) {
             	life_left--;
-	            return LEFT;
+	            return RIGHT;
             }
 
             life_right--;
-            return RIGHT;
+            return LEFT;
         }
 
         return IN;
@@ -235,20 +288,54 @@ void reset_ball(ballstate *ball, int direction)
     ball->speed = 2;
     
     if (direction < 0) {
-    	if (irand(2) == 0) {
-    		ball->angle = GRAD(180 - irand(45));
-    	}
-    	else {
-    		ball->angle = GRAD(180 + irand(45));
-    	}
+   		ball->angle = GRAD(135.0 + (float)irand(90));
     }
     else {
-    	if (irand(2) == 0) {
-    		ball->angle = GRAD(360 - irand(45));
-    	}
-    	else {
-    		ball->angle = GRAD(irand(45));
-    	}
+   		ball->angle = normalize_radiant(GRAD(315.0 + (float)irand(90)));
     }
+}
+
+float normalize_radiant(float source)
+{
+	float new;
+	int ganzzahl;
+	
+	ganzzahl = (int)(source / (2.0 * M_PI));
+	
+	new = source - ganzzahl * (2.0 * M_PI);
+	
+	if (new < 0) {
+		new = 2.0 * M_PI + new;
+	}
+	
+	return new;
+}
+
+void start_game_now()
+{
+	init(&ball);
+	generate_array(&ball, left_bar, right_bar);
+	
+	delay(1000);
+	
+	LED_ON(RED);
+	LED_ON(YELLOW);
+	LED_ON(GREEN);
+	
+	delay(1000);
+	
+	LED_OFF(GREEN);
+
+	delay(1000);
+
+	LED_OFF(YELLOW);
+	
+	delay(1000);
+	
+	LED_OFF(RED);
+	LED_ON(GREEN);
+	
+	running = 1;
+	start_game = 0;
 }
 

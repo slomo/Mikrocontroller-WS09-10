@@ -1,7 +1,7 @@
 #include "msp430x16x.h"
 #include "interrupts.h"
-#include "system.h"
-#include "CC1100.h"
+#include "../system.h"
+#include "../CC1100.h"
 #include "stdio.h"
 #include "string.h"
 #include "project.h"
@@ -13,7 +13,7 @@
 
 //______Interruptquelle_______________INTNR_|_ADR____|_Funktion_________|
 //DACDMA_ISR(ISR_DACDMA)         	//int00 | 0xFFE0 | DAC12 / DMA		|
-//PORT2_ISR(ISR_Port2)             	//int01 | 0xFFE2 | Port2			|
+PORT2_ISR(ISR_Port2)             	//int01 | 0xFFE2 | Port2			|
 //USART1TX_ISR(ISR_USART1_Transmit)	//int02 | 0xFFE4 | USART1 Transmit 	|
 //USART1RX_ISR(ISR_USART1_Receive)  //int03 | 0xFFE6 | USART1 Receive	|
 PORT1_ISR(ISR_Port1)                //int04 | 0xFFE8 | Port1 			|
@@ -72,26 +72,40 @@ ADC12_ISR(ISR_ADC12)             	//int07 | 0xFFEE | ADC				|
 __interrupt void ISR_Port2 (void) {
 	char res ;			// CRC Check 
 	if (P2IFG & 0x01)	// Check P2IFG Bit P2.0 - CC1100 Rx Packet
-		{ 
+	{ 
 		CLEAR(P2IFG, 0x01);
 		res = receivePacket(); 	// CRC Rückgabe 
 		if (res)				// wenn Packet OK ...
-			{
-				printPacket();		// Packet auf Terminal ausgeben
-				//do_output=1;
-			}
+		{
+			if (ready == 1) {
+				// W = WAITING_FOR_PLAYER
+				if (RxCC1100.data[2] == 'W') {
+					// P = PLAYER_READY
+					sendPacket(0, 1, "P", 1);
+				}
+				
+				// C = CHANNEL_SET
+				if (RxCC1100.data[2] == 'C' && RxCC1100.length > 3 &&
+					RxCC1100.data[3] >= '0' && RxCC1100.data[3] <= '9') {
+
+					setUid(RxCC1100.data[3] - '0');
+					ready = 2;
+				}
+			} 
+		}
 		else
-			{	
+		{	
 			spiStrobe(CC1100_SIDLE); 	// Switch to IDLE
 			spiStrobe(CC1100_SFRX);	 	// Flush the RX FIFO
-			}
-		}	
-	else
-		{
-		CLEAR(P2IFG, 0xFF);			 	// Clear all flags
 		}
-	spiStrobe(CC1100_SRX);			 	// Switch to RX Mode
+	}	
+	else
+	{
+		CLEAR(P2IFG, 0xFF);			 	// Clear all flags
 	}
+
+	spiStrobe(CC1100_SRX);			 	// Switch to RX Mode
+}
 
 //==============================================================
 //===INT:02====ADR:FFE4====USART1 Transmit======================
@@ -137,31 +151,11 @@ __interrupt void ISR_Port2 (void) {
 //==============================================================
 
 __interrupt void ISR_Port1 (void) {
-	if (running) {
-		switch (P1IFG & 0x03) {
-			case 0x01 :  // rechter Taster gedrückt
-				if(right_bar <= FIELD_Y-BARLENGTH/2.0-BARSTEP) {
-					right_bar+=BARSTEP;
-				}
-				else {
-					right_bar = FIELD_Y-BARLENGTH/2.0;
-				}
-				
-		  	break;
-			case 0x02 : // linker Taster gedrückt
-				if(right_bar >= 0+BARLENGTH/2.0+BARSTEP) {
-					right_bar-=BARSTEP;
-				}
-				else {
-					right_bar = BARLENGTH/2.0;
-				}
-				
-			break;
-		}
+
+	if (P1IFG & 0x03) {
+		ready = 1;
 	}
-	else {
-		init(&ball);
-	}
+	
   	CLEAR(P1IFG, 0xFF); // Clear all flags
 }
 //==============================================================

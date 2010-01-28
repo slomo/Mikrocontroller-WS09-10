@@ -45,8 +45,16 @@ extern ballstate ball;
 
 extern volatile int ic;
 extern int i;
+
+extern int player;
+extern int start_game;
+
 void project();
 int next(ballstate *ball, barstate bar_left, barstate bar_right);
 void generate_array(ballstate *ball, barstate bar_left, barstate bar_right);
 void init(ballstate *ball);
 void reset_ball(ballstate *ball, int direction);
+
+float normalize_radiant(float source);
+
+void start_game_now();
