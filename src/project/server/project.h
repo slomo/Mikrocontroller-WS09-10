@@ -46,6 +46,8 @@ extern ballstate ball;
 extern volatile int ic;
 extern int i;
 
+extern char str[255]; //man braucht immer mal str
+
 extern int player;
 extern int start_game;
 

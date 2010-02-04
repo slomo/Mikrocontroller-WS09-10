@@ -18,8 +18,8 @@ volatile int ic=2;
 
 barstate left_bar;
 barstate right_bar;
-int life_left;
-int life_right;
+int life_left;	// Player 1 auf cahnnel 2
+int life_right; // Player 2 auf channel 3
 int running;
 ballstate ball;
 
@@ -109,9 +109,17 @@ void project(){
 	        		running = 0;
 	        		LED_OFF(GREEN);
 	        		LED_ON(RED);
+	   				// TODO WIN und FAIL bestimmen
 	        	}
 	        	else {
+	        		char buf[2] = {'L','0'};
 	    	    	reset_ball(&ball, dir);
+	    	    	
+	    	    	// verbleibende Leben senden
+					buf[1] = '0' + life_left;
+					sendPacket(2, 0, buf, 2);
+					buf[1] = '0' + life_right;
+					sendPacket(3, 0, buf, 2);
 	        	}
         	}
 
@@ -161,11 +169,7 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
         // check for collisions
         // ball has reached the borders
         if ((ball->y <= 0) || (ball->y >= FIELD_Y)) {
-        	sprintf(str,"Hit Wall Angle: %f - ",ball->angle);
-            writestr(str);
             ball->angle = normalize_radiant(2*M_PI - ball->angle);
-            sprintf(str,"%f\r\n",ball->angle);
-            writestr(str);
             
             if (ball->y >= FIELD_Y) {
                 // ball crossed border at yMax
@@ -202,11 +206,7 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
             }
 
             if (fabs(bar_position) <= (BARLENGTH/2.0)) {
-                sprintf(str,"Hit Bar Angle: %f - ",ball->angle);
-                writestr(str);
                 ball->angle = normalize_radiant((M_PI - ball->angle) + (bar_position / (BARLENGTH/2.0)) * GRAD(30.0));
-                sprintf(str,"%f\r\n",ball->angle);
-                writestr(str);
                 		
 				// Winkel nicht zu steil
 				if (ball->angle > GRAD(70.0) && ball->angle < GRAD(110.0)) {
@@ -313,8 +313,13 @@ float normalize_radiant(float source)
 
 void start_game_now()
 {
+	char buf[2] = {'L','0'};
 	init(&ball);
 	generate_array(&ball, left_bar, right_bar);
+	
+	// neues spiel neue leben
+	life_left=3;
+	life_right=3;
 	
 	delay(1000);
 	
@@ -337,5 +342,11 @@ void start_game_now()
 	
 	running = 1;
 	start_game = 0;
+	
+	// verbleibende Leben senden um spielstart anzuzeigen
+	buf[1] = '0' + life_left;
+	sendPacket(2, 0, buf, 2);
+	buf[1] = '0' + life_right;
+	sendPacket(3, 0, buf, 2);
 }
 

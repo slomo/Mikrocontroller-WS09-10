@@ -78,8 +78,8 @@ __interrupt void ISR_Port2 (void) {
 		if (res)				// wenn Packet OK ...
 			{
 				if (player < 2) {
-					// P = PLAYER_READY
-					if (RxCC1100.data[2] == 'P') {
+					// R = READY
+					if (RxCC1100.data[2] == 'R') {
 						char buf[3];
 						
 						player++;
@@ -87,11 +87,50 @@ __interrupt void ISR_Port2 (void) {
 						buf[1] = '1' + player;
 						buf[2] = 0;
 						sendPacket(0, 1, buf, 2);
+						if (player == 2) {
+							start_game = 1;
+						}
+					}
+				}
+				else {
+					// P = POSITION
+					if (RxCC1100.data[2] == 'P') {
+						// ankommende Daten Parsen
+						int value;
+						value = (RxCC1100.data[3] - '0');
+						
+						if (RxCC1100.length > 3) {
+							value *= 10;
+							value += (RxCC1100.data[4] - '0');
+							
+							if (RxCC1100.length > 4) {
+								value *= 10;
+								value += (RxCC1100.data[5] - '0');
+							}
+						}
+							
+						if (RxCC1100.source == 3) {
+							// schläger verschieben
+							left_bar = (FIELD_Y/400.0)*(float)value;
+						}
+						else if (RxCC1100.source == 2) {
+							//schläger verschieben
+							right_bar = (FIELD_Y/400.0)*(float)value;
+						}
+						
+						sprintf(str,"BL: %f BR: %f V: %d\r\n",left_bar,right_bar,value);
+            			writestr(str);						
+						//char buf[3];						
+						//buf[0] = 'C';
+						//buf[1] = '1' + player;
+						//buf[2] = 0;
+						//sendPacket(0, 1, buf, 2);
 					}
 				}
 				
 				printPacket();		// Packet auf Terminal ausgeben
 				//do_output=1;
+
 			}
 		else
 			{	
