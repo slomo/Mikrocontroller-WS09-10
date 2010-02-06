@@ -17,7 +17,7 @@ __interrupt void ISR_ADC12 (void);            // Routine: 12Bit ADC
 //__interrupt void ISR_Watchdog (void);         // Routine: Watchdog Timer
 //__interrupt void ISR_Comparator_A (void);     // Routine: Comparator_A
 //__interrupt void ISR_Timer_B (void);          // Routine: Timer B CC1-6,TB
-//__interrupt void ISR_Timer_B_CCR0 (void);     // Routine: Timer_B CC0
+__interrupt void ISR_Timer_B_CCR0 (void);     // Routine: Timer_B CC0
 //__interrupt void ISR_NMI(void);				// Routine: Non-maskable Int
 //===========================================================
 //

@@ -1,4 +1,5 @@
 extern int ready;
+extern int leben;
 
 #define RED                    (0x01)
 #define YELLOW                (0x02)

@@ -8,6 +8,7 @@
 #include "project.h"
 
 int ready;
+int leben;
 
 void delay(unsigned int time_mill) {	
 	unsigned int i;
@@ -28,37 +29,75 @@ void project(){
 	P1IE |= 0x03;
 	P1IES &= ~0x03;
 	
+  P6SEL = 0x07;
+  ADC12MCTL0 = SREF_0 + INCH_0;
+  ADC12MCTL1 = SREF_0 + INCH_1;
+  ADC12MCTL2 = SREF_0 + INCH_2 + EOS;
+  ADC12CTL1 = CONSEQ_1 + SHP;
+  ADC12CTL0 = ADC12ON + ENC + ADC12SC + MSC;
+ 
+  P5DIR |= (0x64+0x32+0x16);
+  P5OUT &= ~(0x32 + 0x16); //GS1 und GS2 (empfindlichkeit) einstellen
+  P5OUT |= 0x64; //Wake up, wake up, wake up now... so tierd of wa~i~ting ...*sing*
+ 
+  //Optionen zur halb-sekuendlichen ausloesung eines timerinterupts
+  TBCTL = MC_1 + TASSEL_1 + ID0 + ID1;
+  TBCCR0 = 200;
+ 
+  ADC12IE = 0x01 + 0x02 + 0x04; // AD-Wandler Intterrup enable
+  _bis_SR_register(GIE); //Interrupts zulassen
+
 	LED_OFF(RED);
 	LED_OFF(YELLOW);
 	LED_OFF(GREEN);
 	
 	while (1) {
-		if (ready == 2) {
-			LED_ON(RED);
-			delay(350);
-			LED_OFF(RED);
-			LED_ON(YELLOW);
-			delay(350);
-			LED_OFF(YELLOW);
-			LED_ON(GREEN);
-			delay(350);
-			LED_OFF(GREEN);
-			LED_ON(YELLOW);
-			delay(350);
-			LED_OFF(YELLOW);
-			LED_ON(RED);
-			delay(350);
-		}
-		else if (ready) {
-			LED_ON(RED);
-			LED_ON(YELLOW);
-			LED_ON(GREEN);
-			delay(500);
-			LED_OFF(RED);
-			LED_OFF(YELLOW);
-			LED_OFF(GREEN);
-			delay(500);
-		}
+    if (ready == 3) {
+       TBCCTL0 |= CCIE;
+  
+       LED_OFF(RED);
+       LED_OFF(YELLOW);
+       LED_OFF(GREEN);
+       
+       switch (leben) {
+          case 3:
+            LED_ON(GREEN);
+          case 2:
+            LED_ON(YELLOW);
+          case 1:
+            LED_ON(RED);
+       }
+    }
+    else {
+       TBCCTL0 &= ~CCIE;
+  
+    	if (ready == 2) {
+  			LED_ON(RED);
+  			delay(350);
+  			LED_OFF(RED);
+  			LED_ON(YELLOW);
+  			delay(350);
+  			LED_OFF(YELLOW);
+  			LED_ON(GREEN);
+  			delay(350);
+  			LED_OFF(GREEN);
+  			LED_ON(YELLOW);
+  			delay(350);
+  			LED_OFF(YELLOW);
+  			LED_ON(RED);
+  			delay(350);
+  		}
+  		else if (ready) {
+  			LED_ON(RED);
+  			LED_ON(YELLOW);
+  			LED_ON(GREEN);
+  			delay(500);
+  			LED_OFF(RED);
+  			LED_OFF(YELLOW);
+  			LED_OFF(GREEN);
+  			delay(500);
+  		}
+    }
 	}
 }	
 

@@ -6,6 +6,9 @@
 #include "string.h"
 #include "project.h"
 
+char buf[255];
+int uid;
+int null;
 	
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen
 //Bei Bedarf für den benutzten Interrupt die Auskommentierung entfernen 
@@ -25,7 +28,7 @@ ADC12_ISR(ISR_ADC12)             	//int07 | 0xFFEE | ADC				|
 //WDT_ISR(ISR_Watchdog)             //int10 | 0xFFF4 | Watchdog Timer	|
 //COMPARATORA_ISR(ISR_Comparator_A) //int11 | 0xFFF6 | Comparator A		|
 //TIMERB1_ISR(ISR_Timer_B)          //int12 | 0xFFF8 | Timer B CC1-6,TB	|
-//TIMERB0_ISR(ISR_Timer_B_CCR0)     //int13 | 0xFFFA | Timer B CC0 		|
+TIMERB0_ISR(ISR_Timer_B_CCR0)     //int13 | 0xFFFA | Timer B CC0 		|
 //=======================================================================
 //NMI_ISR (ISR_NMI)					//int14 | 0xFFFC | Non-maskable		|						|
 //									//int15 | 0xFFFE | Reset 			|
@@ -80,17 +83,28 @@ __interrupt void ISR_Port2 (void) {
 			if (ready == 1) {
 				// W = WAITING_FOR_PLAYER
 				if (RxCC1100.data[2] == 'W') {
+
 					// P = PLAYER_READY
-					sendPacket(0, 1, "P", 1);
+					sendPacket(0, 1, "R", 1);
 				}
-				
-				// C = CHANNEL_SET
-				if (RxCC1100.data[2] == 'C' && RxCC1100.length > 3 &&
+				else if (RxCC1100.data[2] == 'C' && RxCC1100.length > 3 &&
 					RxCC1100.data[3] >= '0' && RxCC1100.data[3] <= '9') {
 
-					setUid(RxCC1100.data[3] - '0');
+          // C = CHANNEL_SET
+          uid = RxCC1100.data[3] - '0';
+					setUid(uid);
 					ready = 2;
+          null = -1;
 				}
+      }
+      else if (ready >= 2) {
+        if (RxCC1100.data[2] == 'L' && RxCC1100.length > 3 &&
+          RxCC1100.data[3] >= '0' && RxCC1100.data[3] <= '9') {
+
+          // L = LIFE_COUNT
+          leben = RxCC1100.data[3] - '0';
+          ready = 3;
+        }
 			} 
 		}
 		else
@@ -184,13 +198,24 @@ __interrupt void ISR_Port1 (void) {
 //==============================================================
 __interrupt void ISR_ADC12 (void)
 {
-	if(ADC12IFG & 0x01){
-		srand(ADC12MEM0);
-		ADC12MCTL0 = 0;
-		ADC12CTL1 = 0;
-		ADC12CTL0 = 0;
-		P5OUT &= ~64;
-	}
+  if (null != -1) { 
+    int raw = ADC12MEM0 - null;
+    if (raw < -200) {
+      raw = -200;
+    }
+    else if (raw > 200) {
+      raw = 200;
+    }
+    
+    sprintf(buf,"%d %d %d %d\n",ADC12MEM0,ADC12MEM1,ADC12MEM2, raw);
+    writestr(buf);
+    
+    sprintf(buf,"P%d", raw + 200);
+    sendPacket(0, uid, buf, 5);
+  }
+  else {
+    null = ADC12MEM0;
+  }
 }
 //==============================================================
 
@@ -243,16 +268,10 @@ __interrupt void ISR_ADC12 (void)
 //==============================================================
 //===INT:13===ADR:FFFA====Timer_B Capture/Compare 0=============
 //==============================================================
-//__interrupt void ISR_Timer_B_CCR0 (void) {
-	
-	//P4OUT ^= 0x2;
-	//time foo goes here
-//	DAC12_1DAT=values[i];
-//	i++;
-//	i=i%100;
-//	TBCCTL0 &= ~CCIFG; 
-//  ...hier den Code der ISR einfügen
-//}	
+__interrupt void ISR_Timer_B_CCR0 (void) {
+	ADC12CTL0 |= ADC12SC;
+  ADC12CTL0 &= ~ADC12SC;
+}	
 //===============================================================
 
 
