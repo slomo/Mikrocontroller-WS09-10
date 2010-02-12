@@ -3,3 +3,6 @@ proto.log
 proto.toc
 proto.pdf
 *.swp
+
+*~
+*.properties.xml
