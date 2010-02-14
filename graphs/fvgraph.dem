@@ -1,0 +1,17 @@
+set terminal postscript eps enhanced color solid rounded
+
+
+f(x) = m * x + b; 
+fit f(x) 'fvgraph.dat' using 1:2 via m,b;
+
+set xlabel "f in Mhz";
+set ylabel "I in mA";
+
+set grid;
+
+set out "vfgraph.eps"
+plot "fvgraph.dat" with points title "", f(x) title "";
+pause -1
+
+!epstopdf vfgraph.eps
+!rm vfgraph.eps
