@@ -26,7 +26,7 @@ void delay(unsigned int time_mill) {
 	}
 }
 
-void aufgabe10() {
+void aufgabe11() {
         // gruene LED einschalten um zu signalisieren, dass der
         // Controller neu gestartet wurde
 		LED_ON(GREEN);
