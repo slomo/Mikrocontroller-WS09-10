@@ -1,9 +1,28 @@
 \chapter{Watchdog}
 
 \section{Aufgabe 9}
-\lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
+
+\paragraph*{}
+Die erste Implementierung führt dazu, das nach $32768 * 8$ ACLK-Tackzyklen (ca. 8 sec) der Mikrokontroller zurück gesetzt wird. Um dies zu verhindern muss der Watchdog innerhalb der vergegebenen Zeit getoggelt werden (so wie im Code zu sehen). Zum Rücksetzen des Watchdogs wird eine Passwort benötigt, dies soll verhindern das Programme die immer wieder gesamten Speicher überschreiben nicht den Watchdog zurücksetzen können. Ein Schreiben mit falschem Passwort führt ebenfalls zu einem Reset. \\
+
+\lstinputlisting[caption=aufgabe9.c]{src/aufgabe9.c}
+
+\paragraph{}*
+Mit der zweiten Implementierung zeigen wir dem Watchdog das unser Programm noch lebt und sich normal verhält, in dem wir an geeigneter Stelle den Watchdog neu initialsieren.
+
 \section{Aufgabe 10}
-\lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
+
+\paragraph{}*
+Um das Drücken des Tasters nicht vom Watchdog unterbrechen zu lassen, nutzen wir eine Schleife in der wir so lange abwarten bis der Schalter nicht mehr gedrückt wird. In dieser Schleife setzen wir den Watchdock immer wieder zurück. Ein anderer möglicher Weg wäre es den Watchdog bei Schalterdruck auszuschalten und beim loslassen wieder anzuschalten. Bei beiden Varianten sollte bedacht werden das der Schalter prellen kann. \\
+
+\lstinputlisting[caption=aufgabe10.c]{src/aufgabe10.c}
+
+\paragraph*{}
+Mittels einem NMI-Intterupt kann der Überlauf des Watchdoges regstrierte werden. Dies muss zuvor im {\em WDCTL}-Register eingeschaltet werden. Anschlißend kann aus diesem Interrupt auf den Reset-Vector zugergriffen werden, der den Prozessorstatus zum Zeitpunkt des Resets zeigt. Anschlißend wird der Programmfluss von der Adresse im Reset-Vektor fortztgesetzt. Somit ist es auch möglich einen Reset in Software zu modellieren.
+
 \section{Aufgabe 11}
-\lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
+
+Die einfachste Möglichkeit einen Reset des Systems zu erreichen, ist das schreiben in das {\em WDTCTL}-Register unter Verwendung eines flaschen Watchdogspassworts.\\
+
+\lstinputlisting[caption=aufgabe11.c]{src/aufgabe11.c}
 
