@@ -232,7 +232,7 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
             }
             
             if (ball->x <= 0) {
-            	life_left--;
+            	right_left--;
 	            return RIGHT;
             }
 

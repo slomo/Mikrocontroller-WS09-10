@@ -80,6 +80,8 @@ __interrupt void ISR_Port2 (void) {
 		res = receivePacket(); 	// CRC Rückgabe 
 		if (res)				// wenn Packet OK ...
 		{
+			printPacket();
+			
 			if (ready == 1) {
 				// W = WAITING_FOR_PLAYER
 				if (RxCC1100.data[2] == 'W') {
@@ -90,11 +92,11 @@ __interrupt void ISR_Port2 (void) {
 				else if (RxCC1100.data[2] == 'C' && RxCC1100.length > 3 &&
 					RxCC1100.data[3] >= '0' && RxCC1100.data[3] <= '9') {
 
-          // C = CHANNEL_SET
-          uid = RxCC1100.data[3] - '0';
+		    		// C = CHANNEL_SET
+					uid = RxCC1100.data[3] - '0';
 					setUid(uid);
 					ready = 2;
-          null = -1;
+					null = -1;
 				}
       }
       else if (ready >= 2) {
@@ -166,7 +168,7 @@ __interrupt void ISR_Port2 (void) {
 
 __interrupt void ISR_Port1 (void) {
 
-	if (P1IFG & 0x03) {
+	if ((P1IFG & 0x03) && (ready < 1)) {
 		ready = 1;
 	}
 	
@@ -210,7 +212,7 @@ __interrupt void ISR_ADC12 (void)
     sprintf(buf,"%d %d %d %d\n",ADC12MEM0,ADC12MEM1,ADC12MEM2, raw);
     writestr(buf);
     
-    sprintf(buf,"P%d", raw + 200);
+    sprintf(buf,"P%0.3d", raw + 200);
     sendPacket(0, uid, buf, 5);
   }
   else {
