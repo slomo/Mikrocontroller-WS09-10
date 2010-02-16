@@ -1,8 +1,10 @@
+\chapter{Vorwort}
+
+Dieses Protokoll dokumentiert unsere Arbeit im Mikrokontrollerpraktikum während des Wintersemsters 2009/10. Der Erste Kapitel widmen sich der Bearbeitung der Aufgabe die in diesem Rahmen gestellt wurden. Das letzte Kapitel beschreibt kurz unser Projekt, die Implemtierung eines Pong-Spieles auf einem Oziloskop. Die Texte diese Proktokoll verstehen sich als kleiner Ergänzung und prinzipille Beschreibung der Funktionswiese unseres Codes. Um detalierte Einblick in die Funktionsweise der einzelnen Programme zuerhalten, sollten eher die enthaltenen Auschschnitte und ihre Kommentare genutzt werden.
+
 \chapter{IO-Ports}
 
-\section{Einführung}
-
-\section{Aufgabe 1}
+\section*{Aufgabe 1}
 
 \paragraph*{}
 Das Schaltungungsbild zeigt, dass an den Bits Null bis Zwei des Ports vier 
@@ -132,7 +134,9 @@ Zuvor müssen die Portleitung auf Ausgabe (1) gesetzt werden, in dem im Register
 Wir arbeiten mit Masken und logischen Operatoren. Um ein Bit ein einem Byte zum verändern, nutzen wir eine Maske die an der betreffenden Stelle eine 1 und sonst auschlielich 0 aufweist. Um ein Bit zu setzen, verodern wir die Maske bitweise mit den Register, in dem das zu modifizierende Byte steht. Um ein Bit zurück zusetzen, negieren wir die Maske und verunden sie bitweise mit dem Register. Für das toggeln eines Bits wenden wir die  Maske mit einem xor auf das Bit an. 
 
 \lstinputlisting[caption=aufgabe1.c]{src/aufgabe1.c}
-\section{Aufgabe 2}
+
+
+\section*{Aufgabe 2}
 
 Wir ein Schalter geschlossen oder ein Taster gedrückt so liegt an der entsprechenden Port Leitung eine Spannung von 3 Volt gegen über GND an. Dieser Wert kann im entsprechenden Regsiter als 1 (high) aus gelesen werden.
 \paragraph*{}
@@ -232,10 +236,10 @@ Das Register P1IN enthält 00001001 nach dem Anwenden der Maske TasterA enthält
 
 \lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
 
-\section{Aufgabe 3}
+\section*{Aufgabe 3}
 \lstinputlisting[caption=aufgabe3.c]{src/aufgabe3.c}
 
-\section{Aufgabe 4}
+\section*{Aufgabe 4}
 
 Als Schalterprellen versteht man eine Veränderung des Schalterstatus während dieser eigentlich gedrückt ist. Es entsteht meist aus dem mechansichen oder elektrischen Aufbau eines Schlaters. Um das Prellen des Schalters abzufangen warten wir kurz, bevor wir erneut das Eingaberegister des Ports aus lesen. Wir versuchen dabei so lange zu warten, bis der Benutzer seine Hand vom Taster entfernt.
 

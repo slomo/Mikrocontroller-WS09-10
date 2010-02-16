@@ -1,6 +1,6 @@
 \chapter{Clock System}
 
-\section{Aufgabe 5}
+\section*{Aufgabe 5}
 
 \paragraph*{}
 Für die Lösung dieser und der nachfolgenden Aufgabe, war es nicht nötig ein Programm zu schreiben, wir konnten die Werte der erfoderlichen Regsiter über den Flasher direkt modfizieren. Gleichzeit massen wir mit einem angschlossenen Ozziloskop die aktuelle Frequenz des MCLK-Taktes, die über P5.5 nach aussen geführt wird, wenn die P5SEL und P5DIR entsprechend gesetzt sind.
@@ -21,7 +21,7 @@ LFXT1CLK & 00 & 32,77 Khz \\ \hline
 \paragraph*{}
 Mit durch setzen des DCOR-Bits auf 1 wird ein externer Widerstand angeschlossen. Dies führt nach unseren Beobachtungen zu einem stabilieren Takt. Mit dem DIVM-Bits wird der Devisor gesteuert. Er er möglicht es Bruchteile der eigenlichen Tackquelle zu erhalten. 
 
-\section{Aufgabe 6}
+\section*{Aufgabe 6}
 
 \paragraph*{}
 Durch unsere Messung konnten wir einen linearen Zusammenhang zwischen Strom und der Frequenz des MCLK-Taktes feststellen. Dies erscheint logisch unter der Annahme das ein Schaltvorgang konstant viel Strom benötigt, unabhänig von seiner Geschwindigkeit.
@@ -29,7 +29,7 @@ Durch unsere Messung konnten wir einen linearen Zusammenhang zwischen Strom und 
 \includegraphics[width=\textwidth]{graphs/vfgraph.pdf}
 
 
-\section{Aufgabe 7}
+\section*{Aufgabe 7}
 
 \paragraph*{}
 Um die gewünschten Einstellung zu treffen nutzen wir die Register {\em DCOCTL},{\em BCSCTL1} und {\em BCSCTL2}. Die genauen nötigen Einstellung ermittelten wir vorher nach dem try-and-error Prinzip.
@@ -45,7 +45,7 @@ Frequenz & Stromverbrauch & Laufzeit mit 1100 mAh Batterie \\ \hline
 7,3728 MHz & 4,635 mA & 273 h (ca. 10 Tage) \\ \hline
 \end{tabular}
 
-\section{Aufgabe 8}
+\section*{Aufgabe 8}
 
 \paragraph*{}
 Da wir direkt auf den Prozessor zu greifen, und wir keine weiteren Programmflüsse auf dem Prozessor laufen haben, ist die Ausführungszeit eines Befehls gegeben als das Reziprok der Prozessorfrequent. Unter der Vorraussetzung das die Operation in einem Takt ab gearbeitet werden kann. 

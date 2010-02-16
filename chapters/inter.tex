@@ -1,6 +1,6 @@
 \chapter{Interrupt}
 
-\section{Aufgabe 12}
+\section*{Aufgabe 12}
 
 \paragraph*{}
 Es sollen Intterupts genutzt werden um auf Tastendruck LEDs ein- bzw. auszuschalten. Dies führt dazu das kein Polling mehr nötig ist und auf eine Endloschleife verzichtet werden kann, da der Status nicht mehr dauerhaft abgefragt werden muss. Wir nutzen trotzdem eine Endlosschleife im Hauptprogramm um die rote LED umzuschalten. Diese könnte ersetzt werden durch einen entsprechenden Timer-Intterrupt. \\
@@ -12,7 +12,7 @@ Im Intterrupthandler zählen wir die Aufraufe mittels einer Zählvariablen, um d
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 12]{src/interrupts_aufgabe12.c}
 
-\section{Aufgabe 13}
+\section*{Aufgabe 13}
 
 \paragraph*{}
 Die Totmanschaltung kann genutzt werden um festzustellen ob ein Fahrer oder Bediener einer Maschine noch aufmerksam und reaktionsfähig ist. Sollte dies nicht der Fall sein wird der Status des Gerätes zurückgesetzt (üblicher weise wird angehalten). In unserem Hauptprogramm initialsieren wir hauptsächlich die benötigten Intterupts und lassen die rote LED blinken (auch hier wäre die Verwendung eines Timer-Intterupt denkbar um den Prozessor zu entlasten). \\ 
