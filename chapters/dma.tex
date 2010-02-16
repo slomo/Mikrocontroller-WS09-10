@@ -1,4 +1,12 @@
 \chapter{DMA}
 
-\section{Aufgabe 26}
-\lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
+\section*{Aufgabe 26}
+
+\paragraph*{}
+Diese Aufgabe stellt eine Lösung der vorhergehende Aufgabe unter der Verweundung der DMA dar. Die DMA-Einheit wird genutzt um Daten zwischen Speicheradressen zu verschieben ohne die CPU zu belasten. Dies wird von der verbauten DMA nicht ganz umgesetzt, da sie die CPU anhalten muss um auf den Speicher zu schreiben. Die DMA unterstützt verschiedene MODI. Sie kann Speicherblöck oder einzeldene Zellen übertragen. Und sie kann eine Übertragung wiederhohlt statt finden lassen. Gleichzeitig kann sie auch die Adresse von der sie liest nach jeder Übertragung hoch zählen und verschiedene Intterutups nutzen. Meißt wird sie verwendet um Ein- oder Ausgabedaten nebenläuft von oder zu einem Gerät zu schreiben. In unserem Fall wollen wir das 100 Felder wiederhohlt lange Array ablaufen und in das Wandlungsregister des DA-Wandlers schreiben. Dazu initialsieren wir alle benötigten Geräte und berechnene wieder alle Ausgabewerte vor. Als Intterruptquelle für die DMA verwenden wir den Timer B. Nach dem starten der DMA benötigen wir die CPU nicht mehr, diese könnte nun theoretisch andere Aufgaben bearbeiten.  
+
+
+\lstinputlisting[caption=aufgabe26.c]{src/aufgabe26.c}
+
+\paragraph*{}
+Die Effizienz des Verfahren zeigt sich schon da durch, das wir die Laufzeit des Timers im Vergleich zur vorangegangen Aufgabe erhöhen konnten, obwohl vorher der Code in der ISR aus nur wenigen Zeilen bestand. Für dies Implementierung mit der DMA sind keine ISRs mehr nötig.
