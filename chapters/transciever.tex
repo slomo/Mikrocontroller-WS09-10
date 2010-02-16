@@ -1,6 +1,24 @@
 \chapter{Transceiver}
 
-\section{Aufgabe 27}
-\lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
+\section*{Aufgabe 27}
+
+\paragraph*{Vorbemerkung:} Da uns mitgeteilt wurde das die erfoderliche Gegenstelle noch nicht fertig sei, haben wir zusammen mit der Gruppe neben uns die Komponenten entwickelt, und sind eventuell leicht von der Spezifikation abgewichen. 
+
+
+\lstinputlisting[caption=aufgabe27.c]{src/aufgabe27.c}
+
 \section{Aufgabe 28}
-\lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
+Es sollen einige Daten, die in vorgehnden Aufagben erhoben wurde, versendet und auf einem anderen Gerät ausgewertet werden. Falls nötig soll optisch über geweisse Statusänderungen des Senders informiert werden. Um zu versichern ob die Packete ihr Ziel erreicht haben, oder ob sie nochmal versendet werden müssen wird ein Antwortpacket vom Sender erwartet.
+
+
+\paragraph*{Sender}
+
+
+\paragraph*{Empfänger}
+Um zu signalisieren das Packete empfangen wurden nutzen wir die ISR von Port2. Anschließend lessen wir den empfangenen String aus und zerlegen ihn. Als größtes Hinderis hierbei stellte sich heraus, das {\em sscanf()} nicht so funktionierte, wie wir das aus der Standart-C-Biblothek gewöhnt waren. Nach dem zerlegen parsteen wir die Werte und aktvierten die LEDs wenn nötig. Dabei greifen wir jeweils auf die zuvor übertragenden Beschleunigungswerte zurück um die Abweichung zu den alten zu errechnen. Schlußendlich senden wir unser Antwort, ein Packet welches mit "FACK" (Fast ACK) beginnt und anschließen due Anzahl der verarbeiten Bytes enthält. 
+
+
+\lstinputlisting[caption=aufgabe28.c]{src/aufgabe28.c}
+
+
+\lstinputlisting[caption=intterrupts.c für Aufgabe 28]{src/interrupts_aufgabe28.c}
