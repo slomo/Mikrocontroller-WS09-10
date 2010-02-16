@@ -18,10 +18,9 @@ void delay(unsigned int time_mill) {
 }
 
 __interrupt void ISR_Port1 (void) { 
-	// bin nicht sicher ob das benoetigt wird
-	//LPM4_EXIT;		// LPM4 beenden und in aktiven Modus wechseln
+	LPM4_EXIT;		// LPM4 beenden und in aktiven Modus wechseln
 
-	wait(10000);
+	delay(10000);
 
 	// Alle Interruptflags fuer Port 1 entfernen um eine Wiederholung
 	// der ISR, wegen gesetzem Interruptflag, zu verhindern
