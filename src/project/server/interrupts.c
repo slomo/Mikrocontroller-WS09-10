@@ -118,8 +118,8 @@ __interrupt void ISR_Port2 (void) {
 							right_bar = (FIELD_Y/400.0)*(float)value;
 						}
 						
-						sprintf(str,"BL: %f BR: %f V: %d\r\n",left_bar,right_bar,value);
-            			writestr(str);						
+						//sprintf(str,"BL: %f BR: %f V: %d\r\n",left_bar,right_bar,value);
+            			//writestr(str);						
 						//char buf[3];						
 						//buf[0] = 'C';
 						//buf[1] = '1' + player;
@@ -128,7 +128,7 @@ __interrupt void ISR_Port2 (void) {
 					}
 				}
 				
-				printPacket();		// Packet auf Terminal ausgeben
+				// printPacket();		// Packet auf Terminal ausgeben
 				//do_output=1;
 
 			}

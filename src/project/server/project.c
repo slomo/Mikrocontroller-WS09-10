@@ -180,7 +180,7 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
                 ball->y = fabs(ball->y);
             }
             
-            ball->speed += 0.2;
+            ball->speed += 0.5;
         }
         
         // ball has passed bar layer
@@ -227,17 +227,21 @@ int next(ballstate *ball, barstate bar_left, barstate bar_right)
 				}
 								
                 //Use the speedup feature later when averything works
-                ball->speed += 0.5;
+                ball->speed += 1;
                 return IN;
             }
             
-            if (ball->x <= 0) {
-            	right_left--;
-	            return RIGHT;
+            if (ball->x > (FIELD_X / 2.0)) {
+            	life_left--;
+            	sprintf(str, "Left %d\n", life_left);
+            	writestr(str);
+            	return LEFT;
             }
 
+          	sprintf(str, "Right %d\n", life_right);
+           	writestr(str);
             life_right--;
-            return LEFT;
+            return RIGHT;
         }
 
         return IN;
@@ -285,7 +289,7 @@ void reset_ball(ballstate *ball, int direction)
 {
     ball->x = FIELD_X / 2 + (FIELD_X / 4.0 * -1.0 * direction);
     ball->y = FIELD_Y / 2;
-    ball->speed = 2;
+    ball->speed = 5;
     
     if (direction < 0) {
    		ball->angle = GRAD(135.0 + (float)irand(90));

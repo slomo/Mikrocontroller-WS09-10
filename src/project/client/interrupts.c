@@ -5,11 +5,26 @@
 #include "stdio.h"
 #include "string.h"
 #include "project.h"
+#include "math.h"
 
 char buf[255];
 int uid;
-int null;
+
+unsigned int xn = 2000;
+unsigned int yn = 2000;
+unsigned int zn = 2000;
+
+volatile unsigned int ax = 0;
+volatile unsigned int ay = 0;
+volatile unsigned int az = 0;
+
+volatile int vx = 0;
+volatile int vy = 0;
+volatile int vz = 0;
 	
+volatile double wx = 0;
+volatile double wy = 0;
+
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen
 //Bei Bedarf für den benutzten Interrupt die Auskommentierung entfernen 
 //Die höchste Priorität hat der int15
@@ -96,7 +111,6 @@ __interrupt void ISR_Port2 (void) {
 					uid = RxCC1100.data[3] - '0';
 					setUid(uid);
 					ready = 2;
-					null = -1;
 				}
       }
       else if (ready >= 2) {
@@ -200,24 +214,27 @@ __interrupt void ISR_Port1 (void) {
 //==============================================================
 __interrupt void ISR_ADC12 (void)
 {
-  if (null != -1) { 
-    int raw = ADC12MEM0 - null;
-    if (raw < -200) {
-      raw = -200;
-    }
-    else if (raw > 200) {
-      raw = 200;
-    }
+	ax = ADC12MEM0 + ADC12MEM3 + ADC12MEM6 + ADC12MEM9 + ADC12MEM12;
+	ay = ADC12MEM1 + ADC12MEM4 + ADC12MEM7 + ADC12MEM10 + ADC12MEM13;
+    az = ADC12MEM2 + ADC12MEM5 + ADC12MEM8 + ADC12MEM11 + ADC12MEM14;
+    vx = ax / 5 - xn;       
+    vy = ay / 5 - yn;
+    vz = az / 5 - zn;
     
-    sprintf(buf,"%d %d %d %d\n",ADC12MEM0,ADC12MEM1,ADC12MEM2, raw);
-    writestr(buf);
+    wx = atan2(vz, vx) * (400.0 / 3.0 /* == pi */);
     
-    sprintf(buf,"P%0.3d", raw + 200);
+    if (wx > 400 || wx < -200) {
+    	wx = 400;
+    }
+    else if (wx < 0) {
+  		wx = 0;
+    }
+       
+//    sprintf(buf,"%d\n", (int)wx);
+//    writestr(buf);
+    
+    sprintf(buf,"P%0.3d", (int)wx);
     sendPacket(0, uid, buf, 5);
-  }
-  else {
-    null = ADC12MEM0;
-  }
 }
 //==============================================================
 
