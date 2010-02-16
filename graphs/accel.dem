@@ -1,4 +1,4 @@
-#set terminal postscript eps enhanced color solid rounded
+set terminal postscript eps enhanced color solid rounded
 
 
 set xlabel "Messwertnummer";
@@ -6,11 +6,8 @@ set ylabel "Werte der Sensoren";
 
 set grid;
 
-
-
-#set out ""
+set out "accel.eps"
 plot "aduAxis1.dat" with line title"x-Achse","aduAxis2.dat" with line title "y-Achse","aduAxis3.dat" with line  title "z-Achse";
 
-pause -1
-#!ls -1 *.eps | xargs -n1 epstopdf
-#!rm *.eps
+!epstopdf accel.eps
+!rm accel.eps
