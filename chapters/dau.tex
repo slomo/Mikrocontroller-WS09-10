@@ -1,12 +1,15 @@
 \chapter{DAU}
 
+\paragraph*{}
+Der Digital-Analog-Wandler (DAU) bildet das Gegenstück zum ADU, so dass wir mit ihm an Schaltungen in Spannungskurven codierte Zustände übermitteln können. Dies kann genutzt werden um zum Beispiel einen Lautsprecher anzuschließen.
+
 \section*{Aufgabe 25}
 
 \paragraph*{}
-Der DA-Wandler wandelt gegeben Zahlwerte zwischen 0 und 4095 in eine analoge Spannung um, die zwischen zwei angegeben Referenzspannungenliegt. Wir konfigurieren ihn so, dass Spannungen zwischen 0V und 3V anliegen. Anschließend berechnen wir die 100 Werte die wir ausgeben möchten. Um eine bestimmte Frequenz zu erreichen, aber gleichzeitig so wenig Werte wie möglich zu speichern, verwenden wir einen Timer um die Umwandlung anzustoßen. Den Wert des Timers kann berechnet werden, aus dem Reziprok der gewünschten Frequent durch die Anzahl der zu wandelnen Werte abzüglich der Zeit die zur Wandlung eines Wertes benötigt wird. Wir haben das so erhaltene Ergebniss durch ausprobieren noch verbessert.
+Der DA-Wandler wandelt gegeben Zahlwerte zwischen 0 und 4095 in eine analoge Spannung um, die zwischen zwei angegeben Referenzspannungen liegt. Um die Sinuskurve mit den geforderten Parametern zu erhalten, konfigurieren wir ihn so, dass Spannungen zwischen 0V und 3V anliegen. Anschließend berechnen wir die 100 Werte die wir ausgeben möchten. Um eine bestimmte Frequenz zu erreichen, aber gleichzeitig so wenig Werte wie möglich zu speichern, verwenden wir einen Timer um die Umwandlung anzustoßen. Den Wert des Timers kann berechnet werden, aus dem Reziprok der gewünschten Frequenz durch die Anzahl der zu wandelnden Werte abzüglich der Zeit die zur Wandlung eines Wertes benötigt wird. Wir haben das so erhaltene Ergebnis durch ausprobieren noch verbessert.
 
 \lstinputlisting[caption=aufgabe25.c]{src/aufgabe25.c}
 
-In der ISR des verwendeten Timers starten wir die eigentliche Umwandlung und schreiben den nächsten zu wandelnen Wert in das entsprechende Register. Die Messung der Frequenz nahmen wir mittels des Oszilloskops vor.
+In der ISR des verwendeten Timers starten wir die eigentliche Umwandlung und schreiben den nächsten zu wandelnden Wert in das entsprechende Register. Die Messung der Frequenz nahmen wir mittels des Oszilloskops vor.
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 12]{src/interrupts_aufgabe12.c}

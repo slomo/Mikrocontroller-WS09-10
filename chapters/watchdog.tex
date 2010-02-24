@@ -1,14 +1,17 @@
 \chapter{Watchdog}
 
+\paragraph*{}
+Bei einem typischen Einsatzszenario für einen Mikrocontroller wird dieser so verbaut das er nur schwer erreicht werden kann. Tritt nun ein Programmierfehler auf der dazu führt das der Controller sich nicht mehr wie spezifiziert verhält, abstürzt oder in einer Endlosschleife landet, kann er nicht durch Tastendrücke oder Unterbrechung der Stromzufuhr neu gestartet werden. Hierfür nutzen wir den Watchdog, er setzt den Controller nach einer bestimmten Zeitspanne zurück, falls er nicht mittels eines bestimmten Schreibzugriffes überzeugt wird, dass das Programm noch wie gewünscht funktioniert. 
+
 \section*{Aufgabe 9}
 
 \paragraph*{}
-Die erste Implementierung führt dazu, das nach $32768 * 8$ ACLK-Tackzyklen (ca. 8 sec) der Mikrokontroller zurück gesetzt wird. Um dies zu verhindern muss der Watchdog innerhalb der vergegebenen Zeit getoggelt werden (so wie im Code zu sehen). Zum Rücksetzen des Watchdogs wird eine Passwort benötigt, dies soll verhindern das Programme die immer wieder gesamten Speicher überschreiben nicht den Watchdog zurücksetzen können. Ein Schreiben mit falschem Passwort führt ebenfalls zu einem Reset. \\
+Die erste Implementierung führt dazu, das nach $32768 * 8$ ACLK-Tackzyklen (ca. 8 sec) der Mikrocontroller zurück gesetzt wird. Um dies zu verhindern muss der Watchdog innerhalb der vorgegebenen Zeit getoggelt werden (so wie im Code zu sehen). Zum Rücksetzen des Watchdogs wird eine Passwort benötigt, dies soll verhindern das Programme, die immer wieder gesamten Speicher überschreiben, nicht den Watchdog unbeabsichtigt zurücksetzen können. Ein Schreiben mit falschem Passwort führt ebenfalls zu einem Reset. \\
 
 \lstinputlisting[caption=aufgabe9.c]{src/aufgabe9.c}
 
 \paragraph{}*
-Mit der zweiten Implementierung zeigen wir dem Watchdog das unser Programm noch lebt und sich normal verhält, in dem wir an geeigneter Stelle den Watchdog neu initialsieren.
+Mit der zweiten Implementierung zeigen wir dem Watchdog das unser Programm noch lebt und sich normal verhält, in dem wir an geeigneter Stelle den Watchdog neu initialisieren.
 
 \section*{Aufgabe 10}
 
@@ -18,11 +21,11 @@ Um das Drücken des Tasters nicht vom Watchdog unterbrechen zu lassen, nutzen wi
 \lstinputlisting[caption=aufgabe10.c]{src/aufgabe10.c}
 
 \paragraph*{}
-Mittels einem NMI-Intterupt kann der Überlauf des Watchdoges regstrierte werden. Dies muss zuvor im {\em WDCTL}-Register eingeschaltet werden. Anschlißend kann aus diesem Interrupt auf den Reset-Vector zugergriffen werden, der den Prozessorstatus zum Zeitpunkt des Resets zeigt. Anschlißend wird der Programmfluss von der Adresse im Reset-Vektor fortztgesetzt. Somit ist es auch möglich einen Reset in Software zu modellieren.
+Mittels einem NMI-Interrupt kann der Überlauf des Watchdoges registrierte werden. Dies muss zuvor im {\em WDCTL}-Register eingeschaltet werden. Anschließend kann aus diesem Interrupt auf den Reset-Vector zugergriffen werden, der den Prozessorstatus zum Zeitpunkt des Resets zeigt. Durch setzen des Reset-Vectors kann der Programmfluss an an beliebiger Stelle wieder fortgesetzt werden. Somit ist es auch möglich einen Reset in Software zu modellieren.
 
 \section*{Aufgabe 11}
 
-Die einfachste Möglichkeit einen Reset des Systems zu erreichen, ist das schreiben in das {\em WDTCTL}-Register unter Verwendung eines flaschen Watchdogspassworts.\\
+Die einfachste Möglichkeit einen Reset des Systems zu erreichen, ist das schreiben in das {\em WDTCTL}-Register unter Verwendung eines falschen Passwortes.\\
 
 \lstinputlisting[caption=aufgabe11.c]{src/aufgabe11.c}
 

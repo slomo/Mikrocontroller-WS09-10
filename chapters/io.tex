@@ -1,14 +1,17 @@
 \chapter{Vorwort}
 
-Dieses Protokoll dokumentiert unsere Arbeit im Mikrokontrollerpraktikum während des Wintersemsters 2009/10. Die ersteen Kapitel widmen sich der Bearbeitung der Aufgaben die in diesem Rahmen gestellt wurden. Das letzte Kapitel beschreibt kurz unser Projekt, die Implemtierung eines Pong-Spieles auf einem Oziloskop. Die Texte diese Proktokoll verstehen sich als kleiner Ergänzung oder prinzipille Beschreibung der Funktionswiese unseres Codes. Um detalierte Einblick in die Funktionsweise der einzelnen Programme zuerhalten, sollten eher die enthaltenen Auschschnitte und ihre Kommentare genutzt werden.
+Dieses Protokoll dokumentiert unsere Arbeit im Mikrokontrollerpraktikum des Wintersemsters 2009/10. Der ersten Kapitel dokumentieren die Bearbeitung der gestellten Aufgaben. Dabei bilden die Texte einen begleitenden Kommentar, der vora llem Grundprinzipien erklärt. Die genaue Umsetzung kann den eingebundenen Quelltextausschnitten entnommen werden, in denen die konkreten Befehle mittels Kommentaren erklärt werden. Das letzte Kapitel beschreibt unser Projekt und dessen Erstellungsprozess genauer.
 
 \chapter{IO-Ports}
+
+\paragraph*{}
+In diesem Kapietel wird die Nutzung der Ein- und Ausgabeports erläutert. Mittels dieser Ports können wir mit angeschlossenen Bauteilen (z.B. LEDs oder Schaltern) interagieren und so eine beschränkte Kommunikation zwischen Controller und Bediender ermöglichen. Außerdem können wir auch weitere Geräte anschließen und auf besondere Funktionen des Controllers zugreifen.
 
 \section*{Aufgabe 1}
 
 \paragraph*{}
-Das Schaltungungbild zeigt, dass an den Bits Null bis Zwei des Ports vier 
-jeweils eine LED so wie der zugehörige Vorwiederstand verschaltet ist. 
+Das Schaltbild zeigt, dass an den Bits Null bis Zwei des Ports vier 
+jeweils eine LED so wie der zugehörige Vorwiederstand verschaltet sind. 
 Die andere Seite der LEDs ist ist an die Stromquelle (mit vermutlich 3 V) 
 angeschlossen. Das vierte Bit des Port vier ist an das Gate eines p-Kanal 
 MOSFETs angeschlossen. Solange zwischen Gate und Source keine positive
@@ -19,12 +22,12 @@ Wird eine Null auf eine Portleitung geschrieben so liegt an ihr, wenn in
 PXDIR das entsprechende Bit auf Ausgang steht (der Wert muss Eins sein), 
 die Versorgungsspannung des Controllers an, anderenfalls Ground.
 \paragraph*{}
-Wir auf die Bits der LEDs eine Null geschrieben so gibt es ein 
-Spannungsgefälle in Leitrichtung der LED so dass ein Strom über die LED 
+Wird auf die Bits der LEDs eine Null geschrieben so gibt es ein 
+Spannungsgefälle in Leitrichtung der LED, so dass ein Strom über die LED 
 fließt und diese leuchtet. Anderes herum verhält es sich bei dem 
-Lautsprecher; Damit dieser einen Ton ausgeben kann muss über den MOSFET
-ein Strom fließen können, dies wird erreicht in dem auf das Gate Spannung 
-gelegt wird durch schreiben einer Eins in die angeschlossene Protleitung.
+Lautsprecher. Damit dieser einen Ton ausgeben kann muss über den MOSFET
+ein Strom fließen können. Dies wird erreicht in dem auf das Gate Spannung 
+gelegt, durch das Schreiben einer Eins auf die angeschlossene Protleitung.
 
 \begin{figure}
 \centering
@@ -129,18 +132,18 @@ heißt wenn das Bit vorher auf 0 war ist es nun 1 und umgekehrt. \\
 \end{longtable}
 
 Wir schalten die an Port 4 angeschlossenen LEDs an oder aus in dem wir in das Register {\em P4OUT} an die entsprechende Stelle (2-0) eine 1 oder eine 0 schreiben. 
-Zuvor müssen die Portleitung auf Ausgabe (1) gesetzt werden, in dem im Register {\em P4DIR} die entsprechenden Stellen 0 gesetzt werden. Da die bereits durch die Initialsierung des Controllers passiert, müssen wir dies nicht explizit vor nehmen.
+Zuvor müssen die Portleitung auf Ausgabe (1) gesetzt werden, in dem im Register {\em P4DIR} die entsprechenden Stellen 0 gesetzt werden. Da die bereits durch die Initialisierung des Controllers passiert, müssen wir dies nicht explizit vor nehmen.
 \paragraph*{}
-Wir arbeiten mit Masken und logischen Operatoren. Um ein Bit ein einem Byte zum verändern, nutzen wir eine Maske die an der betreffenden Stelle eine 1 und sonst auschlielich 0 aufweist. Um ein Bit zu setzen, verodern wir die Maske bitweise mit den Register, in dem das zu modifizierende Byte steht. Um ein Bit zurück zusetzen, negieren wir die Maske und verunden sie bitweise mit dem Register. Für das toggeln eines Bits wenden wir die  Maske mit einem xor auf das Bit an. 
+Wir arbeiten mit Masken und logischen Operatoren. Um ein Bit ein einem Byte zum verändern, nutzen wir eine Maske die an der betreffenden Stelle eine 1 und sonst ausschließlich 0 aufweist. Um ein Bit zu setzen, verodern wir die Maske bitweise mit den Register, in dem das zu modifizierende Byte steht. Um ein Bit zurück zusetzen, negieren wir die Maske und verunden sie bitweise mit dem Register. Für das toggeln eines Bits wenden wir die  Maske mit einem xor auf das Bit an. 
 
 \lstinputlisting[caption=aufgabe1.c]{src/aufgabe1.c}
 
 
 \section*{Aufgabe 2}
 
-Wir ein Schalter geschlossen oder ein Taster gedrückt so liegt an der entsprechenden Port Leitung eine Spannung von 3 Volt gegen über GND an. Dieser Wert kann im entsprechenden Regsiter als 1 (high) aus gelesen werden.
+Wir ein Schalter geschlossen oder ein Taster gedrückt so liegt an der entsprechenden Port Leitung eine Spannung von 3 Volt gegen über GND an. Dieser Wert kann im entsprechenden Register als 1 (high) aus gelesen werden.
 \paragraph*{}
-Um einen Wert auf einer Portleitung auszulesen, muss im DIR-Regsiter des jeweilgen Ports das entsprechende Bit auf 0 gesetzt werden. Anschließend kann der anliegende Wert (high oder low) im IN-Register des Ports ermittelt werden. Für die Aufgabe nutzen wir den Port 1, und dem entsprechend auch die Register {\em P1IN} und {\em P1DIR}.
+Um einen Wert auf einer Portleitung auszulesen, muss im DIR-Register des jeweiligen Ports das entsprechende Bit auf 0 gesetzt werden. Anschließend kann der anliegende Wert (high oder low) im IN-Register des Ports ermittelt werden. Für die Aufgabe nutzen wir den Port 1, und dem entsprechend auch die Register {\em P1IN} und {\em P1DIR}.
 \paragraph{}
 Auch hier nutzen wir eine Maske um die für ins nicht relevanten Bits zu ignorieren. Wir lesen das gesamte Byte auf dem {\em P1IN} Register und verunden es mit einer Maske die an den relevanten Stellen 1 ist.
 \paragraph{} Die in der Aufgabenstellung gegebenen Befehle und 
@@ -241,6 +244,6 @@ Das Register P1IN enthält 00001001 nach dem Anwenden der Maske TasterA enthält
 
 \section*{Aufgabe 4}
 
-Als Schalterprellen versteht man eine Veränderung des Schalterstatus während dieser eigentlich gedrückt ist. Es entsteht meist aus dem mechansichen oder elektrischen Aufbau eines Schlaters. Um das Prellen des Schalters abzufangen warten wir kurz, bevor wir erneut das Eingaberegister des Ports aus lesen. Wir versuchen dabei so lange zu warten, bis der Benutzer seine Hand vom Taster entfernt.
+Unter dem Prellen eines Schalters versteht man eine Veränderung des Schalterzustands während dieser eigentlich gedrückt ist. Es entsteht meist aus dem mechansichen oder elektrischen Aufbau eines Schlaters. Um das Prellen des Schalters abzufangen warten wir kurz, bevor wir erneut das Eingaberegister des Ports aus lesen. Wir versuchen dabei so lange zu warten, bis der Benutzer seine Hand vom Taster entfernt.
 
 \lstinputlisting[caption=aufgabe4.c]{src/aufgabe4.c}

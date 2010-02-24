@@ -3,14 +3,14 @@
 \section*{Aufgabe 20}
 
 \paragraph*{}
-Wir wollen die USART nutzen um seriell mit dem Computer zu kommunizieren. Dazu initialsieren wir die USART über die als Skelet gegebene {\em init()}. Danach können wir einfach durch Schreiben des {\em U1TXBUF}-Registers Daten übertragen. Die Ausgabe kann dann auf dem Terminalemulator gelesen werden.\\
+Wir wollen die USART nutzen um seriell mit dem Computer zu kommunizieren. Dazu initialisieren wir die USART über die als Skelett gegebene {\em init()}. Danach können wir einfach durch Schreiben des {\em U1TXBUF}-Registers Daten übertragen. Die Ausgabe kann dann auf dem Terminaltemulator gelesen werden.\\
 
 \lstinputlisting[caption=aufgabe20.c]{src/aufgabe20.c}
 
 \section*{Aufgabe 21}
 
 \paragraph*{}
-Der Feuchtigskeitsensor ist über die Portleitungen P3.4 und P3.5 angesteuert werden können. Wir nutzen jedoch wir vorgegben die Funktion {\em SHT11\_Read\_Sensor}. Um die Uhrzeit zu ermitteln haben wir die Implementierung aus Aufgabe 19 genutzt. Wir wandeln die Daten in Zeichketen und geben diese mittels der Funktion {\em output\_str\_on\_serial} aus. Dabei muss beachtet werden das nicht auf das Datenregister der USART geschrieben wird bevor die vorgehenden Daten übertragen wurden.\\
+Der Feuchtigkeitssensor kann über die Portleitungen P3.4 und P3.5 angesteuert werden. Wir nutzen jedoch wir vorgegeben die Funktion {\em SHT11\_Read\_Sensor}. Um die Uhrzeit zu ermitteln haben wir die Implementierung aus Aufgabe 19 genutzt. Wir wandeln die Daten in Zeichenketten und geben diese mittels der Funktion {\em output\_str\_on\_serial} aus. Dabei muss beachtet werden das nicht auf das Datenregister der USART geschrieben wird bevor die Daten übertragen wurden.\\
 
 \lstinputlisting[caption=aufgabe21.c]{src/aufgabe21.c}
 
@@ -20,15 +20,15 @@ Der Feuchtigskeitsensor ist über die Portleitungen P3.4 und P3.5 angesteuert we
 \section{Aufgabe 22}
 
 \paragraph*{}
-In den vorhergehenden Aufgabe wurde die serielle Schnittstelle vorallem genutzt um Daten von Kontroller zum PC zu übertragen, nun soll ein bidirektionaler Datenaustausch stattfinden. \\
+In der vorhergehenden Aufgabe wurde die serielle Schnittstelle genutzt um Daten von Controller zum PC zu übertragen, nun soll ein bidirektionaler Datenaustausch stattfinden. \\
 
 \paragraph*{}
-Der Aufgabenstellung folgend warten wir zuerst auf das Daten vom PC übermittel werden. Hierfür verwenden wir die ISR der USART. Sobald wir ein Zeichen erhalten schreiben wir dieses wieder auf den seriellen Port und zählen dabei die empfangnen Zeichen. Erhalten wir ein newline schreiben wir unseren Counter auf die USART. \\
+Der Aufgabenstellung folgend, warten wir zuerst darauf, dass Daten vom PC übermittelt werden. Hierfür verwenden wir die ISR der USART. Sobald wir ein Zeichen erhalten schreiben wir dieses wieder auf den seriellen Port und zählen dabei die empfangenen Zeichen. Erhalten wir ein newline schreiben wir unseren Counter auf die USART. \\
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 22]{src/interrupts_aufgabe22.c}
 
 \paragraph*{}
-Das Hauptprogramm beschränkt sich darauf die Intterruppts zu konfigurieren. \\
+Das Hauptprogramm beschränkt sich darauf die Interrupts zu konfigurieren. \\
 
 \lstinputlisting[caption=aufgabe22.c]{src/aufgabe22.c}
 

@@ -1,25 +1,29 @@
 \chapter{Interrupt}
 
+\paragraph*{}
+Paragraph Interrupts werden beim Auftreten eines bestimmten Ereignisses ausgelöst. Dies ermöglicht es das Auftreten des Ereignis zu erkennen ohne Busy-Waiting zu machen. Der Interrupt hält dazu die normale Programmausführung an und Ruft eine Interrupt-Service-Routine (ISR) auf. Es handelt sich um eine spezielle Funktion deren Verhalten vom Programmierer festgelegt werden kann. 
+
+
 \section*{Aufgabe 12}
 
 \paragraph*{}
-Es sollen Intterupts genutzt werden um auf Tastendruck LEDs ein- bzw. auszuschalten. Dies führt dazu das kein Polling mehr nötig ist und auf eine Endloschleife verzichtet werden kann, da der Status nicht mehr dauerhaft abgefragt werden muss. Wir nutzen trotzdem eine Endlosschleife im Hauptprogramm um die rote LED umzuschalten. Diese könnte ersetzt werden durch einen entsprechenden Timer-Intterrupt. \\
+Es sollen Interrupts genutzt werden um auf Tastendruck LEDs ein- bzw. auszuschalten. Dies führt dazu das kein Polling mehr nötig ist und auf eine Endloschleife verzichtet werden kann, da der Status nicht mehr dauerhaft abgefragt werden muss. Wir nutzen trotzdem eine Endlosschleife im Hauptprogramm um die rote LED umzuschalten. Diese könnte ersetzt werden durch einen entsprechenden Timer-Interrupt. \\
 
 \lstinputlisting[caption=aufgabe12.c]{src/aufgabe12.c}
 
 \paragraph*{}
-Im Intterrupthandler zählen wir die Aufraufe mittels einer Zählvariablen, um das spezifizierte Verhalten umzusetzen. Über das Register {\em P1IE} wird mittels einer geeigneten Bitmaske der Intterrupt am Schalter abgeschalten werden wenn nötig. \\ 
+Im Interrupthandler zählen wir die Aufrufe mittels einer Zählvariablen, um das spezifizierte Verhalten umzusetzen. Über das Register {\em P1IE} wird mittels einer geeigneten Bitmaske der Interrupt am Schalter abgeschaltet wenn nötig. \\ 
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 12]{src/interrupts_aufgabe12.c}
 
 \section*{Aufgabe 13}
 
 \paragraph*{}
-Die Totmanschaltung kann genutzt werden um festzustellen ob ein Fahrer oder Bediener einer Maschine noch aufmerksam und reaktionsfähig ist. Sollte dies nicht der Fall sein wird der Status des Gerätes zurückgesetzt (üblicher weise wird angehalten). In unserem Hauptprogramm initialsieren wir hauptsächlich die benötigten Intterupts und lassen die rote LED blinken (auch hier wäre die Verwendung eines Timer-Intterupt denkbar um den Prozessor zu entlasten). \\ 
+Die Tot-Mann-Schaltung kann genutzt werden um festzustellen ob ein Fahrer oder Bediener einer Maschine noch aufmerksam und reaktionsfähig ist. Sollte dies nicht der Fall sein wird der Status des Gerätes verändert (üblicherweise wird es angehalten). In unserem Hauptprogramm initialisieren wir hauptsächlich die benötigten Interrupts und lassen die rote LED blinken (auch hier wäre die Verwendung eines Timer-Interrupt denkbar um den Prozessor zu entlasten). \\ 
 
 \lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
 
 \paragraph*{}
-Wir nutzen einen Intterupt für den Schalter und den Intterupt des Watchdogs. Erster dient dazu um den Watchdog zurück zusetzen, wenn der Schalter gedrückt wurde. Der Watchdog wird genutzt, um nach einmaligem ablauf über die gelbe LED mitzuteilen, dass der Schalter gedrückt werden sollte. Anderenfalls wird nach einem weiteren Ablauf der Watchdog abgestellt und eine entsprechende Handlung volzogen (in unserem Fall das zeigen einer Ampel). \\ 
+Wir nutzen einen Interrupt für den Schalter und den Interrupt des Watchdogs. Erster dient dazu um den Watchdog zurück zusetzen, wenn der Schalter gedrückt wurde. Der Watchdog wird genutzt, um nach einmaligem Ablauf über die gelbe LED mitzuteilen, dass der Schalter gedrückt werden muss. Anderenfalls wird nach einem weiteren Ablauf der Watchdog abgestellt und eine entsprechende Handlung vollzogen (in unserem Fall das zeigen einer Ampel). \\ 
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 13]{src/interrupts_aufgabe13.c}

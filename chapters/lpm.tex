@@ -1,31 +1,34 @@
+
 \chapter{LPM-Modi}
 
 \paragraph*{}
-Das Nutzen von LPM soll es ermöglichen den Prozessor länger mit einer Batterieladung zu betreiben, in dem (fast) alle Systeme abgeschlatet werden solbald sie nicht mehr explizit verwendet werden. Nur ein zwei Komponenten belieben aktiv um de Prozessor beim auftreten eines bestimmten Ereignisses wieder wecken zu können. Das Betreten eines LPM hat zu Folge das der Stromverbrauch sich erheblich verringert. Abhängig von der Art des LPM werden auch verschiedene Clocks genutzt bzw deaktviert.
+Das Nutzen von Lower-Power-Modi (LPM) soll es ermöglichen den Prozessor länger mit einer Batterieladung zu betreiben, in dem (fast) alle Systeme abgeschaltet werden, sobald sie nicht mehr explizit verwendet werden. Nur bestimmte Komponenten bleiben aktiv um de Prozessor beim auftreten eines bestimmten Ereignisses wieder zu wecken. Das Betreten eines LPM hat zu Folge das der Stromverbrauch sich erheblich verringert. Abhängig von der Art des LPM werden auch verschiedene Clocks genutzt bzw. deaktiviert.
 
-\paragraph*{}
-Der Code dieser Aufgabe ist simpel gehalten und erfüllt ledglich die beschriebnen Anfoderungen.
 
 \section*{Aufgabe 14}
+
+\paragraph*{}
+Der Code dieser Aufgabe ist simpel gehalten und erfüllt lediglich die gegebenen Anforderungen, um anschließend die Messwerte ermitteln zu können.
 
 \lstinputlisting[caption=aufgabe14.c]{src/aufgabe14.c}
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 14]{src/interrupts_aufgabe14.c}
 
 \paragraph*{}
-In der Nachfolgenden Tabelle sind unser Messergebisse dargestellt. Da der Tastendruck den Controller aufweckt entsprichen die Messwerte bei Tastendruck dem Ausgangszustand (mit geringen Abweichungen) \\
+In der Nachfolgenden Tabelle sind unser Messergebisse dargestellt. Da der Tastendruck den Controller aufweckt entsprechen die Messwerte bei Tastendruck dem Ausgangszustand (mit geringen Abweichungen) \\
 
 \begin{tabular}{ c | c | c }\hline \hline
-Zeitpunkt & Tacktfrequenz & Stromverbrauch \\ \hline
-Ausgangspunkt & 0,376 mA & 2926 h (ca. 122 Tage) \\ \hline
-Programmablauf & 4,635 mA & 273 h (ca. 10 Tage) \\ \hline
-bei Tastendruck & 4,635 mA & 273 h (ca. 10 Tage) \\ \hline
+Zeitpunkt & Taktfrequenz & Stromverbrauch \\ \hline
+Leere Schleife & 7.37 Mhz & 5.1 mA \\ \hline
+LPM & 0 hz & 0.85 $\mu$A \\ \hline
+Interrupt (Tastendruck) & 7.38 Mhz & 4.38 mA \\ \hline
 \end{tabular}
+
 
 \section*{Aufgabe 15}
 
 \paragraph*{}
-Wir nutzen der Watchdog um senkündlich die Zählvariable {\em tick} zu erhöhen. Dazu nutzen wir die ISR des Watchdogs. In dieser wird ebenfalls ermittelt, ob die 60 Sekunden um sind und der Controller sich schlafen legen sollte. Die ISR des Schalters an Port 1 nutzen wir um {\em tick} zurückzusetzen und den Controller falls er sich LPM4 befand auf zu wecken. Wir setzen den Controller nicht in der ISR in den Tiefschlaf, da dies ein aufwachen durch einen Intterupt verhindern würde, denn ohne weitere Vorkeherungen kanne eine ISR nicht von einer ISR untterbrochen werden. Daher signalsieren wir ledglich unseren Wunsch nach LPM4 und setzen diesen aus dem Hauptprogramm. \\
+Der Controller soll so programmiert werden das er ab einem bestimmten Ereignis (Tastedruck) 60 Sekunden lang ein Programm abarbeitet und anschließend in den Ruhezustand über geht. Wir nutzen die ISR des Watchdogs um sekündlich die Zählvariable {\em tick} zu erhöhen. In dieser wird ebenfalls ermittelt, ob die 60 Sekunden um sind und der Controller sich schlafen legen sollte. Die ISR des Schalters an Port 1 nutzen wir um {\em tick} zurückzusetzen und den Controller falls er sich LPM4 befand auf zu wecken. Wir setzen den Controller nicht in der ISR in den Tiefschlaf, da dies ein aufwachen durch einen Interrupt verhindern würde, denn ohne weitere Vorkehrungen kann eine ISR nicht von einer ISR unterbrochen werden. Daher signalisieren wir lediglich unseren Wunsch nach LPM4 und starten diesen aus dem Hauptprogramm. \\
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 15]{src/interrupts_aufgabe15.c}
 
@@ -37,7 +40,7 @@ Im Hauptprogramm testen wir ob unser LPM4 Signal gesetzt ist, und handel entspre
 \section*{Aufgabe 16}
 
 \paragraph*{}
-In der ISR unseres Sensors (in diesem Fall der Schalter an Port 1). Wecken wir den Controller falls er vorher geschlafen aht und wir eine high-low Flanke (also einen Knopfdruck) vorfinden. Beim los lassen des Knopfes versetzen wir den Kontroller wieder in den LPM4. Unsere Vorgehen um in den LPM4 einzutreten entspricht dem der vorgehenden Aufgabe.\\ 
+ In der ISR unseres Sensors (in diesem Fall der Schalter an Port 1). Wecken wir den Controller falls er vorher geschlafen hat und wir eine high-low Flanke (also einen Knopfdruck) vorfinden. Beim los lassen des Knopfes versetzen wir den Controller wieder in den LPM4. Unsere Vorgehen um in den LPM4 einzutreten entspricht dem der vorgehenden Aufgabe.\\ 
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 16]{src/interrupts_aufgabe16.c}
 
@@ -50,10 +53,11 @@ Im Hauptprogramm wird lediglich Geschäftigkeit simuliert (über eine Ampel) und
 In der Nachfolgenden Tabelle sind unser Messergebisse dargestellt. \\
 
 \begin{tabular}{ c | c | c }\hline \hline
-Modus & Tacktfrequenz & Stromverbrauch \\ \hline
-normal & 0,376 mA & 2926 h (ca. 122 Tage) \\ \hline
-LPM4 & 4,635 mA & 273 h (ca. 10 Tage) \\ \hline
+Modus & Taktfrequenz & Stromverbrauch \\ \hline
+LPM ON & 0 hz & 0.83 $\mu$A  \\ \hline
+CPU wach & 7.33 Mhz & 6.3 – 8.6 mA \\ \hline
 \end{tabular}
+
 
 
 

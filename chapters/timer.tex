@@ -1,9 +1,11 @@
 \chapter{Timer}
 
 \section*{Aufgabe 17}
+Die Timer können genutzt werden um Zeiten zumessen und den Controller nach Ablauf einer bestimmten Zeitspanne zu informieren. Ihre Geschwindigkeit kann durch die Wahl der Taktquelle beeinflusst werden.
+
 
 \paragraph*{}
-Die Nutzung des Timers soll es ermöglichen den Knotroller effiktiver zu nutzen indem, auf Endloschleifen verzichtet wird. Im Hauptprogramm wird ledglich der Timer initiallsiert. Wir wählen eine Taktquelle mit 32 kHz und lassen den Interrupt durch die Capture-Compare-Einheit aufrufen, wenn der Timer den Wert 32 000 mal getickt hat. \\
+Die Nutzung des Timers soll es ermöglichen den Controller effektiver zu nutzen in dem, auf Endlosschleifen verzichtet wird. Im Hauptprogramm wird lediglich der Timer initialisiert. Wir wählen eine Taktquelle mit 32 kHz und lassen den Interrupt durch die Capture-Compare-Einheit aufrufen, wenn der Timer 32 000 mal getickt hat. \\
 
 \lstinputlisting[caption=aufgabe17.c]{src/aufgabe17.c}
 
@@ -15,14 +17,14 @@ In der Capture-Compare ISR des Timers B schalten wir die LED um. \\
 \section*{Aufgabe 18}
 
 \paragraph*{}
-Unsere Lösung basiert größtenteils auf der vorgehenden Aufgabe. Wir nutzen Präcompiler-Makros bei der Initialsierung des Capture-Compare-Registers, dies ermöglicht es uns zur Compile-Zeit die Leuchtdauer und das Intervall der LED zu verändern. \\
+Unsere Lösung basiert größtenteils auf der vorgehenden Aufgabe. Wir nutzen Präcompiler-Makros bei der Initialisierung des Capture-Compare-Registers, dies ermöglicht es uns zur Complie-Zeit die Leuchtdauer und das Intervall der LED zu verändern. \\
 
 \lstinputlisting[caption=aufgabe18.c]{src/aufgabe18.c}
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 18]{src/interrupts_aufgabe18.c}
 
 \paragraph*{}
-Um die Laufzeit zu berechnen, ermitteln wir zu erst der Strom der durchschnitlich fliest und dividieren dann durch die Arbeit die die Batterie verreichten kann. 
+Um die Laufzeit zu berechnen, ermitteln wir zu erst der Strom der durchschnittlich fließt und dividieren dann durch die Arbeit die die Batterie verrichten kann. 
 
 \begin{eqnarray*}
 	\frac{0,1 mA}{0,75} + \frac{5mA}{0,25} = 1,38 mA \\
@@ -32,11 +34,11 @@ Um die Laufzeit zu berechnen, ermitteln wir zu erst der Strom der durchschnitlic
 \section*{Aufgabe 19}
 
 \paragraph*{}
-Es soll eine Zeitschaltuhr implemtiert werden, die zu definierten Zeitpunkten {\em t1} und {\em t2} gespeichert LEDs schaltet. Zusätlich zu den beiden Schaltzeiten setzen wir im Hauptprogramm noch die Aktuelle Zeit. Wir stellen den Timer so ein das alle 0,1 s die ISR aufgerufen wird.
+Es soll eine Zeitschaltuhr implementiert werden, die zu definierten Zeitpunkten {\em t1} und {\em t2} gespeichert LEDs schaltet. Zusätzlich zu den beiden Schaltzeiten setzen wir im Hauptprogramm noch die Aktuelle Zeit. Wir stellen den Timer so ein das alle 0,1 s die ISR aufgerufen wird.
 
 \lstinputlisting[caption=aufgabe19.c]{src/aufgabe19.c}
 
 \paragraph*{}
-Jeder zehnte Aufruf der ISR erhöht den Skundenzähler, wenn nötig werden Überträge an die anderen Stelle verschoben. Außerdem wird überprüft ob zum jetzigen Zeitpunkt eines der beiden Erignisse ansteht.
+Jeder zehnte Aufruf der ISR erhöht den Skundenzähler, wenn nötig werden Überträge an die anderen Stelle verschoben. Außerdem wird überprüft ob zum jetzigen Zeitpunkt eines der beiden Ereignisse ansteht.
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 19]{src/interrupts_aufgabe19.c}

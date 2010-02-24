@@ -1,24 +1,35 @@
 \chapter{Transceiver}
 
+\paragraph*{}
+Der Transiver wird genutzt um Daten zwischen zwei Controllern mittels Funkwellen zu übertragen.
+
+\paragraph*{Anmerkung:} Da uns mitgeteilt wurde das die erforderliche Gegenstelle noch nicht fertig sei, haben wir zusammen mit der Gruppe neben uns die Komponenten entwickelt, und sind eventuell leicht von der Spezifikation abgewichen. 
+
 \section*{Aufgabe 27}
 
-\paragraph*{Vorbemerkung:} Da uns mitgeteilt wurde das die erfoderliche Gegenstelle noch nicht fertig sei, haben wir zusammen mit der Gruppe neben uns die Komponenten entwickelt, und sind eventuell leicht von der Spezifikation abgewichen. 
+\paragraph*{}
+Diese Aufgabe haben wir zwar bearbeitet, jedoch wurde der Quellcode von uns in der nächsten Aufgabe weiter verwendet, ohne das wir ihn gespeichert haben. Deshalb möchte ich hier nur kurz den Ablauf des Paketempfanges bzw. des Sendens zusammenfassen.
 
+\paragraph*{Paket senden}
+Zum Senden eines Paketes muss der Funkchip des Controllers auf den Kanal des Empfängers gesetzt werden (dazu nutzen wir die gegebenen Programmfragmente). Anschließend können Strings mittels {\em sendPacket} gesendet werden. Die Funktion erhält als Parameter die ID des Sender, die des Empfängers sowie die Nachricht und deren Länge. 
 
-\lstinputlisting[caption=aufgabe27.c]{src/aufgabe27.c}
+\paragraph*{Paket empfangen}
+Der Transiver ist an eine Portleitung des Ports 2 angeschlossen, und signalisiert über diese den Empfang eines Paketes. Anschließend kann durch den Aufruf von {\em recievePacket} das Paket auf den Controller übertragen werden. Als Rückgabe erhält man eine Aussage über den Erfolg der CRC-Kontrolle, auf deren Basis man entscheiden kann ob das Paket verworfen oder bearbeitet werden soll. Anschließend kann der Inhalt des Paketes aus RxCC1100.data gelesen werden.
 
-\section{Aufgabe 28}
-Es sollen einige Daten, die in vorgehnden Aufagben erhoben wurde, versendet und auf einem anderen Gerät ausgewertet werden. Falls nötig soll optisch über geweisse Statusänderungen des Senders informiert werden. Um zu versichern ob die Packete ihr Ziel erreicht haben, oder ob sie nochmal versendet werden müssen wird ein Antwortpacket vom Sender erwartet.
+\section*{Aufgabe 28}
+Es sollen einige Daten, die in vorgehenden Aufgaben erhoben wurde, versendet und auf einem anderen Gerät ausgewertet werden. Es soll optisch über einige Statusänderungen des Senders informiert werden. Um zu versichern ob die Pakete ihr Ziel erreicht haben, oder ob sie nochmal versendet werden müssen wird ein Antwortpaket vom Empfänger beim Sender erwartet.
 
 
 \paragraph*{Sender}
+Der Sender konfiguriert die benötigten Interruptquellen, sowie die Beschleunigungsensoren, so dass er die gewünschten Daten ermitteln kann. Er nutzt die AD-Wandler um die Temperatur-, Feuchtigskeit- und Beschleunigungssensoren auszulesen. Der Timer B wird so konfiguriert, dass er alle 5s einen Interrupt erzeugt, in dessen ISR die Pakete zusammengebaut und abgesendet werden. Anschließend wartet der Sender auf das Ende der nächsten Wandlung, um das nächste Paket zu senden. Fall ein Bestätigungspaket empfangen wird, wird es ausgewertet und  mittels der roten LED die korrekte Übertragung angezeigt.
 
+\lstinputlisting[caption=Sender für Aufgabe 28]{src/aufgabe28sender.c}
 
 \paragraph*{Empfänger}
-Um zu signalisieren das Packete empfangen wurden nutzen wir die ISR von Port2. Anschließend lessen wir den empfangenen String aus und zerlegen ihn. Als größtes Hinderis hierbei stellte sich heraus, das {\em sscanf()} nicht so funktionierte, wie wir das aus der Standart-C-Biblothek gewöhnt waren. Nach dem zerlegen parsteen wir die Werte und aktvierten die LEDs wenn nötig. Dabei greifen wir jeweils auf die zuvor übertragenden Beschleunigungswerte zurück um die Abweichung zu den alten zu errechnen. Schlußendlich senden wir unser Antwort, ein Packet welches mit "FACK" (Fast ACK) beginnt und anschließen due Anzahl der verarbeiten Bytes enthält. 
+Um zu signalisieren das Pakete empfangen wurden nutzen wir die ISR von Port2. Anschließend lesen wir den empfangenen String aus und zerlegen ihn. Als größtes Hindernis hierbei stellte sich heraus, das {\em sscanf()} nicht so funktionierte, wie wir das aus der Standard-C-Bibliothek gewöhnt waren. Nach dem zerlegen und umwandeln der Werte und aktivieren wir die LEDs, wenn eines der Ereignisse beim Sender aufgetreten ist. Dabei greifen wir jeweils auf die zuvor übertragenden Beschleunigungswerte zurück um die Abweichung zu den alten zu errechnen. Schlussendlich senden wir die Bestätigung, ein Paket welches mit "FACK" (Fast ACK) beginnt und anschließen die Anzahl der verarbeiten Bytes enthält. 
 
 
-\lstinputlisting[caption=aufgabe28.c]{src/aufgabe28.c}
+\lstinputlisting[caption=empfänger der Aufgabe 28]{src/aufgabe28.c}
 
 
 \lstinputlisting[caption=intterrupts.c für Aufgabe 28]{src/interrupts_aufgabe28.c}
