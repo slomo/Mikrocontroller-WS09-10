@@ -46,8 +46,6 @@ void aufgabe13() {
 	_bis_SR_register(GIE);
 	// Taster an P1.0 Interruptfaehig machen
 	P1IE |= 0x01;
-	// TODO was soll das -> siehe aufgabe12
-	P1IES &= ~0x00;
 
 	// Alle LEDs abschalten
 	LED_OFF(RED);
