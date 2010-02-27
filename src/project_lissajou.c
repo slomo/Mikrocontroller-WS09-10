@@ -1,20 +1,3 @@
-#include "msp430x16x.h"		// Systemdefinitionen von TI für den MSP430F1612
-#include "init.h"			// Initialisierung des Mikrocontrollers
-#include "CC1100.h"			// CC1100 Funktransceiver
-#include "system.h"			// Systemfunktionen MSB430H
-#include "interrupts.h"		// ISR - Interrupt Service Routinen
-#include "stdio.h"			// includes TI MSP430F1612 
-#include "SHT11.h"			// SHT11 Temperatur- und Feuchtesensor
-#include "project.h"
-#include "math.h"
-
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
-
 #define PI 3.1415926535897932384626433
 
 #define SCALEX 1
@@ -53,46 +36,6 @@ void project(){
     	valuesX[i][t]=(int) (lissajous_x((float)t*2.0*PI/((float)ANTZ),a,delta)*4096.0/3.0);
        	valuesY[i][t]=(int) (lissajous_y((float)t*2.0*PI/((float)ANTZ),b)*4096.0/3.0);
     }
-	
-	
-	//Sinuswerte für Ausgabe berechnen
-	/*
-	for(i=0;i<100;i++) {
-		valuesX[i]=(int)((sin(i*PI/50)/2+1.5+0.05*(sin(i*PI/5)))*4096/3);
-		valuesY[i]=(int)((cos(i*PI/50)/2+1.5+0.05*(cos(i*PI/5)))*4096/3);
-	}
-	for(i=100;i<150;i++) {
-		valuesX[i]=(int)((sin(i*PI/25)/4+1.5)*4096/3);
-		valuesY[i]=(int)((cos(i*PI/25)/4+1.5)*4096/3);
-	}
-	
-	
-	for(i=0;i<150;i++) {
-		valuesX[i]=(int)((sin(i*PI/75)/2+1.5)*4096/3);
-		valuesY[i]=(int)((cos(i*PI/75)/2+1.5)*4096/3);
-	}
-	*/
-	
-	/*
-	//DAC vorbereiten
-	DAC12_1CTL = DAC12SREF0 + DAC12SREF1 + DAC12IR + DAC12AMP1 + DAC12IE + DAC12ENC + DAC12LSEL0;
-	DAC12_0CTL = DAC12SREF0 + DAC12SREF1 + DAC12IR + DAC12AMP1 + DAC12IE + DAC12ENC + DAC12LSEL0 + DAC12GRP;
-	
-	//output
-	P6SEL = 0xC0;
-	
-	
-	/*
-	TBCTL 	= MC_1 + TASSEL_2 + ID_3;
-	TBCCTL0 = CCIE; 
-	TBCCR0 	= 91; */
-	
-	/*
-	_bis_SR_register(GIE); //Interrupts zulassen
-	
-	DAC12_0DAT=valuesCos[0];
-	DAC12_1DAT=valuesSin[0];
-	*/
 
 
 	//DMA vorbereiten

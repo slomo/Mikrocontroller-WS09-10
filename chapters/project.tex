@@ -1,0 +1,31 @@
+\chapter{Projekt}
+
+\paragraph*{}
+Ziel unseres Projektes war es, eine Implementierung des Spielklassikers Pong auf dem Mikrocontroller zu schaffen. Das Projekt kann in 4 Unterabschnitte unterteilt werden. Als erstes versuchten wir ein angeschlossenes Oszilloskop über die DA-Wandler als Bildschirm zu verwenden. Darauf implementierten wir die Spiellogik. Anschließend erscheine es sinnvoll weitere zwei Controller zur Steuerung zu nutzen, damit die Spieler über mehr Bewegungsfreiheit verfügen und die Technik nicht leidet. Dafür entwickelten wir ein primitives Protokoll mit dessen Hilfe alle Spieldaten über die Transiver ausgetauscht werden können. Zu letzten beschäftigten wir uns mit der Steuerung selbst.
+
+\section*{Grafikausgabe}
+
+\paragraph*{}
+Um die Ausgabe auf dem Oszilloskop umzusetzen sahen wie grundsätzlich mehrere Möglichkeiten. Gemein ist alle Ansätzen das zu einem Zeitpunkt auf Grund der Konstruktionsweise des Oszilloskops nur ein Punkt dargestellt werden kann. Daher wird es nötig ein Bild zu zeichnen, in dem in einem für das menschliche Auge nicht auflösbare Zeitintervall alle Bildpunkte einmal angesteuert werden (bestenfalls sogar mehrfach).
+
+\paragraph*{}
+Um Formen darzustellen bieten sich grundsätzlich zwei Möglichkeiten: Es können entweder Punkte oder Pfade gespeichert werden. Da Pfade bei der Darstellung auf dem Oszilloskop sowieso wieder in Punkte umgewandelt werden müssen, und anders als bei herkömmlichen Computern keine vorgefertigten Lösungen in Hardware dafür existieren, entschieden wir uns, gleich mit Punkten zu arbeiten. 
+
+\paragraph*{}
+Als letztes mussten wir noch entscheiden wie wir die Punktmengen effizient speichern und gleichzeitig die resultierenden Bilder effizient aufbauen können. Hierbei können Punkte entweder in Matrizen von Wahrheitswerten, wobei die Indizes den Koordinaten entsprechen, oder gleich als Liste von Koordinatenpaaren gespeichert werden. Ersteres ist besonders von Vorteil, wenn es für die Performance wichtig ist benachbarte Bildelemente zeitnahe darzustellen. Allerdings wird in unserem Anwendungsfall eine große Menge an Feldern existieren, die nicht vorhandene Punkte beschreiben und trotzdem abgearbeitet und gespeichert werden müssen. Da wir theoretisch wahlfreien Zugriff auf der Mattscheibe des Oszilloskops haben und der Speicher des Controllers sehr beschränkt ist, entschieden wir uns die Bilder mittels Punktlisten zu speichern. Die Realität zeigte das die Bildqualität von der Lokalität der aufeinander folgender Punkte profitieren kann, da es dann weniger nach leuchtende Stahlbewegungen auf dem Bildschirm gibt (vergleiche endgültige Lösung).
+
+\paragraph*{}
+Zur Umwandlung unserer Koordinaten in Spannungswerte, mit denen das Oszilloskop angesteuert werden kann, nutzen wir die zwei Digital-Analogwandler unseres Controllers. Die Umwandlung sollte gleichmäßig und dauerhaft erfolgen, um ein möglichst gute Bildqualität zu erreichen (insbesondere kein Stocken oder Aussetzen des Bildes). Da das Hauptprogramm noch Berechnungen zum eigentlichen Spiel berechnen soll, erscheint es sinnvoll auf die eingebaute DMA zurückzugreifen um die Umwandlung mit neuen Eingabedaten zu versorgen und zu damit zu starten. Wir testeten verschiedene Konstellationen und Modi der DMA. Insbesondere die Wahl des Interrupts der die DMA zum Übertragen der neuen Werte auffordert stellte sich als Schwierigkeit heraus. Es muss eine Abwägung statt finden zwischen, der Anzahl der Punkte (und damit auch Bilder) die pro Sekunde gezeichnet werden und der für das Hauptprogramm verfügbaren Rechenzeit, da die CPU während der DMA Aktivität angehalten wird. Nach versuchen das Ende einer Wandlung zu nutzen entschieden wir uns letztendlich auf Grund der guten Steuerbarkit und zu Gunsten der Rechenzeit im Hauptprogramm für einen Timer geschützte Lösung.
+
+\paragraph*{}
+Da zu diesem frühen Zeitpunkt noch keine Daten zum Ausgeben zur Verfügung standen nutzten wir auf Empfehlung die Lissajou-Figuren um unsere Darstellung zu testen. Die sind Schwingungen von zwei Trigonometrischen Funktionen zweidimensional aufgetragen. Je nach Frequenzverhältnis entstehen dabei verschiedene Schwingungen, wobei einige Aussehen wir räumliche Objekte in Drehbewegungen. 
+
+\lstinputlisting[caption=Lissajous Figuren]{src/project_lissajou.c}
+
+Diese Simulation unserer späteren Umsetzung hat vor allem den Vorteil, das im Hauptprogramm fortwährend die nächste Darstellung der Funktion berechnet wird und wir so gut abschätzen konnten, wie viel Rechenzeit zwischen den Umwandlungen zur Verfügung steht.
+
+\section*{Spiellogik}
+
+\section*{Kommunikationsprotokoll}
+
+\section*{Steuerung}
