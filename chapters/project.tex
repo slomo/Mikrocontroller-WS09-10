@@ -37,8 +37,13 @@ Wir verwenden kein Punkte- , sondern ein Lebensystem. Jeder Spieler erhält 3 Le
 
 \section*{Kommunikationsprotokoll}
 
-\paragraoh*{}
+\paragraph*{}
 Um die Komunikation zwischen dem Server und den Clienten möglichst einfach und dynamisch zu gestallten, haben wir ein simples Protokoll entworfen welches im großen und ganzen aus den folgenden Nachrichten besteht.
+
+\lstset{
+	frame=none,
+	}
+
 
 \begin{longtable}{p{0.4\textwidth}p{0.5\textwidth}}
 
@@ -79,6 +84,10 @@ Position - Ein Client schickt periodisch diese Nachrichten, sobald das Spiel, l�
 \hline
 
 \end{longtable}
+
+\lstset{
+	frame=tblr,
+	}
 
 Ein Spiel würde folgendermaßen ablaufen. Der Server wird eingeschaltet und schickt W nachrichten um Clienten auf sich aufmerksam zu machen. Ein Client wird per Knopfdruck in den Bereitschaftsmodus versetzt, beantwortet die W Nachricht mit einer R Nachricht und erhält eine C Nachricht mit seinem Kanal. Ein zweiter Client tut das selbe und erhält ebenfalls einen Kanal. Nun hat der Server 2 Spieler zur verfügung und Startet einen Countdown. Am Ende dieses Countdowns schickt er jedem Clienten eine L Nachricht mit der Initialmenge Leben. Die Clienten wissen dann, dass das Spiel begonnen hat und schicken P Nachrichten.
 
