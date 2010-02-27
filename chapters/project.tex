@@ -26,6 +26,15 @@ Diese Simulation unserer späteren Umsetzung hat vor allem den Vorteil, das im H
 
 \section*{Spiellogik}
 
+\paragraph*{}
+Das wir implementieren klassische Spiel Pong in der klassischen Variante. Das Feld wir mit 1024 mal 1024 Punkten angenommen. Der Ball und seine momentaner Status wird durch ein struct vom Type Ballstate repräsentiert, während die Bars durch den Barstate codiert werden (dieser enthält als einzige Information die Höhe der Bars gegenüber 0). 
+
+\paragraph*{}
+Die Funktion {\em next()} errechnet die nächste Zeititeration des Spieles. Sie erhält einen Ballstate und die beiden Barstates, aus Geschwindigkeit, Richtung und Postion des Balls ermittelt sie, wo er sich zum nächsten Zeititeration befinden würde. Der Winkel wird dabei als Bogenmaßgespeichert. Anschließend überprüft sie Kollisionen mit dem Rand oder ob die linke und rechte Spielfeldseite übertreten wurde. Im letzteren Fall wird überprüft ob sich ein Schläger in ausreichende Nähe befindet. Aus dem Schnittpunkt und -winkel zwischen Bande und Ball wird die neue Ballpostion errechnet. Dabei wir angenommen das der Einfallswinkel dem Ausfallwinkel entspricht, nur bei der Kollision mit den Schlägerrändern wird der Ball mehr weg reflektiert.  Zusätzlich erhöht jeder Schlag die Geschwindigkeit des Balls. Der Rückgabewert der Funktion informiert, ob der Ball im Feld ist und wenn nicht die auf welcher Seite er ausgegangen ist. Ist der Ball aus, wird er zurückgesetzt zum Aufschlagpunkt und dem entsprechenden Spieler ein Punkt abgezogen. 
+
+\paragraph*{}
+Wir verwenden kein Punkte- , sondern ein Lebensystem. Jeder Spieler erhält 3 Leben am Anfang des Spieles. Sobald der Ball auf seiner Seite aus geht wird ihm ein Leben abgezogen. Es wird solange gespielt bis ein Spieler eine negative Anzahl an Leben hat.  
+
 \section*{Kommunikationsprotokoll}
 
 \paragraoh*{}
@@ -74,3 +83,10 @@ Position - Ein Client schickt periodisch diese Nachrichten, sobald das Spiel, l�
 Ein Spiel würde folgendermaßen ablaufen. Der Server wird eingeschaltet und schickt W nachrichten um Clienten auf sich aufmerksam zu machen. Ein Client wird per Knopfdruck in den Bereitschaftsmodus versetzt, beantwortet die W Nachricht mit einer R Nachricht und erhält eine C Nachricht mit seinem Kanal. Ein zweiter Client tut das selbe und erhält ebenfalls einen Kanal. Nun hat der Server 2 Spieler zur verfügung und Startet einen Countdown. Am Ende dieses Countdowns schickt er jedem Clienten eine L Nachricht mit der Initialmenge Leben. Die Clienten wissen dann, dass das Spiel begonnen hat und schicken P Nachrichten.
 
 \section*{Steuerung}
+
+\paragraph*{}
+Jeder der beiden Spieler nutzt einen zweiten Controller um am Spiel teilzunehmen. Die LEDs des Controllers erläutern dem Spieler vor dem Spiel, ob er verbunden ist oder nicht. Während des Spiels werden die Leben des Spielers angezeigt. 
+
+\paragraph*{}
+Die Steuerungsmöglichkeiten vor Spielbeginn beschränken sich auf den Druck auf einen der beiden Tasten. Dies starte die Suche nach eine Server. Während des Spiels kann jeder Spieler seinen Schläger (Bar) über die Beschleunigungssensoren steuern. Dabei ist die Steuerung nicht relativ zur Postion des Schlägers, sonder absolut. Es wird die Neigung des Controllers gegenüber der Erdbeschleunigung gemessen. Die Formeln für diese Berechnung wurden uns gegeben. Um starkes Wackeln der Schläger zu unterbinden, welches durch die Ungenauigkeit der Beschleunigungsensoren oder minimale Schwanken entstehen kann, mitteln wir den Wert über mehrere Messungen und das letzte Ergebnis. Dadurch entsteht eine angenehme und akkurate Steuerung.
+
