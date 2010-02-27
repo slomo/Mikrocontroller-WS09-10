@@ -1,5 +1,6 @@
-\chapter{Vorwort}
+\section*{Vorwort}
 
+\paragraph*{}
 Dieses Protokoll dokumentiert unsere Arbeit im Mikrokontrollerpraktikum des Wintersemsters 2009/10. Der ersten Kapitel dokumentieren die Bearbeitung der gestellten Aufgaben. Dabei bilden die Texte einen begleitenden Kommentar, der vora llem Grundprinzipien erklärt. Die genaue Umsetzung kann den eingebundenen Quelltextausschnitten entnommen werden, in denen die konkreten Befehle mittels Kommentaren erklärt werden. Das letzte Kapitel beschreibt unser Projekt und dessen Erstellungsprozess genauer.
 
 \chapter{IO-Ports}
@@ -38,6 +39,11 @@ gelegt, durch das Schreiben einer Eins auf die angeschlossene Protleitung.
 \paragraph{} Die in der Aufgabenstellung gegebenen Befehle und 
 ihre Wirkung sind in der folgenden Tabelle beschreiben:
 
+
+\lstset{
+	frame=none,
+	}
+
 \begin{longtable}{p{0.4\textwidth}p{0.5\textwidth}}
 
 \textbf{Befehl} &
@@ -45,13 +51,13 @@ ihre Wirkung sind in der folgenden Tabelle beschreiben:
 \endhead
 \hline
 
-\begin{lstlisting} 
+\begin{lstlisting}
 #define LEDRT (0x01)
 \end{lstlisting} &
 Definition eines Präcompilermakros LEDRT.\\
 \hline
 
-\begin{lstlisting} 
+\begin{lstlisting}
 P4DIR = 0x00; 
 \end{lstlisting} &
 Setzen der Ausgaberichtung des Portes 4 auf ausgehend.\\
@@ -115,7 +121,7 @@ Unter Verwendung eines Präcompiler-Makros wird in P4OUT das erste Bit
 auf 1 gesetzt, und damit die angeschlossene LED ausschaltet.\\
 \hline 
 
-\begin{lstlisting} 
+\begin{lstlisting}frame=tlbr,
 P4OUT &= ~LEDRT;
 \end{lstlisting} &
 Das erste Bit in P4OUT wird auf 0 gesetzt, und somit die angeschlossene
@@ -130,6 +136,11 @@ heißt wenn das Bit vorher auf 0 war ist es nun 1 und umgekehrt. \\
 \hline 
 
 \end{longtable}
+
+\lstset{
+	frame=tlbr,
+	}
+
 
 Wir schalten die an Port 4 angeschlossenen LEDs an oder aus in dem wir in das Register {\em P4OUT} an die entsprechende Stelle (2-0) eine 1 oder eine 0 schreiben. 
 Zuvor müssen die Portleitung auf Ausgabe (1) gesetzt werden, in dem im Register {\em P4DIR} die entsprechenden Stellen 0 gesetzt werden. Da die bereits durch die Initialisierung des Controllers passiert, müssen wir dies nicht explizit vor nehmen.
@@ -148,6 +159,10 @@ Um einen Wert auf einer Portleitung auszulesen, muss im DIR-Register des jeweili
 Auch hier nutzen wir eine Maske um die für ins nicht relevanten Bits zu ignorieren. Wir lesen das gesamte Byte auf dem {\em P1IN} Register und verunden es mit einer Maske die an den relevanten Stellen 1 ist.
 \paragraph{} Die in der Aufgabenstellung gegebenen Befehle und 
 ihre Wirkung sind in der folgenden Tabelle beschreiben:
+
+\lstset{
+	frame=none,
+	}
 
 \begin{longtable}{p{0.4\textwidth}p{0.5\textwidth}}
 
@@ -237,9 +252,17 @@ Das Register P1IN enthält 00001001 nach dem Anwenden der Maske TasterA enthält
 \hline
 \end{longtable}
 
+\lstset{
+	frame=tlbr,
+	}
+
 \lstinputlisting[caption=aufgabe2.c]{src/aufgabe2.c}
 
 \section*{Aufgabe 3}
+
+\paragraph*{}
+Die Aufgabe wurde gelöst unter Anwednung der Methoden aus den vorgehenden Aufagben.
+
 \lstinputlisting[caption=aufgabe3.c]{src/aufgabe3.c}
 
 \section*{Aufgabe 4}
