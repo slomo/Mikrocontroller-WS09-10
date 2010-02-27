@@ -8,15 +8,9 @@
 #include "aufgabe25.h"
 #include <math.h>
 
-#define RED					(0x01)
-#define YELLOW				(0x02)
-#define GREEN				(0x04)
-#define LED_OFF(led)	    (P4OUT |= led)    
-#define LED_ON(led)      	(P4OUT &= ~led)    
-#define LED_TOGGLE(led)  	(P4OUT ^=  led)
-
 #define PI 3.14
 
+// Array welches Ausgabewerte enthaelt
 int values[100];
 int i;
 
@@ -28,16 +22,17 @@ void aufgabe25() {
 		values[i]=(sin(i*PI/50.0)+1.5)*4096/3;
 	}
 	
-	//DAC vorbereiten
+	// DAC vorbereiten
 	DAC12_1CTL = DAC12SREF0 + DAC12SREF1 + DAC12IR + DAC12AMP1;
 	
-	//Timer und output
+	// Timer und Output einrichten
 	P6SEL = 0x80;
 	TBCTL 	= MC_1 + TASSEL_2 + ID_3;
 	TBCCTL0 = CCIE; 
 	TBCCR0 	= 91;
 	
-	_bis_SR_register(GIE); //Interrupts zulassen
+    // Interrupts zulassen
+	_bis_SR_register(GIE);
 	
 	while(1) {
 	}
