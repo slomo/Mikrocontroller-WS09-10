@@ -11,11 +11,19 @@
   Freie Universit\"at Berlin\\
   nehls@spline.de uves@spline.de }
 \date{}
+
+\definecolor{string}{rgb}{0.1,0.7,0.1}
+\definecolor{comment}{rgb}{0.8,0.5,0}
+\definecolor{identi}{rgb}{0,0,1}
+
 \lstset{
 	language=C ,
-	basicstyle=\small , 
-	keywordstyle=\color{blue},
-	frame=none,
+	basicstyle=\scriptsize , 
+	keywordstyle=\bf,
+	stringstyle=\color{string},
+	commentstyle=\color{comment}\em,
+	identifierstyle=\color{identi},
+	frame=tblr,
 	tabsize=4,
 	breaklines=true
 	}
