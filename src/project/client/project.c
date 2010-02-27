@@ -10,6 +10,8 @@
 int ready;
 int leben;
 
+// Funtion, welche die bereits vorhandene Funktion wait verwendet
+// um den Programmfluss zu um n Millisekunden zu verzoegern
 void delay(unsigned int time_mill) {	
 	unsigned int i;
 	for(i=0;i<=time_mill;++i){
@@ -26,9 +28,10 @@ void project(){
 	setUid(1);
 	switchFreq(7);
 	
+	// Interupts von Tastern zulassen
 	P1IE |= 0x03;
 	P1IES &= ~0x03;
-	
+
   P6SEL = 0x07;
   
   // 16 Werte automatisch mit dem ADC wandeln
@@ -54,13 +57,13 @@ void project(){
  
   P5DIR |= (0x64+0x32+0x16);
   P5OUT &= ~(0x32 + 0x16); //GS1 und GS2 (empfindlichkeit) einstellen
-  P5OUT |= 0x64; //Wake up, wake up, wake up now... so tierd of wa~i~ting ...*sing*
+  P5OUT |= 0x64; //Wake up
  
   //Optionen zur halb-sekuendlichen ausloesung eines timerinterupts
   TBCTL = MC_1 + TASSEL_1 + ID0 + ID1;
   TBCCR0 = 200;
  
-  ADC12IE = 0x01 + 0x02 + 0x04; // AD-Wandler Intterrup enable
+  ADC12IE = 0x01 + 0x02 + 0x04; // AD-Wandler Interrupt aktivieren
   _bis_SR_register(GIE); //Interrupts zulassen
 
 	LED_OFF(RED);
@@ -68,6 +71,7 @@ void project(){
 	LED_OFF(GREEN);
 	
 	while (1) {
+	// Spiel lauft Leben per LED anzeigen
     if (ready == 3) {
        TBCCTL0 |= CCIE;
   
@@ -87,6 +91,7 @@ void project(){
     else {
        TBCCTL0 &= ~CCIE;
   
+		// Am Server angemeldet warte auf Spiel
     	if (ready == 2) {
   			LED_ON(RED);
   			delay(350);
@@ -103,6 +108,7 @@ void project(){
   			LED_ON(RED);
   			delay(350);
   		}
+  		// Warte auf Server Antwort
   		else if (ready) {
   			LED_ON(RED);
   			LED_ON(YELLOW);

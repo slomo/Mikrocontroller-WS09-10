@@ -6,7 +6,7 @@ Ziel unseres Projektes war es, eine Implementierung des Spielklassikers Pong auf
 \section*{Grafikausgabe}
 
 \paragraph*{}
-Um die Ausgabe auf dem Oszilloskop umzusetzen sahen wie grundsätzlich mehrere Möglichkeiten. Gemein ist alle Ansätzen das zu einem Zeitpunkt auf Grund der Konstruktionsweise des Oszilloskops nur ein Punkt dargestellt werden kann. Daher wird es nötig ein Bild zu zeichnen, in dem in einem für das menschliche Auge nicht auflösbare Zeitintervall alle Bildpunkte einmal angesteuert werden (bestenfalls sogar mehrfach).
+Um die Ausgabe auf dem Oszilloskop umzusetzen sahen wir grundsätzlich mehrere Möglichkeiten. Gemein ist bei allen Ansätzen, dass zu einem Zeitpunkt, auf Grund der Konstruktionsweise des Oszilloskops, nur ein Punkt dargestellt werden kann. Daher wird es nötig ein Bild zu zeichnen, in dem in einem für das menschliche Auge nicht auflösbarem Zeitintervall alle Bildpunkte einmal angesteuert werden (bestenfalls sogar mehrfach).
 
 \paragraph*{}
 Um Formen darzustellen bieten sich grundsätzlich zwei Möglichkeiten: Es können entweder Punkte oder Pfade gespeichert werden. Da Pfade bei der Darstellung auf dem Oszilloskop sowieso wieder in Punkte umgewandelt werden müssen, und anders als bei herkömmlichen Computern keine vorgefertigten Lösungen in Hardware dafür existieren, entschieden wir uns, gleich mit Punkten zu arbeiten. 
@@ -27,5 +27,50 @@ Diese Simulation unserer späteren Umsetzung hat vor allem den Vorteil, das im H
 \section*{Spiellogik}
 
 \section*{Kommunikationsprotokoll}
+
+\paragraoh*{}
+Um die Komunikation zwischen dem Server und den Clienten möglichst einfach und dynamisch zu gestallten, haben wir ein simples Protokoll entworfen welches im großen und ganzen aus den folgenden Nachrichten besteht.
+
+\begin{longtable}{p{0.4\textwidth}p{0.5\textwidth}}
+
+\textbf{Nachricht} &
+\textbf{Wirkung}
+\endhead
+\hline
+
+\begin{lstlisting} 
+W
+\end{lstlisting} &
+Waiting for Players - Wird vom Server gesendet wenn er noch nicht genug Spieler hat um ein Spiel zu starten. Ein Client antwortet auf diese Nachricht mit R wenn er Spielen möchte. \\
+\hline
+
+\begin{lstlisting} 
+R
+\end{lstlisting} &
+Ready - Ein Client schickt R wenn er ein W von einem Server erhält und sich im Bereitschaftsmodus befindet. \\
+\hline
+
+\begin{lstlisting} 
+C<1 digit number>
+\end{lstlisting} &
+Connected - Ein Server schickt einem Client diese Nachricht wenn er sein R Packet erhalten hat und ihn als Spieler registriert hat. Die einstellige Zahl welche mitgeschickt wird, ist der Kanal, welcher dem Spieler zugewiesen wurde. \\
+\hline
+
+\begin{lstlisting} 
+L<1 digit number>
+\end{lstlisting} &
+Lifes - Der Server schickt diese Nachricht an einen Clienten um ihm mitzuteilen wieviel leben er Anzeigen soll. Ein Client interpretiert die erste L Nachricht als Spielstart und beginnt P Nachrichten zu schicken. \\
+\hline
+
+
+\begin{lstlisting} 
+P<3 digit Number>
+\end{lstlisting} &
+Position - Ein Client schickt periodisch diese Nachrichten, sobald das Spiel, läuft um dem Server die gewünschte Position des Schlägers mitzuteilen. \\
+\hline
+
+\end{longtable}
+
+Ein Spiel würde folgendermaßen ablaufen. Der Server wird eingeschaltet und schickt W nachrichten um Clienten auf sich aufmerksam zu machen. Ein Client wird per Knopfdruck in den Bereitschaftsmodus versetzt, beantwortet die W Nachricht mit einer R Nachricht und erhält eine C Nachricht mit seinem Kanal. Ein zweiter Client tut das selbe und erhält ebenfalls einen Kanal. Nun hat der Server 2 Spieler zur verfügung und Startet einen Countdown. Am Ende dieses Countdowns schickt er jedem Clienten eine L Nachricht mit der Initialmenge Leben. Die Clienten wissen dann, dass das Spiel begonnen hat und schicken P Nachrichten.
 
 \section*{Steuerung}

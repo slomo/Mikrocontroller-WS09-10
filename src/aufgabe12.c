@@ -25,11 +25,6 @@ void aufgabe12() {
     _bis_SR_register(GIE);
     // Interrupts fuer den Taster an Port 1.1 aktivieren
     P1IE |= 0x02;
-    // IMHO macht das keinen Sinn
-    // wenn man etwas auschlieslich mit einsen verundet ist das Ergebnis
-    // das selbe
-    // TODO: klaehren was das soll
-    P1IES &= ~0x00;
     while(1){
         // Rote LED alle 500ms aus bzw. einschalten
         delay(500);
