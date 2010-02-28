@@ -32,6 +32,103 @@ Das wir implementieren klassische Spiel Pong in der klassischen Variante. Das Fe
 \paragraph*{}
 Die Funktion {\em next()} errechnet die nächste Zeititeration des Spieles. Sie erhält einen Ballstate und die beiden Barstates, aus Geschwindigkeit, Richtung und Postion des Balls ermittelt sie, wo er sich zum nächsten Zeititeration befinden würde. Der Winkel wird dabei als Bogenmaßgespeichert. Anschließend überprüft sie Kollisionen mit dem Rand oder ob die linke und rechte Spielfeldseite übertreten wurde. Im letzteren Fall wird überprüft ob sich ein Schläger in ausreichende Nähe befindet. Aus dem Schnittpunkt und -winkel zwischen Bande und Ball wird die neue Ballpostion errechnet. Dabei wir angenommen das der Einfallswinkel dem Ausfallwinkel entspricht, nur bei der Kollision mit den Schlägerrändern wird der Ball mehr weg reflektiert.  Zusätzlich erhöht jeder Schlag die Geschwindigkeit des Balls. Der Rückgabewert der Funktion informiert, ob der Ball im Feld ist und wenn nicht die auf welcher Seite er ausgegangen ist. Ist der Ball aus, wird er zurückgesetzt zum Aufschlagpunkt und dem entsprechenden Spieler ein Punkt abgezogen. 
 
+\begin{lstlisting}[caption=Kernkomponeten der Spiellogik] 
+// Diese Funktion berechnet die naechste Position des Balls
+int next(ballstate *ball, barstate bar_left, barstate bar_right)
+{
+        float m_x, m_y;
+        
+        // Richtungsvektoren der Bewegung berechnen
+        m_x = ball->speed * cos(ball->angle);
+        m_y = ball->speed * sin(ball->angle);
+        
+        // Vektoren zur aktuellen Position addieren
+        ball->x += m_x;
+        ball->y += m_y;
+        
+        // Kollisionskontrolle
+        // Ball hat einen Rand des Spielfeld erreicht
+        // Refelktion berechnen
+        if ((ball->y <= 0) || (ball->y >= FIELD_Y)) {
+            ball->angle = normalize_radiant(2*M_PI - ball->angle);
+            
+            if (ball->y >= FIELD_Y) {
+                // Ball trifft Wand bei yMax
+                ball->y = 2 * FIELD_Y - ball->y;
+            }
+            else {
+                // Ball trifft Wand bei yMin
+                ball->y = fabs(ball->y);
+            }
+            // Geschwindikeit des Balls erhoehen (mehr Spass)
+            ball->speed += 0.5;
+        }
+        
+        // Ball ist auf einer Spielerseite angekommen
+        if(ball->x <= 0 || ball->x >= FIELD_X){
+
+			// Variable zur bestimmung Wo der Schlaeger getroffen wurde
+			// um den Reflektionswinkel davon abhaenging zu machen
+            float bar_position;
+            
+            if (ball->x <= 0) {
+	            float collision_point_y = fabs(tan(ball->angle) * (ball->x - m_x) + (ball->y - m_y));
+                bar_position = collision_point_y - bar_left;
+
+                // Ball trifft Ebene bei xMin
+                ball->x = fabs(ball->x);
+            }
+            else {
+	            float collision_point_y = fabs(tan(ball->angle) * (FIELD_X - ball->x - m_x) + (ball->y - m_y));
+                bar_position = bar_right - collision_point_y;
+
+                // Ball trifft Ebene bei xMax
+                ball->x = 2 * FIELD_X - ball->x;
+            }
+
+            if (fabs(bar_position) <= (BARLENGTH/2.0)) {
+                ball->angle = normalize_radiant((M_PI - ball->angle) + (bar_position / (BARLENGTH/2.0)) * GRAD(30.0));
+
+				// Dafuer sorgen das der Reflektionswinkel nicht zu
+				// steil wird
+				if (ball->angle > GRAD(70.0) && ball->angle < GRAD(110.0)) {
+					if (ball->angle > GRAD(90.0)) {
+						ball->angle = GRAD(110.0);
+					}
+					else {
+						ball->angle = GRAD(70.0);
+					}
+				}
+				else if (ball->angle > GRAD(250.0) && ball->angle < GRAD(290.0)) {
+					if (ball->angle > GRAD(270.0)) {
+						ball->angle = GRAD(290.0);
+					}
+					else {
+						ball->angle = GRAD(250.0);
+					}
+				}
+
+                // Geschwindigkeit des Ball erhoehen und getroffen
+                // zurueckgeben wenn der Ball getroffen wurde
+                ball->speed += 1;
+                return IN;
+            }
+            
+            // Entscheiden welche Seite Schuld war im Falle, dass der
+            // Ball nicht getroffen wird
+            if (ball->x > (FIELD_X / 2.0)) {
+            	life_left--;
+            	return LEFT;
+            }
+
+            life_right--;
+            return RIGHT;
+        }
+
+        return IN;
+}
+\end{lstlisting}
+
 \paragraph*{}
 Wir verwenden kein Punkte- , sondern ein Lebensystem. Jeder Spieler erhält 3 Leben am Anfang des Spieles. Sobald der Ball auf seiner Seite aus geht wird ihm ein Leben abgezogen. Es wird solange gespielt bis ein Spieler eine negative Anzahl an Leben hat.  
 
@@ -98,4 +195,10 @@ Jeder der beiden Spieler nutzt einen zweiten Controller um am Spiel teilzunehmen
 
 \paragraph*{}
 Die Steuerungsmöglichkeiten vor Spielbeginn beschränken sich auf den Druck auf einen der beiden Tasten. Dies starte die Suche nach eine Server. Während des Spiels kann jeder Spieler seinen Schläger (Bar) über die Beschleunigungssensoren steuern. Dabei ist die Steuerung nicht relativ zur Postion des Schlägers, sonder absolut. Es wird die Neigung des Controllers gegenüber der Erdbeschleunigung gemessen. Die Formeln für diese Berechnung wurden uns gegeben. Um starkes Wackeln der Schläger zu unterbinden, welches durch die Ungenauigkeit der Beschleunigungsensoren oder minimale Schwanken entstehen kann, mitteln wir den Wert über mehrere Messungen und das letzte Ergebnis. Dadurch entsteht eine angenehme und akkurate Steuerung.
+
+\section*{Abschluss}
+
+\paragraph*{}
+Als Resultat unseres Projekts entstand ein durcchaus spielbares Pongspiel, welches genutzt werden kann wenn der Clientcode auf zwei und der Servercode auf einen Controller geflasht wird. Der vollständige Code erschien zu umfangreich um ihn in diesem Protkoll ein zu schließen und ist deßhalb nur im Anhang unserer Abgabemail enthalten.
+
 
