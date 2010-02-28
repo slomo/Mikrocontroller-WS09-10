@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include "msp430x16x.h"
-#include "../led.h"
-#include "../util.h"
-#include "../system.h"
-#include "../SHT11.h"
-#include "../CC1100.h"
+// Standart Headerfiles siehe aufgabe1.c
 #include <math.h>
 #include "aufgabe28.h"
  

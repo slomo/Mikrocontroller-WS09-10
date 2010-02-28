@@ -1,9 +1,4 @@
-#include "msp430x16x.h"	// Systemdefinitionen von TI fur den MSP430F1612
-#include "interrupts.h"	// ISR - Interrupt Service Routinen
-#include "system.h"		// Systemfunktionen MSB430H
-#include "CC1100.h"		// CC1100 Funktransceiver
-#include "stdio.h"		// includes TI MSP430F1612
-#include "aufgabe22.h"	// Headerdatei des Haubtprogramms
+// alle StandartHeaderfiles (siehe Aufgabe 12) einbinden
 #include "string.h"		// Header fuer die Manipulation von Strings
 
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen

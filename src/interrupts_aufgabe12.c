@@ -1,3 +1,4 @@
+// diese Headerfiles sind in alle Intteruptdefinitionen eingebunden
 #include "msp430x16x.h" // Systemdefinitionen von TI fur den MSP430F1612
 #include "interrupts.h" // ISR - Interrupt Service Routinen
 #include "system.h"     // Systemfunktionen MSB430H

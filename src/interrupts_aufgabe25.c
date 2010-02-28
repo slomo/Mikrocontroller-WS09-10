@@ -1,9 +1,4 @@
-#include "msp430x16x.h"
-#include "interrupts.h"
-#include "system.h"
-#include "CC1100.h"
-#include "stdio.h"
-#include "string.h"
+// alle StandartHeaderfiles (siehe Aufgabe 12) einbinden
 #include "aufgabe25.h"
 
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen

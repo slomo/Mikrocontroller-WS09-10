@@ -1,3 +1,4 @@
+// Diese Header sind in allen Quelltexten eingebunden
 #include "msp430x16x.h"		// Systemdefinitionen von TI fur den MSP430F1612
 #include "init.h"			// Initialisierung des Mikrocontrollers
 #include "CC1100.h"			// CC1100 Funktransceiver
