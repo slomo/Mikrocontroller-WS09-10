@@ -86,40 +86,9 @@ __interrupt void ISR_Port2 (void) {
 }
 
 __interrupt void ISR_Port1 (void) {
-	if (running && player == 2) {
-		switch (P1IFG & 0x03) {
-			case 0x01 :  // rechter Taster gedrückt
-				if(right_bar <= FIELD_Y-BARLENGTH/2.0-BARSTEP) {
-					right_bar+=BARSTEP;
-					left_bar+=BARSTEP;
-				}
-				else {
-					right_bar = FIELD_Y-BARLENGTH/2.0;
-					left_bar = FIELD_Y-BARLENGTH/2.0;
-				}
-				
-		  	break;
-			case 0x02 : // linker Taster gedrückt
-				if(right_bar >= 0+BARLENGTH/2.0+BARSTEP) {
-					right_bar-=BARSTEP;
-					left_bar-=BARSTEP;
-				}
-				else {
-					right_bar = BARLENGTH/2.0;
-					left_bar = BARLENGTH/2.0;
-				}
-				
-			break;
-		}
-	}
-	else {
-		if (player < 2) {
-			player++;
-		}
-
-		if (player == 2) {
-			start_game = 1;
-		}
+	// Spiel starten wenn beide Spieler da sind und Taster gedrückt wird
+	if (player == 2) {
+		start_game = 1;
 	}
   	CLEAR(P1IFG, 0xFF); // Clear all flags
 }
