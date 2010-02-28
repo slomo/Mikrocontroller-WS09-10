@@ -26,11 +26,11 @@ volatile double wx = 0;
 volatile double wy = 0;
 
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen
-//______Interruptquelle_______________INTNR_|_ADR____|_Funktion_________|
-PORT2_ISR(ISR_Port2)             	//int01 | 0xFFE2 | Port2			|
-PORT1_ISR(ISR_Port1)                //int04 | 0xFFE8 | Port1 			|
-ADC12_ISR(ISR_ADC12)             	//int07 | 0xFFEE | ADC				|
-TIMERB0_ISR(ISR_Timer_B_CCR0)     //int13 | 0xFFFA | Timer B CC0 		|
+//______Interruptquelle_______________INTNR_|_ADR____|_Funktion
+PORT2_ISR(ISR_Port2)             	//int01 | 0xFFE2 | Port2
+PORT1_ISR(ISR_Port1)                //int04 | 0xFFE8 | Port1
+ADC12_ISR(ISR_ADC12)             	//int07 | 0xFFEE | ADC
+TIMERB0_ISR(ISR_Timer_B_CCR0)     //int13 | 0xFFFA | Timer B CC0
 
 __interrupt void ISR_Port2 (void) {
 	char res ;			// CRC Check 

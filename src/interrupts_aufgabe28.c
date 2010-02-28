@@ -1,10 +1,9 @@
 // alle StandartHeaderfiles (siehe Aufgabe 12) einbinden
 #include "aufgabe28.h"
-
 	
 //Zuweisung der Interruptvektoren auf die ISR Behandlungsroutinen
-//______Interruptquelle_______________INTNR_|_ADR____|_Funktion_________|
-PORT2_ISR(ISR_Port2)             	//int01 | 0xFFE2 | Port2			|
+//______Interruptquelle_______________INTNR_|_ADR____|_Funktion
+PORT2_ISR(ISR_Port2)             	//int01 | 0xFFE2 | Port2
 
 __interrupt void ISR_Port2 (void) {
 	char res ;			// CRC Check 
